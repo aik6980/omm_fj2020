@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-guid: 92567dcbb8094f34ad6efc414d7180b7
+guid: fc0d86fadf7e4dfba6fea54327923f95
 labels:
 - gvh
 - gvh_version-6.16.1
-- gvhp_exportpath-Firebase/Plugins/x86_64/FirebaseCppApp-6_16_1.so
+- gvhp_exportpath-Firebase/Plugins/Firebase.App.dll.mdb
 timeCreated: 1480838400
 PluginImporter:
   serializedVersion: 1
@@ -12,7 +12,7 @@ PluginImporter:
   isPreloaded: 0
   platformData:
     Android:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
     Any:
@@ -25,9 +25,9 @@ PluginImporter:
         DefaultValueInitialized: true
         OS: AnyOS
     Linux:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: None
+        CPU: x86
     Linux64:
       enabled: 1
       settings:
@@ -37,17 +37,17 @@ PluginImporter:
       settings:
         CPU: AnyCPU
     OSXIntel:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: None
+        CPU: x86
     OSXIntel64:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: None
+        CPU: x86_64
     OSXUniversal:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: None
+        CPU: AnyCPU
     Web:
       enabled: 0
       settings: {}
@@ -55,13 +55,13 @@ PluginImporter:
       enabled: 0
       settings: {}
     Win:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: None
+        CPU: x86
     Win64:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: None
+        CPU: x86_64
     WindowsStoreApps:
       enabled: 0
       settings:
