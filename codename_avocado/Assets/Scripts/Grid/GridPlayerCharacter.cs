@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class GridPlayerCharacter : MonoBehaviour
 {
-    public float m_Speed;
-    public CharacterController m_Controller;
+	public float m_Speed;
+	public CharacterController m_Controller;
 
 	[HideInInspector]
 	public CoordinateRepresentation m_RelevantCoordinate;
 
-    void FixedUpdate()
-    {
-        Movement();
+	void FixedUpdate()
+	{
+		Movement();
 		Interactions();
 	}
 
-    private void Movement()
-    {
+	private void Movement()
+	{
 		Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 		m_Controller.Move(move * Time.deltaTime * m_Speed);
 	}
