@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "644942082476",
+    "firebase_url": "https://test-db-fcc3a.firebaseio.com",
+    "project_id": "test-db-fcc3a",
+    "storage_bucket": "test-db-fcc3a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644942082476:android:3181d89574f7b9df08ca09",
+        "android_client_info": {
+          "package_name": "com.oom.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644942082476-2m8isfq3s463h3k8i5oht1emmq7o2fe8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhR32dFBY8xrTGK-Y8HNR-NNvQtc9J-1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644942082476-2m8isfq3s463h3k8i5oht1emmq7o2fe8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
