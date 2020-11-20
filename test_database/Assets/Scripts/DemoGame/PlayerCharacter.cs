@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridPlayerCharacter : MonoBehaviour
+public class PlayerCharacter : MonoBehaviour
 {
     public float m_Speed;
     public CharacterController m_Controller;
