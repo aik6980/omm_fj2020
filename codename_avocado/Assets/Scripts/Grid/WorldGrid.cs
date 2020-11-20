@@ -7,6 +7,8 @@ public class WorldGrid : MonoBehaviour
 	public GameObject m_CoordinatePrefab;
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
+	public List<GridBridge> m_Bridges = new List<GridBridge>();
+
 	private void Start()
 	{
 		Populate();
@@ -15,16 +17,23 @@ public class WorldGrid : MonoBehaviour
 	private void Populate()
 	{
 		int obstacleCount = 0;
-		while (obstacleCount < 10)
-		{
-			int randomX = Random.Range(-10, 10);
-			int randomY = Random.Range(-10, 10);
+		//while (obstacleCount < 10)
+		//{
+		//	int randomX = Random.Range(-10, 10);
+		//	int randomY = Random.Range(-10, 10);
 
-			// placeholder populate logic...
-			Coordinate coordinate = new BrokenCoordinate(this, new Vector2(randomX, randomY));
+		//	// placeholder populate logic...
+		//	Coordinate coordinate = new BrokenCoordinate(this, new Vector2(randomX, randomY));
+		//	AddCoordinate(coordinate);
+		//	obstacleCount++;
+		//}
+
+		m_Bridges.ForEach((GridBridge bridge) =>
+		{
+			Vector2 position = new Vector2(bridge.transform.position.x, bridge.transform.position.z);
+			BridgeCoordinate coordinate = new BridgeCoordinate(this, position, bridge);
 			AddCoordinate(coordinate);
-			obstacleCount++;
-		}
+		});
 	}
 
 	private void AddCoordinate(Coordinate c)
