@@ -126,6 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e091e8b737457a546807a858c0f5cd05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Speed: 2
+  m_Speed: 3
   m_Controller: {fileID: 8568058017538819751}
   m_RelevantCoordinate: {fileID: 0}
