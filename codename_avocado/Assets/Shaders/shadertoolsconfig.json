@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "hlsl.preprocessorDefinitions": {
+    "INTELLISENSE":  1 
+  },
+  "hlsl.additionalIncludeDirectories": [
+    "D:\\Projects\\Unity\\omm_fj2020\\codename_avocado\\Library\\PackageCache\\com.unity.render-pipelines.universal@7.3.1\\ShaderLibrary",
+    "D:\\Projects\\Unity\\omm_fj2020\\codename_avocado\\Library\\PackageCache\\com.unity.render-pipelines.universal@7.3.1\\Shaders"
+  ]
+}
