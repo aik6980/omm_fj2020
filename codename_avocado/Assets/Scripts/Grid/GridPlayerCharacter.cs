@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GridPlayerCharacter : MonoBehaviour
 {
+	public GridSpawn m_SpawnPoint;
 	public float m_Speed;
-	public CharacterController m_Controller;
+	public NavMeshAgent m_Agent;
 
 	[HideInInspector]
 	public CoordinateRepresentation m_RelevantCoordinate;
@@ -19,7 +21,7 @@ public class GridPlayerCharacter : MonoBehaviour
 	private void Movement()
 	{
 		Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-		m_Controller.Move(move * Time.deltaTime * m_Speed);
+		m_Agent.Move(move * Time.deltaTime * m_Speed);
 	}
 	private void Interactions()
 	{
@@ -42,5 +44,10 @@ public class GridPlayerCharacter : MonoBehaviour
 		{
 			Debug.Log("rep reacting finished");
 		}
+	}
+
+	public void Respawn()
+	{
+		m_Agent.Warp(m_SpawnPoint.transform.position);
 	}
 }

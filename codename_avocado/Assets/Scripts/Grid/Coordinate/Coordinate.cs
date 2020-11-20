@@ -29,7 +29,51 @@ public class Coordinate
 	public virtual void Decorate(CoordinateRepresentation rep)
 	{
 	}
+
+	public virtual bool CanInteract()
+	{
+		return true;
+	}
 }
+
+// needs to be healed, can be many types of coordinates...
+public class BridgeCoordinate : Coordinate
+{
+	private GridBridge m_Bridge;
+
+	public BridgeCoordinate(WorldGrid grid, Vector2 position, GridBridge bridge) 
+		: base(grid, position)
+	{
+		m_Bridge = bridge;
+	}
+
+	public override void Decorate(CoordinateRepresentation rep)
+	{
+		rep.m_Mesh.material.color = Color.red;
+	}
+
+	public override bool CanInteract()
+	{
+		return !m_Bridge.BridgeActive();
+	}
+
+	public override void HandleReacting(CoordinateRepresentation rep, bool reacting)
+	{
+		rep.m_Mesh.material.color = reacting ? Color.blue : Color.red;
+	}
+
+	public override void HandleInteraction(CoordinateRepresentation rep, GridPlayerCharacter player)
+	{
+		player.SetRelevantCoordinate(null);
+		m_Grid.CoordinateRegistration(this, false);
+		m_Bridge.ToggleBridgeActive(true);
+		rep.m_Mesh.material.color = Color.green;
+		player.Respawn();
+	}
+
+}
+
+
 
 // needs to be healed, can be many types of coordinates...
 public class BrokenCoordinate : Coordinate
