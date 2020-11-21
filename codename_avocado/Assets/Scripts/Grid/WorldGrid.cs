@@ -5,50 +5,44 @@ using UnityEngine;
 public class WorldGrid : MonoBehaviour
 {
 	public GameObject m_CoordinatePrefab;
+	public List<GridPiece> m_Pieces = new List<GridPiece>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
-	public List<GridBridge> m_Bridges = new List<GridBridge>();
-
-	private void Start()
+	private void Awake()
 	{
-		Populate();
+		var startPiece = GridPiece.GeneratePiece(this);
+		startPiece.Place(Vector2.zero);
 	}
 
-	private void Populate()
+	public static Vector2 OffsetDirection(Vector2 start, Direction direction)
 	{
-		int obstacleCount = 0;
-		//while (obstacleCount < 10)
-		//{
-		//	int randomX = Random.Range(-10, 10);
-		//	int randomY = Random.Range(-10, 10);
-
-		//	// placeholder populate logic...
-		//	Coordinate coordinate = new BrokenCoordinate(this, new Vector2(randomX, randomY));
-		//	AddCoordinate(coordinate);
-		//	obstacleCount++;
-		//}
-
-		m_Bridges.ForEach((GridBridge bridge) =>
+		switch (direction)
 		{
-			Vector2 position = new Vector2(bridge.transform.position.x, bridge.transform.position.z);
-			BridgeCoordinate coordinate = new BridgeCoordinate(this, position, bridge);
-			AddCoordinate(coordinate);
+			case Direction.North:
+				return new Vector2(start.x, start.y + 1);
+			case Direction.South:
+				return new Vector2(start.x, start.y - 1);
+			case Direction.East:
+				return new Vector2(start.x + 1, start.y);
+			case Direction.West:
+				return new Vector2(start.x - 1, start.y);
+			default:
+				return start;
+		}
+	}
+
+	public void RepresentPiece(GridPiece newPiece)
+	{
+		newPiece.m_Coordinates.ForEach((Coordinate coordinate) =>
+		{
+			var coordinateRepGO = GameObject.Instantiate(m_CoordinatePrefab);
+			coordinateRepGO.GetComponent<CoordinateRepresentation>().Configure(coordinate, false);
 		});
-	}
 
-	private void AddCoordinate(Coordinate c)
-	{
-		var newCoordinate = GameObject.Instantiate<GameObject>(m_CoordinatePrefab, transform);
-		var rep = newCoordinate.GetComponent<CoordinateRepresentation>();
-		rep.Configure(c);
-	}
-
-	public void CoordinateRegistration(Coordinate coordinate, bool registered)
-	{
-		if (registered)
-			m_Coordinates.Add(coordinate);
-		else
-			m_Coordinates.Remove(coordinate);
+		m_Pieces.ForEach((GridPiece piece) =>
+		{
+			piece.PopulateCoords(this);
+		});
 	}
 
 }

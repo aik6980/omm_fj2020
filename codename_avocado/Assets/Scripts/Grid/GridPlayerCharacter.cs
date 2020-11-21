@@ -1,16 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+
+public enum Direction
+{
+	North,
+	South,
+	East,
+	West
+}
 
 public class GridPlayerCharacter : MonoBehaviour
 {
+	public WorldGrid m_Grid;
+	public CharacterController m_Controller;
+	private Coordinate m_CurrentCoordinte;
+	public GridPiece m_PlayerPiece;
+
+	public Direction m_Facing = Direction.North;
+
 	public GridSpawn m_SpawnPoint;
 	public float m_Speed;
-	public NavMeshAgent m_Agent;
 
-	[HideInInspector]
-	public CoordinateRepresentation m_RelevantCoordinate;
+	private void Start()
+	{
+		Respawn();
+		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
+	}
 
 	void FixedUpdate()
 	{
@@ -20,34 +36,57 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	private void Movement()
 	{
-		Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-		m_Agent.Move(move * Time.deltaTime * m_Speed);
+		if (!Input.GetKeyDown(KeyCode.W) && !Input.GetKeyDown(KeyCode.A) && !Input.GetKeyDown(KeyCode.S) && !Input.GetKeyDown(KeyCode.D))
+			return;
+
+		float horizontal = Input.GetAxis("Horizontal");
+		float vertical = Input.GetAxis("Vertical");
+		Direction direction = vertical > 0f ? Direction.North : Direction.South;
+		if (Mathf.Abs(horizontal) > Mathf.Abs(vertical))
+		{
+			direction = horizontal > 0 ? Direction.East : Direction.West;
+		}
+
+		m_Facing = direction;
+		AttemptMove(direction);
 	}
+
+	private void AttemptMove(Direction direction)
+	{
+		Coordinate nextCoordinate = null;
+		if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
+		{
+			m_CurrentCoordinte = nextCoordinate;
+			Vector3 desiredPosition = new Vector3(m_CurrentCoordinte.GridPosition().x, 0f, m_CurrentCoordinte.GridPosition().y);
+			transform.position = desiredPosition;
+		}
+	}
+
 	private void Interactions()
 	{
-		if (m_RelevantCoordinate != null && Input.GetKeyDown(KeyCode.Space))
-			m_RelevantCoordinate.PlayerInteracted(this);
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			TryPlacePiece();
+		}
 	}
 
-	public void SetRelevantCoordinate(CoordinateRepresentation rep)
+	private void TryPlacePiece()
 	{
-		if (m_RelevantCoordinate != null && m_RelevantCoordinate != rep)
-			m_RelevantCoordinate.ToggleReaction(false);
-
-		m_RelevantCoordinate = rep;
-		if (m_RelevantCoordinate != null)
+		// check if can place piece in front of player...
+		Coordinate nextCoordinate = null;
+		if (!m_CurrentCoordinte.TryMove(m_Facing, ref nextCoordinate))
 		{
-			Debug.Log("rep reacting");
-			m_RelevantCoordinate.ToggleReaction(true);
-		}
-		else
-		{
-			Debug.Log("rep reacting finished");
+			Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
+			// TODO: overlapping piece handling...
+			m_PlayerPiece.Place(placePostition);
+			Respawn();
 		}
 	}
+
 
 	public void Respawn()
 	{
-		m_Agent.Warp(m_SpawnPoint.transform.position);
+		transform.position = m_SpawnPoint.transform.position;
+		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid);
 	}
 }
