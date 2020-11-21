@@ -67,6 +67,7 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
                 float4 positionOS       : POSITION;
                 float2 uv               : TEXCOORD0;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
+                float4 vertexColour     : COLOR;
             };
 
             struct Varyings
@@ -75,6 +76,7 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
                 float fogCoord  : TEXCOORD1;
                 float4 vertex : SV_POSITION;
                 float4 posWS : TEXCOORD6;
+                float4 vertexColour     : COLOR;
 
 #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
                 float4 shadowCoord              : TEXCOORD7;
@@ -97,6 +99,7 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
                 output.uv = TRANSFORM_TEX(input.uv, _BaseMap);
                 output.fogCoord = ComputeFogFactor(vertexInput.positionCS.z);
                 output.posWS.xyz = vertexInput.positionWS;
+                output.vertexColour = input.vertexColour;
 
 #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
                 output.shadowCoord = GetShadowCoord(vertexInput);
@@ -116,6 +119,8 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
                 half alpha = texColor.a * _BaseColor.a;
                 AlphaDiscard(alpha, _Cutoff);
 
+                color.rgb *= input.vertexColour.rgb;
+
 #ifdef _ALPHAPREMULTIPLY_ON
                 color *= alpha;
 #endif
@@ -132,12 +137,12 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
                 half3 attenuatedLightColor = mainLight.color * (mainLight.distanceAttenuation * mainLight.shadowAttenuation);
 
 #ifdef _ADDITIONAL_LIGHTS
-                //uint pixelLightCount = GetAdditionalLightsCount();
-                //for (uint lightIndex = 0u; lightIndex < pixelLightCount; ++lightIndex)
-                //{
-                //    Light light = GetAdditionalLight(lightIndex, inputData.positionWS);
-                //    attenuatedLightColor += light.color * (light.distanceAttenuation * light.shadowAttenuation);
-                //}
+                uint pixelLightCount = GetAdditionalLightsCount();
+                for (uint lightIndex = 0u; lightIndex < pixelLightCount; ++lightIndex)
+                {
+                    Light light = GetAdditionalLight(lightIndex, input.posWS);
+                    attenuatedLightColor += light.color * (light.distanceAttenuation * light.shadowAttenuation);
+                }
 #endif
 
                 color.rgb *= attenuatedLightColor;
