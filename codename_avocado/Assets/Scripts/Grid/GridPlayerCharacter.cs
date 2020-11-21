@@ -92,7 +92,10 @@ public class GridPlayerCharacter : MonoBehaviour
 		// always recreate for now, might switch directions...
 		ClearPreview();
 		Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
-		m_PreviewPlacement = m_PlayerPiece.PreviewPlacement(placePostition);
+		if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece))
+		{
+			m_PreviewPlacement = m_PlayerPiece.PreviewPlacement(placePostition);
+		}
 	}
 
 	private void Interactions()
@@ -112,9 +115,13 @@ public class GridPlayerCharacter : MonoBehaviour
 			ClearPreview();
 
 			Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
-			// TODO: overlapping piece handling...
-			m_PlayerPiece.Place(placePostition);
-			Respawn();
+			if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece))
+			{
+				// TODO: overlapping piece handling...
+				m_PlayerPiece.Place(placePostition);
+				m_Grid.HandleHealing();
+				Respawn();
+			}
 		}
 	}
 
