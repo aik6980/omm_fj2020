@@ -332,6 +332,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 2110301655}
+    - target: {fileID: 6350621152783761884, guid: a540e87f926d50148b6f09f83d6f3d48,
+        type: 3}
+      propertyPath: m_GameState
+      value: 
+      objectReference: {fileID: 2713911376495592172}
     - target: {fileID: 7808869385160492457, guid: a540e87f926d50148b6f09f83d6f3d48,
         type: 3}
       propertyPath: m_Name
@@ -491,6 +496,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3469598363503513671}
   - component: {fileID: 1703700765319623408}
+  - component: {fileID: 2713911376495592172}
   m_Layer: 0
   m_Name: WorldGrid
   m_TagString: Untagged
@@ -498,6 +504,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2713911376495592172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2713911376495592171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4911ad95c34e5e145b6a58842fb65989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3469598363503513671
 Transform:
   m_ObjectHideFlags: 0

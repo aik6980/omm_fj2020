@@ -12,6 +12,7 @@ public enum Direction
 
 public class GridPlayerCharacter : MonoBehaviour
 {
+	public GameState m_GameState;
 	public WorldGrid m_Grid;
 	public CharacterController m_Controller;
 	private Coordinate m_CurrentCoordinte;
@@ -20,13 +21,15 @@ public class GridPlayerCharacter : MonoBehaviour
 	public Direction m_Facing = Direction.North;
 	public float m_Speed;
 
+	private PreviewPlacement m_PreviewPlacement;
+
 	private void Start()
 	{
 		Respawn();
 		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
 		Movement();
 		Interactions();
@@ -34,28 +37,39 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	private void Movement()
 	{
-		if (!Input.GetKeyDown(KeyCode.W) && !Input.GetKeyDown(KeyCode.A) && !Input.GetKeyDown(KeyCode.S) && !Input.GetKeyDown(KeyCode.D))
+		bool north = Input.GetKeyDown(KeyCode.W);
+		bool south = Input.GetKeyDown(KeyCode.S);
+		bool east = Input.GetKeyDown(KeyCode.D);
+		bool west = Input.GetKeyDown(KeyCode.A);
+
+		if (!north && !south && !east && !west)
 			return;
 
-		float horizontal = Input.GetAxis("Horizontal");
-		float vertical = Input.GetAxis("Vertical");
-		Direction direction = vertical > 0f ? Direction.North : Direction.South;
-		if (Mathf.Abs(horizontal) > Mathf.Abs(vertical))
-		{
-			direction = horizontal > 0 ? Direction.East : Direction.West;
-		}
+		Direction direction = Direction.North;
+		if (south)
+			direction = Direction.South;
+		if (east)
+			direction = Direction.East;
+		if (west)
+			direction = Direction.West;
 
 		m_Facing = direction;
-		AttemptMove(direction);
+		if (!AttemptMove(direction))
+			PreparePlacement();
 	}
 
-	private void AttemptMove(Direction direction)
+	private bool AttemptMove(Direction direction)
 	{
 		Coordinate nextCoordinate = null;
 		if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
 		{
+			Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
+			ClearPreview();
 			MoveToCoordinate(nextCoordinate);
+			CheckWinCondition();
+			return true;
 		}
+		return false;
 	}
 
 	private void MoveToCoordinate(Coordinate coordinate)
@@ -65,9 +79,25 @@ public class GridPlayerCharacter : MonoBehaviour
 		transform.position = desiredPosition;
 	}
 
+	private void CheckWinCondition()
+	{
+		if (m_Grid.IsFinalCoordinate(m_CurrentCoordinte))
+		{
+			m_GameState.GameOver();
+		}
+	}
+
+	private void PreparePlacement()
+	{
+		// always recreate for now, might switch directions...
+		ClearPreview();
+		Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
+		m_PreviewPlacement = m_PlayerPiece.PreviewPlacement(placePostition);
+	}
+
 	private void Interactions()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (m_PreviewPlacement != null && Input.GetKeyDown(KeyCode.Space))
 		{
 			TryPlacePiece();
 		}
@@ -79,10 +109,21 @@ public class GridPlayerCharacter : MonoBehaviour
 		Coordinate nextCoordinate = null;
 		if (!m_CurrentCoordinte.TryMove(m_Facing, ref nextCoordinate))
 		{
+			ClearPreview();
+
 			Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
 			// TODO: overlapping piece handling...
 			m_PlayerPiece.Place(placePostition);
 			Respawn();
+		}
+	}
+
+	private void ClearPreview()
+	{
+		if (m_PreviewPlacement != null)
+		{
+			m_PreviewPlacement.Clear();
+			m_PreviewPlacement = null;
 		}
 	}
 

@@ -8,10 +8,23 @@ public class WorldGrid : MonoBehaviour
 	public List<GridPiece> m_Pieces = new List<GridPiece>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
+	public int m_Distance = 10;
+
+	//public Vector
+	public GridPiece m_FinalPiece;
+
 	private void Awake()
 	{
-		var startPiece = GridPiece.GeneratePiece(this);
+		var startPiece = GridPiece.GeneratePiece(this, new Square());
 		startPiece.Place(Vector2.zero);
+
+		m_FinalPiece = GridPiece.GeneratePiece(this, new Square());
+		m_FinalPiece.Place(new Vector2(0, m_Distance));
+	}
+
+	public bool IsFinalCoordinate(Coordinate coordinate)
+	{
+		return m_FinalPiece.m_Coordinates.Contains(coordinate);
 	}
 
 	public static Vector2 OffsetDirection(Vector2 start, Direction direction)
@@ -31,17 +44,32 @@ public class WorldGrid : MonoBehaviour
 		}
 	}
 
-	public void RepresentPiece(GridPiece newPiece)
+	public bool SupportsPlacement(Vector2 placement, GridPiece piece)
 	{
+		return true;
+	}
+
+	public List<CoordinateRepresentation> RepresentPiece(GridPiece newPiece)
+	{
+		List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
 		newPiece.m_Coordinates.ForEach((Coordinate coordinate) =>
 		{
 			var coordinateRepGO = GameObject.Instantiate(m_CoordinatePrefab);
-			coordinateRepGO.GetComponent<CoordinateRepresentation>().Configure(coordinate, false);
+			var rep = coordinateRepGO.GetComponent<CoordinateRepresentation>();
+			reps.Add(rep);
+			rep.Configure(coordinate);
 		});
 
-		m_Pieces.ForEach((GridPiece piece) =>
+		return reps;
+	}
+
+	public void LinkPiece(GridPiece piece)
+	{
+		m_Pieces.Add(piece);
+		m_Coordinates.AddRange(piece.m_Coordinates);
+		m_Pieces.ForEach((GridPiece p) =>
 		{
-			piece.PopulateCoords(this);
+			p.PopulateCoords(this);
 		});
 	}
 
