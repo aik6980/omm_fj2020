@@ -31,18 +31,28 @@ public class WorldGrid : MonoBehaviour
 		}
 	}
 
-	public void RepresentPiece(GridPiece newPiece)
+	public bool SupportsPlacement(Vector2 placement, GridPiece piece)
 	{
+		return true;
+	}
+
+	public List<CoordinateRepresentation> RepresentPiece(GridPiece newPiece)
+	{
+		List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
 		newPiece.m_Coordinates.ForEach((Coordinate coordinate) =>
 		{
 			var coordinateRepGO = GameObject.Instantiate(m_CoordinatePrefab);
-			coordinateRepGO.GetComponent<CoordinateRepresentation>().Configure(coordinate, false);
+			var rep = coordinateRepGO.GetComponent<CoordinateRepresentation>();
+			reps.Add(rep);
+			rep.Configure(coordinate);
 		});
 
 		m_Pieces.ForEach((GridPiece piece) =>
 		{
 			piece.PopulateCoords(this);
 		});
+
+		return reps;
 	}
 
 }

@@ -20,6 +20,8 @@ public class GridPlayerCharacter : MonoBehaviour
 	public Direction m_Facing = Direction.North;
 	public float m_Speed;
 
+	private PreviewPlacement m_PreviewPlacement;
+
 	private void Start()
 	{
 		Respawn();
@@ -46,16 +48,20 @@ public class GridPlayerCharacter : MonoBehaviour
 		}
 
 		m_Facing = direction;
-		AttemptMove(direction);
+		if (!AttemptMove(direction))
+			PreparePlacement();
 	}
 
-	private void AttemptMove(Direction direction)
+	private bool AttemptMove(Direction direction)
 	{
 		Coordinate nextCoordinate = null;
 		if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
 		{
+			ClearPreview();
 			MoveToCoordinate(nextCoordinate);
+			return true;
 		}
+		return false;
 	}
 
 	private void MoveToCoordinate(Coordinate coordinate)
@@ -65,9 +71,17 @@ public class GridPlayerCharacter : MonoBehaviour
 		transform.position = desiredPosition;
 	}
 
+	private void PreparePlacement()
+	{
+		// always recreate for now, might switch directions...
+		ClearPreview();
+		Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
+		m_PreviewPlacement = m_PlayerPiece.PreviewPlacement(placePostition);
+	}
+
 	private void Interactions()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (m_PreviewPlacement != null && Input.GetKeyDown(KeyCode.Space))
 		{
 			TryPlacePiece();
 		}
@@ -79,10 +93,21 @@ public class GridPlayerCharacter : MonoBehaviour
 		Coordinate nextCoordinate = null;
 		if (!m_CurrentCoordinte.TryMove(m_Facing, ref nextCoordinate))
 		{
+			ClearPreview();
+
 			Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
 			// TODO: overlapping piece handling...
 			m_PlayerPiece.Place(placePostition);
 			Respawn();
+		}
+	}
+
+	private void ClearPreview()
+	{
+		if (m_PreviewPlacement != null)
+		{
+			m_PreviewPlacement.Clear();
+			m_PreviewPlacement = null;
 		}
 	}
 

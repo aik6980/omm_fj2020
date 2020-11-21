@@ -2,60 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coordinate
+public class PreviewPlacement
 {
-	Vector2 m_Position;
+	List<CoordinateRepresentation> m_Reps;
 
-	public Dictionary<Direction, Coordinate> m_Coordinates = new Dictionary<Direction, Coordinate>();
-	GridPiece m_Piece;
-
-	public Coordinate(GridPiece piece, Vector2 position)
+	public PreviewPlacement(List<CoordinateRepresentation> reps)
 	{
-		m_Position = position;
-		m_Piece = piece;
+		m_Reps = reps;
+		m_Reps.ForEach((CoordinateRepresentation rep) => rep.SetColor(Color.white));
 	}
 
-	public void Populate(WorldGrid grid)
+	public void Clear()
 	{
-		FindCoord(grid, Direction.North );
-		FindCoord(grid, Direction.South );
-		FindCoord(grid, Direction.East );
-		FindCoord(grid, Direction.West );
-	}
-
-	private void FindCoord(WorldGrid grid, Direction direction)
-	{
-		var position = WorldGrid.OffsetDirection(GridPosition(), direction);
-		for (int i = 0; i < grid.m_Coordinates.Count; ++i)
-		{
-			var cord = grid.m_Coordinates[i];
-			if (cord.m_Piece.m_Placed && cord.GridPosition() == position)
-			{
-				m_Coordinates[direction] = cord;
-				break;
-			}
-		}
-	}
-
-	public bool TryMove(Direction direction, ref Coordinate nextCoordinate)
-	{
-		if (m_Coordinates.TryGetValue(direction, out Coordinate coord))
-		{
-			nextCoordinate = coord;
-			return true;
-		}
-
-		return false;
-	}
-
-	public Vector2 GridPosition()
-	{
-		return m_Piece.m_PlacedPosition + m_Position;
-	}
-
-	public void Decorate(CoordinateRepresentation rep)
-	{
-		// set to color of shape
+		m_Reps.ForEach((CoordinateRepresentation rep) => GameObject.Destroy(rep.gameObject));
 	}
 }
 
@@ -65,19 +24,30 @@ public class GridPiece
 	public Vector2 m_PlacedPosition;
 	public List<Vector2> m_Positions = new List<Vector2>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
-
+	
 	private WorldGrid m_Grid;
+
+	private Color m_Color;
 
 	public GridPiece(WorldGrid grid, List<Vector2> positions)
 	{
+		m_Color = Random.ColorHSV();
 		m_Grid = grid;
-		m_Grid.m_Pieces.Add(this);
 		m_Positions = positions;
 		for (int i = 0; i < m_Positions.Count; ++i)
 		{
 			var newCoord = new Coordinate(this, m_Positions[i]);
 			m_Coordinates.Add(newCoord);
 			grid.m_Coordinates.Add(newCoord);
+		}
+	}
+
+	private void LinkToGrid()
+	{
+		m_Grid.m_Pieces.Add(this);
+		for (int i = 0; i < m_Coordinates.Count; ++i)
+		{
+			m_Grid.m_Coordinates.Add(m_Coordinates[i]);
 		}
 	}
 
@@ -109,6 +79,7 @@ public class GridPiece
 				coords.Add(new Vector2(1, 2));
 				break;
 		}
+
 		GridPiece newPiece = new GridPiece(grid, coords);
 		return newPiece;
 	}
@@ -117,6 +88,15 @@ public class GridPiece
 	{
 		m_PlacedPosition = position;
 		m_Placed = true;
-		m_Grid.RepresentPiece(this);
+		var coordinates = m_Grid.RepresentPiece(this);
+		coordinates.ForEach((CoordinateRepresentation rep) => rep.SetColor(m_Color));
+		LinkToGrid();
+	}
+
+	public PreviewPlacement PreviewPlacement(Vector2 position)
+	{
+		m_PlacedPosition = position;
+		var preview = new PreviewPlacement(m_Grid.RepresentPiece(this));
+		return preview;
 	}
 }
