@@ -37,9 +37,9 @@ public class DatabaseAPI : MonoSingleton<DatabaseAPI>
     ///     World19727437291
     ///     {
     ///         Users:  [
-    ///         { name: "Aik", UserId: "jfhshfks1" },
-    ///         { name: "Phil" UserId: "maadhfks2" },
-    ///         { name: "Matt", UserId: "uiosyuts4" }
+    ///             { name: "Aik", UserId: "jfhshfks1" },
+    ///             { name: "Phil" UserId: "maadhfks2" },
+    ///             { name: "Matt", UserId: "uiosyuts4" }
     ///         ]
     ///     }
     /// ]
@@ -73,11 +73,6 @@ public class DatabaseAPI : MonoSingleton<DatabaseAPI>
 
     public WorldData GetWorld()
     {
-        // if success
-        //      Pick an existing world ID or create a new ID
-        // else
-        //      Create new ID
-
         return new WorldData();
     }
 
