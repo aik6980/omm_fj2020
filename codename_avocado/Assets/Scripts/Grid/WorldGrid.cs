@@ -8,12 +8,12 @@ public class WorldGrid : MonoBehaviour
 	public List<GridPiece> m_Pieces = new List<GridPiece>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
-	public List<BlockingCoordinate> m_Obstacles = new List<BlockingCoordinate>();
+	public List<PollutionPiece> m_Pollution = new List<PollutionPiece>();
 
-	public int m_Distance = 10;
+	private int m_Distance = 20;
 
-	public int m_ObstacleRange = 3;
-	public int m_ObstacleCount = 5;
+	private int m_ObstacleRange = 3;
+	private int m_ObstacleCount = 1;
 
 	//public Vector
 	public GridPiece m_FinalPiece;
@@ -28,20 +28,16 @@ public class WorldGrid : MonoBehaviour
 
 		for (int i = 0; i < m_ObstacleCount; ++i)
 		{
-			AddObstacle();
+			AddPollution();
 		}
 	}
 
-	private void AddObstacle()
+	private void AddPollution()
 	{
 		int randomX = Random.Range(0, m_ObstacleRange);
-		int randomY = Random.Range(2, m_Distance - 2);
-		var newObstacle = new BlockingCoordinate(new Vector2(randomX, randomY));
-		var coordinateRepGO = GameObject.Instantiate(m_CoordinatePrefab);
-		var rep = coordinateRepGO.GetComponent<CoordinateRepresentation>();
-		rep.Configure(newObstacle);
-		rep.SetColor(Color.red);
-		m_Obstacles.Add(newObstacle);
+		int randomY = Random.Range(4, m_Distance - 4);
+		var pollutionPiece = new PollutionPiece(this, new Volcano(), new Vector2(0, 10));
+		m_Pollution.Add(pollutionPiece);
 	}
 
 	public bool IsFinalCoordinate(Coordinate coordinate)
@@ -71,14 +67,42 @@ public class WorldGrid : MonoBehaviour
 		for (int i = 0; i < piece.m_Coordinates.Count; ++i)
 		{
 			var coPosition = piece.m_Coordinates[i].m_Position + placement;
-			for (int o = 0; o < m_Obstacles.Count; ++o)
+			for (int p = 0; p < m_Pollution.Count; ++p)
 			{
-				var obstacle = m_Obstacles[o];
-				if (obstacle.GridPosition() == coPosition)
-					return false;
+				var pollution = m_Pollution[p];
+				for (int o = 0; o < pollution.m_Coordinates.Count; ++o)
+				{
+					var obstacle = pollution.m_Coordinates[o];
+					if (obstacle.GridPosition() == coPosition && !obstacle.CanBeHealed())
+						return false;
+				}
 			}
 		}
 
+		return true;
+	}
+
+	public bool HandleHealing()
+	{
+		List<Coordinate> coordsToHeal = new List<Coordinate>();
+		for (int i = 0; i < m_Coordinates.Count; ++i)
+		{
+			var coPosition = m_Coordinates[i].GridPosition();
+			for (int p = 0; p < m_Pollution.Count; ++p)
+			{
+				var pollution = m_Pollution[p];
+				for (int o = 0; o < pollution.m_Coordinates.Count; ++o)
+				{
+					var pollutionCoord = pollution.m_Coordinates[o];
+					if (pollutionCoord.GridPosition() == coPosition && pollutionCoord.CanBeHealed())
+					{
+						coordsToHeal.Add(pollutionCoord);
+					}
+				}
+			}
+		}
+
+		coordsToHeal.ForEach((Coordinate c) => c.Heal(false));
 		return true;
 	}
 
@@ -102,7 +126,7 @@ public class WorldGrid : MonoBehaviour
 		m_Coordinates.AddRange(piece.m_Coordinates);
 		m_Pieces.ForEach((GridPiece p) =>
 		{
-			p.PopulateCoords(this);
+			p.PopulateCoords(this.m_Coordinates);
 		});
 	}
 

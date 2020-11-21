@@ -119,6 +119,7 @@ public class GridPlayerCharacter : MonoBehaviour
 			{
 				// TODO: overlapping piece handling...
 				m_PlayerPiece.Place(placePostition);
+				m_Grid.HandleHealing();
 				Respawn();
 			}
 		}
