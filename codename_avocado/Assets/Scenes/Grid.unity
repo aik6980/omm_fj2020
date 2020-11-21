@@ -486,6 +486,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CoordinatePrefab: {fileID: 979360823693339932, guid: 570da0b217c9ea14d8d5e74fbd7b5889,
     type: 3}
+  m_Distance: 20
+  m_Polluter: {fileID: 2713911376495592173}
 --- !u!1 &2713911376495592171
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,6 +499,7 @@ GameObject:
   - component: {fileID: 3469598363503513671}
   - component: {fileID: 1703700765319623408}
   - component: {fileID: 2713911376495592172}
+  - component: {fileID: 2713911376495592173}
   m_Layer: 0
   m_Name: WorldGrid
   m_TagString: Untagged
@@ -516,6 +519,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4911ad95c34e5e145b6a58842fb65989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2713911376495592173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2713911376495592171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa797c22087c6e4693b92ffd1a2ed8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Grid: {fileID: 1703700765319623408}
 --- !u!4 &3469598363503513671
 Transform:
   m_ObjectHideFlags: 0

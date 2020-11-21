@@ -6,7 +6,7 @@ public class Shape
 {
 	public virtual Color GetColor()
 	{
-		return Color.white;
+		return Color.clear;
 	}
 
 	public virtual List<Vector2> Coordinates()
@@ -32,11 +32,34 @@ public class Shape
 
 }
 
+public class Volcano : Shape
+{
+	public override Color GetColor()
+	{
+		return Color.red;
+	}
+
+	public override List<Vector2> Coordinates()
+	{
+		var coords = base.Coordinates();
+		coords.Add(new Vector2(0, 1));
+		coords.Add(new Vector2(1, 1));
+		coords.Add(new Vector2(1, 0));
+		coords.Add(new Vector2(1, -1));
+		coords.Add(new Vector2(0, -1));
+		coords.Add(new Vector2(-1, -1));
+		coords.Add(new Vector2(-1, 0));
+		coords.Add(new Vector2(0, -1));
+		coords.Add(new Vector2(-1, 1));
+		return coords;
+	}
+}
+
 public class Square : Shape
 {
 	public override Color GetColor()
 	{
-		return Color.yellow;
+		return Color.green;
 	}
 
 	public override List<Vector2> Coordinates()
@@ -70,7 +93,7 @@ public class Corner : Shape
 {
 	public override Color GetColor()
 	{
-		return Color.green;
+		return Color.magenta;
 	}
 
 	public override List<Vector2> Coordinates()

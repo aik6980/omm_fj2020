@@ -8,7 +8,10 @@ public class WorldGrid : MonoBehaviour
 	public List<GridPiece> m_Pieces = new List<GridPiece>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
-	public int m_Distance = 10;
+	public int m_Distance = 20;
+	public GridPolluter m_Polluter;
+
+
 
 	//public Vector
 	public GridPiece m_FinalPiece;
@@ -20,7 +23,10 @@ public class WorldGrid : MonoBehaviour
 
 		m_FinalPiece = GridPiece.GeneratePiece(this, new Square());
 		m_FinalPiece.Place(new Vector2(0, m_Distance));
+		m_Polluter.InitialPollution();
+
 	}
+
 
 	public bool IsFinalCoordinate(Coordinate coordinate)
 	{
@@ -46,6 +52,13 @@ public class WorldGrid : MonoBehaviour
 
 	public bool SupportsPlacement(Vector2 placement, GridPiece piece)
 	{
+		for (int i = 0; i < piece.m_Coordinates.Count; ++i)
+		{
+			var coPosition = piece.m_Coordinates[i].m_Position + placement;
+			if (m_Polluter.Polluted(coPosition))
+				return false;
+		}
+
 		return true;
 	}
 
@@ -69,7 +82,7 @@ public class WorldGrid : MonoBehaviour
 		m_Coordinates.AddRange(piece.m_Coordinates);
 		m_Pieces.ForEach((GridPiece p) =>
 		{
-			p.PopulateCoords(this);
+			p.PopulateCoords(this.m_Coordinates);
 		});
 	}
 
