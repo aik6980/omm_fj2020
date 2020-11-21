@@ -11,6 +11,11 @@ public class TestInteract : MonoBehaviour
         DatabaseAPI.GetOrCreateInstance().ListenForUnfold(SpawnSphere, Debug.Log);
     }
 
+    private void OnDestroy()
+    {
+        DatabaseAPI.GetOrCreateInstance().StopListenForUnfold();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))

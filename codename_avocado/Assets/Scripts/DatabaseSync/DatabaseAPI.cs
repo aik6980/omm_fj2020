@@ -172,7 +172,7 @@ public class DatabaseAPI : MonoSingleton<DatabaseAPI>
     //    reference.Child("messages").ChildRemoved += deletedMessageListener;
     //}
 
-    public void StopListenForMessage()
+    public void StopListenForUnfold()
     {
         reference.Child("worlds/world_1234/pieces").ChildAdded -= newMessageListener;
         //reference.Child("messages").ChildChanged -= editedMessageListener;
