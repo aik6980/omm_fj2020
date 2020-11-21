@@ -8,7 +8,12 @@ public class WorldGrid : MonoBehaviour
 	public List<GridPiece> m_Pieces = new List<GridPiece>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
+	public List<BlockingCoordinate> m_Obstacles = new List<BlockingCoordinate>();
+
 	public int m_Distance = 10;
+
+	public int m_ObstacleRange = 3;
+	public int m_ObstacleCount = 5;
 
 	//public Vector
 	public GridPiece m_FinalPiece;
@@ -20,6 +25,23 @@ public class WorldGrid : MonoBehaviour
 
 		m_FinalPiece = GridPiece.GeneratePiece(this, new Square());
 		m_FinalPiece.Place(new Vector2(0, m_Distance));
+
+		for (int i = 0; i < m_ObstacleCount; ++i)
+		{
+			AddObstacle();
+		}
+	}
+
+	private void AddObstacle()
+	{
+		int randomX = Random.Range(0, m_ObstacleRange);
+		int randomY = Random.Range(2, m_Distance - 2);
+		var newObstacle = new BlockingCoordinate(new Vector2(randomX, randomY));
+		var coordinateRepGO = GameObject.Instantiate(m_CoordinatePrefab);
+		var rep = coordinateRepGO.GetComponent<CoordinateRepresentation>();
+		rep.Configure(newObstacle);
+		rep.SetColor(Color.red);
+		m_Obstacles.Add(newObstacle);
 	}
 
 	public bool IsFinalCoordinate(Coordinate coordinate)
@@ -46,6 +68,17 @@ public class WorldGrid : MonoBehaviour
 
 	public bool SupportsPlacement(Vector2 placement, GridPiece piece)
 	{
+		for (int i = 0; i < piece.m_Coordinates.Count; ++i)
+		{
+			var coPosition = piece.m_Coordinates[i].m_Position + placement;
+			for (int o = 0; o < m_Obstacles.Count; ++o)
+			{
+				var obstacle = m_Obstacles[o];
+				if (obstacle.GridPosition() == coPosition)
+					return false;
+			}
+		}
+
 		return true;
 	}
 

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Coordinate
 {
-	Vector2 m_Position;
+	public Vector2 m_Position;
 
 	public Dictionary<Direction, Coordinate> m_Coordinates = new Dictionary<Direction, Coordinate>();
 	GridPiece m_Piece;
@@ -50,11 +51,24 @@ public class Coordinate
 
 	public Vector2 GridPosition()
 	{
-		return m_Piece.m_PlacedPosition + m_Position;
+		if (m_Piece != null)
+			return m_Piece.m_PlacedPosition + m_Position;
+		else
+			return m_Position;
 	}
 
 	public void Decorate(CoordinateRepresentation rep)
 	{
 		// set to color of shape
+	}
+}
+
+public class BlockingCoordinate : Coordinate
+{
+
+	public BlockingCoordinate(Vector2 position) 
+		: base(null, position)
+	{
+
 	}
 }
