@@ -10,6 +10,21 @@ public class GridPolluter : MonoBehaviour
 	private int m_ObstacleRange = 3;
 	private int m_ObstacleCount = 1;
 
+	public float m_PollutionExpansionTime = 3f;
+
+	private void Update()
+	{
+		CheckExpandPollution();
+	}
+
+	public void CheckExpandPollution()
+	{
+		m_Pollution.ForEach((PollutionPiece piece) =>
+		{
+			piece.TickPollution();
+		});
+	}
+
 	public void InitialPollution()
 	{
 		for (int i = 0; i < m_ObstacleCount; ++i)

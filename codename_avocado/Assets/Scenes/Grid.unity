@@ -532,6 +532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Grid: {fileID: 1703700765319623408}
+  m_PollutionExpansionTime: 3
 --- !u!4 &3469598363503513671
 Transform:
   m_ObjectHideFlags: 0

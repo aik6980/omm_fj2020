@@ -62,20 +62,6 @@ public class WorldGrid : MonoBehaviour
 		return true;
 	}
 
-	public List<CoordinateRepresentation> RepresentPiece(GridPiece newPiece)
-	{
-		List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
-		newPiece.m_Coordinates.ForEach((Coordinate coordinate) =>
-		{
-			var coordinateRepGO = GameObject.Instantiate(m_CoordinatePrefab);
-			var rep = coordinateRepGO.GetComponent<CoordinateRepresentation>();
-			reps.Add(rep);
-			rep.Configure(coordinate);
-		});
-
-		return reps;
-	}
-
 	public void LinkPiece(GridPiece piece)
 	{
 		m_Pieces.Add(piece);
