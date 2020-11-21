@@ -65,6 +65,7 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
             struct Attributes
             {
                 float4 positionOS       : POSITION;
+                float3 normalOS         : NORMAL;
                 float2 uv               : TEXCOORD0;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 float4 vertexColour     : COLOR;
@@ -74,6 +75,7 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
             {
                 float2 uv        : TEXCOORD0;
                 float fogCoord  : TEXCOORD1;
+                float3 normalWS : TEXCOORD5;
                 float4 vertex : SV_POSITION;
                 float4 posWS : TEXCOORD6;
                 float4 vertexColour     : COLOR;
@@ -95,8 +97,11 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
+                VertexNormalInputs normalInputs = GetVertexNormalInputs(input.normalOS);
+
                 output.vertex = vertexInput.positionCS;
                 output.uv = TRANSFORM_TEX(input.uv, _BaseMap);
+                output.normalWS = normalInputs.normalWS;
                 output.fogCoord = ComputeFogFactor(vertexInput.positionCS.z);
                 output.posWS.xyz = vertexInput.positionWS;
                 output.vertexColour = input.vertexColour;
@@ -125,6 +130,7 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
                 color *= alpha;
 #endif
 
+#ifndef _RECEIVE_SHADOWS_OFF
 #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
                 float4 inputData_shadowCoord = input.shadowCoord;
 #elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
@@ -134,18 +140,21 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
 #endif
 
                 Light mainLight = GetMainLight(inputData_shadowCoord);
-                half3 attenuatedLightColor = mainLight.color * (mainLight.distanceAttenuation * mainLight.shadowAttenuation);
+                half3 attenuatedLightColor = mainLight.shadowAttenuation;
 
 #ifdef _ADDITIONAL_LIGHTS
                 uint pixelLightCount = GetAdditionalLightsCount();
                 for (uint lightIndex = 0u; lightIndex < pixelLightCount; ++lightIndex)
                 {
                     Light light = GetAdditionalLight(lightIndex, input.posWS);
-                    attenuatedLightColor += light.color * (light.distanceAttenuation * light.shadowAttenuation);
+                    attenuatedLightColor += light.shadowAttenuation;
                 }
 #endif
-
                 color.rgb *= attenuatedLightColor;
+                
+                bool shadowed = dot(input.normalWS, mainLight.direction) >= 0;
+                color.rgb = lerp(float3(0, 0, 0), color.rgb, shadowed);
+#endif
 
                 color = MixFog(color, input.fogCoord);
 
