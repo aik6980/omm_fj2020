@@ -108,7 +108,7 @@ public class PollutionPiece : GridPiece
 			}
 
 			m_Coordinates.Clear();
-			m_Grid.m_Pollution.Remove(this);
+			m_Grid.m_Polluter.m_Pollution.Remove(this);
 		}
 		else
 		{
