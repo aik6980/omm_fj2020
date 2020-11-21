@@ -28,7 +28,7 @@ public class GridPlayerCharacter : MonoBehaviour
 		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
 		Movement();
 		Interactions();
