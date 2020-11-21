@@ -21,7 +21,17 @@ public class GridPlayerCharacter : MonoBehaviour
 	public Direction m_Facing = Direction.North;
 	public float m_Speed;
 
-	private PreviewPlacement m_PreviewPlacement;
+    //config
+    public float[] heading = { 0, 180, 90, -90 };
+
+    public delegate void VoidFunction();
+    public delegate void Vector2Function(Vector2 pos);
+    public event Vector2Function OnPlaceDelegate = null;
+    public event VoidFunction OnSpawnDelegate = null;
+
+    private PreviewPlacement m_PreviewPlacement;
+
+
 
 	private void Start()
 	{
@@ -37,10 +47,10 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	private void Movement()
 	{
-		bool north = Input.GetKeyDown(KeyCode.W);
-		bool south = Input.GetKeyDown(KeyCode.S);
-		bool east = Input.GetKeyDown(KeyCode.D);
-		bool west = Input.GetKeyDown(KeyCode.A);
+		bool north = Input.GetKey(KeyCode.W);
+		bool south = Input.GetKey(KeyCode.S);
+		bool east = Input.GetKey(KeyCode.D);
+		bool west = Input.GetKey(KeyCode.A);
 
 		if (!north && !south && !east && !west)
 			return;
@@ -54,6 +64,8 @@ public class GridPlayerCharacter : MonoBehaviour
 			direction = Direction.West;
 
 		m_Facing = direction;
+        transform.rotation = Quaternion.Euler(0, heading[(int)direction], 0);
+
 		if (!AttemptMove(direction))
 			PreparePlacement();
 	}
@@ -117,6 +129,8 @@ public class GridPlayerCharacter : MonoBehaviour
 			Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
 			if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece))
 			{
+                OnPlaceDelegate(placePostition);
+
 				// TODO: overlapping piece handling...
 				m_PlayerPiece.Place(placePostition);
 				m_Grid.m_Polluter.HandleHealing();
@@ -138,5 +152,7 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
 		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid);
+
+        OnSpawnDelegate();
 	}
 }

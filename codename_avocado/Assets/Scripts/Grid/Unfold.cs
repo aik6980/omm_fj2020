@@ -25,6 +25,9 @@ public class Unfold : MonoBehaviour
 
     public GameObject facePrefab;
 
+    [Range(0,1)]
+    public float progress;
+
     [InspectorButton("SpawnFaces", "UnfoldStep_", "UnSpawnFaces")]
     public bool _;
 
@@ -91,6 +94,7 @@ public class Unfold : MonoBehaviour
         {
             SquareFace f = faces[i];
             if (!(f.parent < i)) continue;   //has no parent
+            if (f.model == null) continue;
 
             SquareFace p = faces[faces[i].parent];
             Vector3 v = new Vector3(f.parentSide.x, 0, f.parentSide.y) * edgeLength * 0.5f;
@@ -99,5 +103,19 @@ public class Unfold : MonoBehaviour
             f.model.position = p.model.TransformPoint(v + relRot * v);
             f.model.rotation = p.model.rotation * relRot;
         }
+    }
+
+
+    void OnValidate()
+    {
+        for (int i = 0; i < faces.Count; i++)
+        {
+            SquareFace f = faces[i];
+            if (!(f.parent < i)) continue;   //has no parent
+
+            f.currentAngle = Mathf.Lerp(f.angle, 0.0f, progress);
+        }
+
+        UpdateTransforms();
     }
 }
