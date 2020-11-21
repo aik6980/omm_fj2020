@@ -29,11 +29,11 @@ public class GridPiece
 
 	private Color m_Color;
 
-	public GridPiece(WorldGrid grid, List<Vector2> positions)
+	public GridPiece(WorldGrid grid, Shape shape)
 	{
-		m_Color = Random.ColorHSV();
+		m_Color = shape.GetColor();
 		m_Grid = grid;
-		m_Positions = positions;
+		m_Positions = shape.Coordinates();
 		for (int i = 0; i < m_Positions.Count; ++i)
 		{
 			var newCoord = new Coordinate(this, m_Positions[i]);
@@ -49,28 +49,13 @@ public class GridPiece
 		}
 	}
 
-	public static GridPiece GeneratePiece(WorldGrid grid)
+	public static GridPiece GeneratePiece(WorldGrid grid, Shape shapeOverride = null)
 	{
-		List<Vector2> coords = new List<Vector2>();
-		int randomShape = Random.Range(0, 2);
-		coords.Add(new Vector2(0, 0));
-		switch (randomShape)
-		{
-			case 0:
-				// make random shape...
-				coords.Add(new Vector2(0, 1));
-				coords.Add(new Vector2(0, 2));
-				coords.Add(new Vector2(0, 3));
-				break;
-			case 1:
-				// make random shape...
-				coords.Add(new Vector2(0, 1));
-				coords.Add(new Vector2(0, 2));
-				coords.Add(new Vector2(1, 2));
-				break;
-		}
+		Shape shape = shapeOverride;
+		if (shape == null)
+			shape = Shape.RandomShape();
 
-		GridPiece newPiece = new GridPiece(grid, coords);
+		GridPiece newPiece = new GridPiece(grid, shape);
 		return newPiece;
 	}
 

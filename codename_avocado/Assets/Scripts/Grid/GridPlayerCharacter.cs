@@ -12,6 +12,7 @@ public enum Direction
 
 public class GridPlayerCharacter : MonoBehaviour
 {
+	public GameState m_GameState;
 	public WorldGrid m_Grid;
 	public CharacterController m_Controller;
 	private Coordinate m_CurrentCoordinte;
@@ -65,6 +66,7 @@ public class GridPlayerCharacter : MonoBehaviour
 			Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
 			ClearPreview();
 			MoveToCoordinate(nextCoordinate);
+			CheckWinCondition();
 			return true;
 		}
 		return false;
@@ -75,6 +77,14 @@ public class GridPlayerCharacter : MonoBehaviour
 		m_CurrentCoordinte = coordinate;
 		Vector3 desiredPosition = new Vector3(m_CurrentCoordinte.GridPosition().x, 0f, m_CurrentCoordinte.GridPosition().y);
 		transform.position = desiredPosition;
+	}
+
+	private void CheckWinCondition()
+	{
+		if (m_Grid.IsFinalCoordinate(m_CurrentCoordinte))
+		{
+			m_GameState.GameOver();
+		}
 	}
 
 	private void PreparePlacement()

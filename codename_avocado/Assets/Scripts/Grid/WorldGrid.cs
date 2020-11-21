@@ -9,11 +9,20 @@ public class WorldGrid : MonoBehaviour
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
 	//public Vector
+	public GridPiece m_FinalPiece;
 
 	private void Awake()
 	{
-		var startPiece = GridPiece.GeneratePiece(this);
+		var startPiece = GridPiece.GeneratePiece(this, new Square());
 		startPiece.Place(Vector2.zero);
+
+		m_FinalPiece = GridPiece.GeneratePiece(this, new Square());
+		m_FinalPiece.Place(new Vector2(0, 10));
+	}
+
+	public bool IsFinalCoordinate(Coordinate coordinate)
+	{
+		return m_FinalPiece.m_Coordinates.Contains(coordinate);
 	}
 
 	public static Vector2 OffsetDirection(Vector2 start, Direction direction)
