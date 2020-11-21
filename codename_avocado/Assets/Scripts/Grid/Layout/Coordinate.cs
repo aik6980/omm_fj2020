@@ -41,8 +41,24 @@ public class Coordinate
 		m_Coordinates[direction] = null;
 	}
 
+	public void AppendEmptyNeighbors(ref List<Vector2> neighbors)
+	{
+		Coordinate coord = null;
+		for (int i = 0; i < 5; ++i)
+		{
+			Direction d = (Direction)i;
+			if (!TryMove(d, ref coord))
+			{
+				var emptyNeighbor = WorldGrid.OffsetDirection(m_Position, d);
+				if (!neighbors.Contains(emptyNeighbor))
+					neighbors.Add(emptyNeighbor);
+			}
+		}
+	}
+
 	public bool TryMove(Direction direction, ref Coordinate nextCoordinate)
 	{
+		nextCoordinate = null;
 		if (m_Coordinates.TryGetValue(direction, out Coordinate coord))
 		{
 			if (coord != null)
@@ -83,23 +99,24 @@ public class Coordinate
 
 	public virtual bool CanBeHealed()
 	{
-		return false;
+		return true;
 	}
 
 	public virtual void Heal(bool fromPiece = false)
 	{
+		if (!fromPiece)
+			m_Piece.CoordinateHealed(this);
+
+		if (m_Representation != null && m_Representation.gameObject != null)
+			GameObject.Destroy(m_Representation.gameObject);
 	}
 }
 
 public class PollutionCoordinate : Coordinate
 {
-
-	private PollutionPiece m_PollutionPiece;
-
 	public PollutionCoordinate(PollutionPiece piece, Vector2 position) 
 		: base(piece, position)
 	{
-		m_PollutionPiece = piece;
 	}
 
 	public override Color GetColor()
@@ -126,12 +143,4 @@ public class PollutionCoordinate : Coordinate
 		return !blocked;
 	}
 
-	public override void Heal(bool fromPiece = false)
-	{
-		if (!fromPiece)
-			m_PollutionPiece.CoordinateHealed(this);
-
-		if (m_Representation != null && m_Representation.gameObject != null)
-			GameObject.Destroy(m_Representation.gameObject);
-	}
 }

@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4239536834826044497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4239536834826044499}
+  - component: {fileID: 4239536834826044498}
+  m_Layer: 0
+  m_Name: Unfold
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4239536834826044499
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4239536834826044497}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4239536834826044498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4239536834826044497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e219c562cde032747932f45cdbb730f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faces:
+  - index: 0
+    parent: 0
+    parentSide: {x: 0, y: 0}
+    angle: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - index: 1
+    parent: 0
+    parentSide: {x: 0, y: 1}
+    angle: 90
+    currentAngle: 90
+    model: {fileID: 0}
+  - index: 2
+    parent: 1
+    parentSide: {x: 0, y: 1}
+    angle: 90
+    currentAngle: 90
+    model: {fileID: 0}
+  - index: 3
+    parent: 2
+    parentSide: {x: 0, y: 1}
+    angle: 90
+    currentAngle: 90
+    model: {fileID: 0}
+  - index: 4
+    parent: 3
+    parentSide: {x: 1, y: 0}
+    angle: 90
+    currentAngle: 90
+    model: {fileID: 0}
+  - index: 5
+    parent: 3
+    parentSide: {x: -1, y: 0}
+    angle: 90
+    currentAngle: 90
+    model: {fileID: 0}
+  edgeLength: 1
+  unfoldAngVel: 90
+  waitForParents: 1
+  facePrefab: {fileID: 3303278340562397570, guid: 23cd3b977ec9f204c86e0b0ef9feab28,
+    type: 3}
+  _: 0

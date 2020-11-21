@@ -8,12 +8,10 @@ public class WorldGrid : MonoBehaviour
 	public List<GridPiece> m_Pieces = new List<GridPiece>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
-	public List<PollutionPiece> m_Pollution = new List<PollutionPiece>();
+	public int m_Distance = 20;
+	public GridPolluter m_Polluter;
 
-	private int m_Distance = 20;
 
-	private int m_ObstacleRange = 3;
-	private int m_ObstacleCount = 1;
 
 	//public Vector
 	public GridPiece m_FinalPiece;
@@ -25,20 +23,10 @@ public class WorldGrid : MonoBehaviour
 
 		m_FinalPiece = GridPiece.GeneratePiece(this, new Square());
 		m_FinalPiece.Place(new Vector2(0, m_Distance));
+		m_Polluter.InitialPollution();
 
-		for (int i = 0; i < m_ObstacleCount; ++i)
-		{
-			AddPollution();
-		}
 	}
 
-	private void AddPollution()
-	{
-		int randomX = Random.Range(0, m_ObstacleRange);
-		int randomY = Random.Range(4, m_Distance - 4);
-		var pollutionPiece = new PollutionPiece(this, new Volcano(), new Vector2(0, 10));
-		m_Pollution.Add(pollutionPiece);
-	}
 
 	public bool IsFinalCoordinate(Coordinate coordinate)
 	{
@@ -67,57 +55,11 @@ public class WorldGrid : MonoBehaviour
 		for (int i = 0; i < piece.m_Coordinates.Count; ++i)
 		{
 			var coPosition = piece.m_Coordinates[i].m_Position + placement;
-			for (int p = 0; p < m_Pollution.Count; ++p)
-			{
-				var pollution = m_Pollution[p];
-				for (int o = 0; o < pollution.m_Coordinates.Count; ++o)
-				{
-					var obstacle = pollution.m_Coordinates[o];
-					if (obstacle.GridPosition() == coPosition && !obstacle.CanBeHealed())
-						return false;
-				}
-			}
+			if (m_Polluter.Polluted(coPosition))
+				return false;
 		}
 
 		return true;
-	}
-
-	public bool HandleHealing()
-	{
-		List<Coordinate> coordsToHeal = new List<Coordinate>();
-		for (int i = 0; i < m_Coordinates.Count; ++i)
-		{
-			var coPosition = m_Coordinates[i].GridPosition();
-			for (int p = 0; p < m_Pollution.Count; ++p)
-			{
-				var pollution = m_Pollution[p];
-				for (int o = 0; o < pollution.m_Coordinates.Count; ++o)
-				{
-					var pollutionCoord = pollution.m_Coordinates[o];
-					if (pollutionCoord.GridPosition() == coPosition && pollutionCoord.CanBeHealed())
-					{
-						coordsToHeal.Add(pollutionCoord);
-					}
-				}
-			}
-		}
-
-		coordsToHeal.ForEach((Coordinate c) => c.Heal(false));
-		return true;
-	}
-
-	public List<CoordinateRepresentation> RepresentPiece(GridPiece newPiece)
-	{
-		List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
-		newPiece.m_Coordinates.ForEach((Coordinate coordinate) =>
-		{
-			var coordinateRepGO = GameObject.Instantiate(m_CoordinatePrefab);
-			var rep = coordinateRepGO.GetComponent<CoordinateRepresentation>();
-			reps.Add(rep);
-			rep.Configure(coordinate);
-		});
-
-		return reps;
 	}
 
 	public void LinkPiece(GridPiece piece)
