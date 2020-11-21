@@ -19,7 +19,7 @@ public class FirebaseMgr : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        FirebaseApp.DefaultInstance.Options.DatabaseUrl= new System.Uri("https://test-db-fcc3a.firebaseio.com");
+        //FirebaseApp.DefaultInstance.Options.DatabaseUrl= new System.Uri("https://test-db-fcc3a.firebaseio.com");
         reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
