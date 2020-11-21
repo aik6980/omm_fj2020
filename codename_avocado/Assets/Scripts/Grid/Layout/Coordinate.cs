@@ -85,7 +85,7 @@ public class Coordinate
 			Decorate(m_Representation);
 	}
 
-	public void Decorate(CoordinateRepresentation rep)
+	public virtual void Decorate(CoordinateRepresentation rep)
 	{
 		m_Representation = rep;
 		// set to color of shape
@@ -104,6 +104,8 @@ public class Coordinate
 
 	public virtual void Heal(bool fromPiece = false)
 	{
+		m_Piece.m_Grid.m_Coordinates.Remove(this);
+
 		if (!fromPiece)
 			m_Piece.CoordinateHealed(this);
 
@@ -122,12 +124,19 @@ public class PollutionCoordinate : Coordinate
 	public override Color GetColor()
 	{
 		Color color = CanBeHealed() ? Color.yellow : Color.red;
-
-		// source is back when healable
-		if (CanBeHealed() && m_Position == Vector2.zero)
-			color = Color.black;
+		// we are the source
+		if (IsCenterPollutant())
+		{
+			// need a spout at the center?
+			color = CanBeHealed() ? Color.black : Color.red;
+		}
 
 		return color;
+	}
+
+	public virtual bool IsCenterPollutant()
+	{
+		return m_Position == Vector2.zero;
 	}
 
 	public override bool CanBeHealed()
@@ -143,4 +152,42 @@ public class PollutionCoordinate : Coordinate
 		return !blocked;
 	}
 
+	public override void Heal(bool fromPiece = false)
+	{
+		m_Piece.m_Grid.m_Polluter.m_PollutionCoordinates.Remove(this);
+		base.Heal(fromPiece);
+	}
+
+	public override void Decorate(CoordinateRepresentation rep)
+	{
+		base.Decorate(rep);
+		if (IsCenterPollutant())
+		{
+			rep.Offset(0.1f);
+		}
+	}
+}
+
+public class BlockingCoordinate : PollutionCoordinate
+{
+	public BlockingCoordinate(PollutionPiece piece, Vector2 position)
+	: base(piece, position)
+	{
+	}
+
+	public override Color GetColor()
+	{
+		return Color.black;
+	}
+
+	public override bool CanBeHealed()
+	{
+		return false;
+	}
+
+	public override bool IsCenterPollutant()
+	{
+		// raise all blocks...
+		return true;
+	}
 }

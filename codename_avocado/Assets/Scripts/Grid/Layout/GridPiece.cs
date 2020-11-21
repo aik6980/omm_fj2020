@@ -100,9 +100,7 @@ public class GridPiece
 
 	public void CoordinateHealed(Coordinate coordinate)
 	{
-		m_Grid.m_Coordinates.Remove(coordinate);
 		m_Coordinates.Remove(coordinate);
-
 		if (CheckHealedPiece(coordinate))
 		{
 			for (int i = 0; i < m_Coordinates.Count; ++i)
@@ -135,6 +133,33 @@ public class GridPiece
 }
 
 
+public class BlockingPiece : PollutionPiece
+{
+	public BlockingPiece(WorldGrid grid, Shape shape, Vector2 position)
+		: base(grid, shape, position)
+	{
+	}
+
+	public override void TickPollution()
+	{
+	}
+
+	protected override Coordinate BuildCoordinate(Vector2 position)
+	{
+		return new BlockingCoordinate(this, position);
+	}
+
+	protected override bool CheckHealedPiece(Coordinate coordinate)
+	{
+		return false;
+	}
+
+	protected override void OnPieceHealed()
+	{
+		//m_Grid.m_Polluter.m_Pollution.Remove(this);
+	}
+}
+
 public class PollutionPiece : GridPiece
 {
 	public float m_ExpansionTime = 5f;
@@ -150,13 +175,13 @@ public class PollutionPiece : GridPiece
 		m_LastExpansion = Random.Range(Time.time, Time.time + (m_ExpansionTime / 2));
 
 		m_PlacedPosition = position;
+		m_Grid.m_Polluter.m_PollutionCoordinates.AddRange(m_Coordinates);
 		RepresentCoordianates(m_Coordinates);
-		// pollution populated with itself...
-		PopulateCoords(m_Coordinates);
+		PopulateCoords(m_Grid.m_Polluter.m_PollutionCoordinates);
 		RedecorateCords();
 	}
 
-	public void TickPollution()
+	public virtual void TickPollution()
 	{
 		if (m_LastExpansion > 0f)
 		{
@@ -194,6 +219,7 @@ public class PollutionPiece : GridPiece
 		coordsToGrow.Add(expansion);
 
 		List<Coordinate> newCoords = BuildCoordinates(coordsToGrow);
+		m_Grid.m_Polluter.m_PollutionCoordinates.AddRange(newCoords);
 		List<Vector2> gridNeighborPositions = new List<Vector2>();
 		for (int i = 0; i < coordsToGrow.Count; ++i)
 		{
@@ -211,7 +237,7 @@ public class PollutionPiece : GridPiece
 		}
 
 		RepresentCoordianates(newCoords);
-		PopulateCoords(m_Coordinates);
+		PopulateCoords(m_Grid.m_Polluter.m_PollutionCoordinates);
 		RedecorateCords();
 	}
 
@@ -232,7 +258,6 @@ public class PollutionPiece : GridPiece
 
 }
 
-
 public class PreviewPlacement
 {
 	List<CoordinateRepresentation> m_Reps;
@@ -240,7 +265,11 @@ public class PreviewPlacement
 	public PreviewPlacement(List<CoordinateRepresentation> reps)
 	{
 		m_Reps = reps;
-		m_Reps.ForEach((CoordinateRepresentation rep) => rep.SetColor(Color.white));
+		m_Reps.ForEach((CoordinateRepresentation rep) =>
+		{
+			rep.SetColor(Color.white);
+			rep.Offset(0.2f);
+		});
 	}
 
 	public void Clear()
