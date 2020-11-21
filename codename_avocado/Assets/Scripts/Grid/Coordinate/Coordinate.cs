@@ -17,14 +17,15 @@ public class Coordinate
 
 	public void Populate(WorldGrid grid)
 	{
-		FindCoord(grid, WorldGrid.OffsetDirection(m_Position, Direction.North), Direction.North );
-		FindCoord(grid, WorldGrid.OffsetDirection(m_Position, Direction.South), Direction.South );
-		FindCoord(grid, WorldGrid.OffsetDirection(m_Position, Direction.East), Direction.East );
-		FindCoord(grid, WorldGrid.OffsetDirection(m_Position, Direction.West), Direction.West );
+		FindCoord(grid, Direction.North );
+		FindCoord(grid, Direction.South );
+		FindCoord(grid, Direction.East );
+		FindCoord(grid, Direction.West );
 	}
 
-	private void FindCoord(WorldGrid grid, Vector2 position, Direction direction)
+	private void FindCoord(WorldGrid grid, Direction direction)
 	{
+		var position = WorldGrid.OffsetDirection(GridPosition(), direction);
 		for (int i = 0; i < grid.m_Coordinates.Count; ++i)
 		{
 			var cord = grid.m_Coordinates[i];

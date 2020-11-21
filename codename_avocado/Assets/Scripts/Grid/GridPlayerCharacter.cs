@@ -18,8 +18,6 @@ public class GridPlayerCharacter : MonoBehaviour
 	public GridPiece m_PlayerPiece;
 
 	public Direction m_Facing = Direction.North;
-
-	public GridSpawn m_SpawnPoint;
 	public float m_Speed;
 
 	private void Start()
@@ -56,10 +54,15 @@ public class GridPlayerCharacter : MonoBehaviour
 		Coordinate nextCoordinate = null;
 		if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
 		{
-			m_CurrentCoordinte = nextCoordinate;
-			Vector3 desiredPosition = new Vector3(m_CurrentCoordinte.GridPosition().x, 0f, m_CurrentCoordinte.GridPosition().y);
-			transform.position = desiredPosition;
+			MoveToCoordinate(nextCoordinate);
 		}
+	}
+
+	private void MoveToCoordinate(Coordinate coordinate)
+	{
+		m_CurrentCoordinte = coordinate;
+		Vector3 desiredPosition = new Vector3(m_CurrentCoordinte.GridPosition().x, 0f, m_CurrentCoordinte.GridPosition().y);
+		transform.position = desiredPosition;
 	}
 
 	private void Interactions()
@@ -83,10 +86,9 @@ public class GridPlayerCharacter : MonoBehaviour
 		}
 	}
 
-
 	public void Respawn()
 	{
-		transform.position = m_SpawnPoint.transform.position;
+		MoveToCoordinate(m_Grid.m_Coordinates[0]);
 		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid);
 	}
 }
