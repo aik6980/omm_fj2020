@@ -129,7 +129,7 @@ public class GridPlayerCharacter : MonoBehaviour
 			Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
 			if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece))
 			{
-                OnPlaceDelegate(placePostition);
+                OnPlaceDelegate?.Invoke(placePostition);
 
 				// TODO: overlapping piece handling...
 				m_PlayerPiece.Place(placePostition);
@@ -153,6 +153,6 @@ public class GridPlayerCharacter : MonoBehaviour
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
 		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid);
 
-        OnSpawnDelegate();
+        OnSpawnDelegate?.Invoke();
 	}
 }
