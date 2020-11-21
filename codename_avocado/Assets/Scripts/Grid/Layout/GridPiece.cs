@@ -38,16 +38,6 @@ public class GridPiece
 		{
 			var newCoord = new Coordinate(this, m_Positions[i]);
 			m_Coordinates.Add(newCoord);
-			grid.m_Coordinates.Add(newCoord);
-		}
-	}
-
-	private void LinkToGrid()
-	{
-		m_Grid.m_Pieces.Add(this);
-		for (int i = 0; i < m_Coordinates.Count; ++i)
-		{
-			m_Grid.m_Coordinates.Add(m_Coordinates[i]);
 		}
 	}
 
@@ -88,9 +78,9 @@ public class GridPiece
 	{
 		m_PlacedPosition = position;
 		m_Placed = true;
+		m_Grid.LinkPiece(this);
 		var coordinates = m_Grid.RepresentPiece(this);
 		coordinates.ForEach((CoordinateRepresentation rep) => rep.SetColor(m_Color));
-		LinkToGrid();
 	}
 
 	public PreviewPlacement PreviewPlacement(Vector2 position)

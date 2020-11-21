@@ -13,7 +13,7 @@ public class CoordinateRepresentation : MonoBehaviour
 		m_Coordinate = coordinate;
 		transform.position = new Vector3(m_Coordinate.GridPosition().x, -.5f, m_Coordinate.GridPosition().y);
 		m_Coordinate.Decorate(this);
-		Debug.Log("Spawned Coordinate: " + m_Coordinate.GridPosition().x.ToString() + "," +  m_Coordinate.GridPosition().y.ToString());
+		//Debug.Log("Spawned Coordinate: " + m_Coordinate.GridPosition().x.ToString() + "," +  m_Coordinate.GridPosition().y.ToString());
 	}
 
 	public void SetColor(Color color)

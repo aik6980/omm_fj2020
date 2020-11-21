@@ -36,16 +36,21 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	private void Movement()
 	{
-		if (!Input.GetKeyDown(KeyCode.W) && !Input.GetKeyDown(KeyCode.A) && !Input.GetKeyDown(KeyCode.S) && !Input.GetKeyDown(KeyCode.D))
+		bool north = Input.GetKeyDown(KeyCode.W);
+		bool south = Input.GetKeyDown(KeyCode.S);
+		bool east = Input.GetKeyDown(KeyCode.D);
+		bool west = Input.GetKeyDown(KeyCode.A);
+
+		if (!north && !south && !east && !west)
 			return;
 
-		float horizontal = Input.GetAxis("Horizontal");
-		float vertical = Input.GetAxis("Vertical");
-		Direction direction = vertical > 0f ? Direction.North : Direction.South;
-		if (Mathf.Abs(horizontal) > Mathf.Abs(vertical))
-		{
-			direction = horizontal > 0 ? Direction.East : Direction.West;
-		}
+		Direction direction = Direction.North;
+		if (south)
+			direction = Direction.South;
+		if (east)
+			direction = Direction.East;
+		if (west)
+			direction = Direction.West;
 
 		m_Facing = direction;
 		if (!AttemptMove(direction))
@@ -57,6 +62,7 @@ public class GridPlayerCharacter : MonoBehaviour
 		Coordinate nextCoordinate = null;
 		if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
 		{
+			Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
 			ClearPreview();
 			MoveToCoordinate(nextCoordinate);
 			return true;

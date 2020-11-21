@@ -8,6 +8,8 @@ public class WorldGrid : MonoBehaviour
 	public List<GridPiece> m_Pieces = new List<GridPiece>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
+	//public Vector
+
 	private void Awake()
 	{
 		var startPiece = GridPiece.GeneratePiece(this);
@@ -47,12 +49,17 @@ public class WorldGrid : MonoBehaviour
 			rep.Configure(coordinate);
 		});
 
-		m_Pieces.ForEach((GridPiece piece) =>
-		{
-			piece.PopulateCoords(this);
-		});
-
 		return reps;
+	}
+
+	public void LinkPiece(GridPiece piece)
+	{
+		m_Pieces.Add(piece);
+		m_Coordinates.AddRange(piece.m_Coordinates);
+		m_Pieces.ForEach((GridPiece p) =>
+		{
+			p.PopulateCoords(this);
+		});
 	}
 
 }
