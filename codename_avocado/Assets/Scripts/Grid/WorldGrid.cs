@@ -36,7 +36,7 @@ public class WorldGrid : MonoBehaviour
 	{
 		int randomX = Random.Range(0, m_ObstacleRange);
 		int randomY = Random.Range(4, m_Distance - 4);
-		var pollutionPiece = new PollutionPiece(this, new Volcano(), new Vector2(0, 10));
+		var pollutionPiece = new PollutionPiece(this, new Volcano(), new Vector2(randomX, randomY));
 		m_Pollution.Add(pollutionPiece);
 	}
 
