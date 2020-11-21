@@ -8,6 +8,8 @@ public class WorldGrid : MonoBehaviour
 	public List<GridPiece> m_Pieces = new List<GridPiece>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
+	public int m_Distance = 10;
+
 	//public Vector
 	public GridPiece m_FinalPiece;
 
@@ -17,7 +19,7 @@ public class WorldGrid : MonoBehaviour
 		startPiece.Place(Vector2.zero);
 
 		m_FinalPiece = GridPiece.GeneratePiece(this, new Square());
-		m_FinalPiece.Place(new Vector2(0, 10));
+		m_FinalPiece.Place(new Vector2(0, m_Distance));
 	}
 
 	public bool IsFinalCoordinate(Coordinate coordinate)
