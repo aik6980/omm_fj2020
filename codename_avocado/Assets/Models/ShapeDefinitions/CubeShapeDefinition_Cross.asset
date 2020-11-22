@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a5c0d7ec75afa4a8827c61c02a9219, type: 3}
   m_Name: CubeShapeDefinition_Cross
   m_EditorClassIdentifier: 
+  bodyShape: 0
   faces:
   - parent: 0
     parentSide: {x: 0, y: 0}

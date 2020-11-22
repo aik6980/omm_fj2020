@@ -13,6 +13,7 @@ public class Unfold : MonoBehaviour
         public int parent;
         public Vector2 parentSide;    //which edge of the parent it attaches to (x=right, y=fwd)
         public float angle;           //bent ones start at 90; larger faces are made of multiple unit faces at 0
+        public int generation;        //used if waitForParents; number of anchestors
         public float currentAngle;    //start at angle, all 0 when fully unfolded
         public Transform model;
     }
@@ -24,6 +25,7 @@ public class Unfold : MonoBehaviour
     public float edgeLength = 1.0f;
     public float unfoldAngVel = 90.0f;  //degrees per second
     public bool waitForParents = true;
+    public int maxGenerations = 0;
 
     public GameObject facePrefab;
 
@@ -54,7 +56,7 @@ public class Unfold : MonoBehaviour
         return false;
     }
 
-    void SpawnFaces()
+    public void SpawnFaces()
     {
         for(int i=0; i<faces.Count; i++)
         {
@@ -67,7 +69,7 @@ public class Unfold : MonoBehaviour
         UpdateTransforms(faces);
     }
 
-    void UnSpawnFaces()
+    public void UnSpawnFaces()
     {
         for (int i = 0; i < faces.Count; i++)
         {
@@ -83,7 +85,7 @@ public class Unfold : MonoBehaviour
         UnfoldStep(0.1f);
     }
 
-    void UnfoldStep(float dT)
+    public void UnfoldStep(float dT)
     {
         for (int i = 0; i < faces.Count; i++)
         {
@@ -99,6 +101,19 @@ public class Unfold : MonoBehaviour
         UpdateTransforms(faces);
     }
 
+    public bool Finished()
+    {
+        for (int i = 0; i < faces.Count; i++)
+        {
+            SquareFace f = faces[i];
+            if (f.currentAngle <= 0) continue;   //already unfolded
+            if (!(f.parent < i)) continue;   //has no parent
+
+            return false;
+        }
+
+        return true;
+    }
 
     void UpdateTransforms(List<SquareFace> squareFaces)
     {
@@ -154,14 +169,46 @@ public class Unfold : MonoBehaviour
         return coordinates;
     }
 
+    float S_Curve(float x)
+    {
+        //return 3.0f * x * x - 2.0f * x * x * x;
+        //return 0.5f - 0.5f * Mathf.Cos(x * Mathf.PI);
+        return (x * x) / (2.0f * (x * x - x) + 1.0f);
+    }
+
     void OnValidate()
     {
+        //used for the progress slider
+
+        maxGenerations = 0;
         for (int i = 0; i < faces.Count; i++)
         {
             SquareFace f = faces[i];
-            if (!(f.parent < i)) continue;   //has no parent
+            f.generation = (f.parent < i) ? (faces[f.parent].generation + 1) : 0;
+            maxGenerations = Mathf.Max(maxGenerations, f.generation);
+        }
 
-            f.currentAngle = Mathf.Lerp(f.angle, 0.0f, progress);
+        for (int i = 0; i < faces.Count; i++)
+        {
+            SquareFace f = faces[i];
+            if (!(f.parent < i))   //has no parent
+            {
+                f.currentAngle = 0;
+                continue;
+            }
+
+            if (waitForParents)
+            {
+                float genLen = 1.0f / (float)(maxGenerations);
+                float genStart = (f.generation - 1) * genLen;
+                float genProgress = Mathf.Clamp01((progress - genStart) / genLen);  //progress of this generation
+                //ToDo: add a bit of pause at each stage :) it would feel better
+                f.currentAngle = Mathf.Lerp(f.angle, 0.0f, S_Curve(genProgress));
+            }
+            else
+            {
+                f.currentAngle = Mathf.Lerp(f.angle, 0.0f, progress);
+            }
         }
 
         UpdateTransforms(faces);

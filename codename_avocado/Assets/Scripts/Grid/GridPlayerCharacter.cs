@@ -20,7 +20,9 @@ public class GridPlayerCharacter : MonoBehaviour
 	public GridPiece m_PlayerPiece;
     public Unfold unfoldScript;
 
-	public Direction m_Facing = Direction.North;
+    public UnfoldShapeDefinition m_currentUnfoldShapeDef;
+
+    public Direction m_Facing = Direction.North;
 	public float m_Speed;
 
     //config
@@ -33,6 +35,8 @@ public class GridPlayerCharacter : MonoBehaviour
 
     private PreviewPlacement m_PreviewPlacement;
 
+    public bool unfolding;
+
 	private void Start()
 	{
 		Respawn();
@@ -41,6 +45,15 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	void Update()
 	{
+        //ugly hack, sorry :oP
+        if (unfolding)
+        {
+            if (m_AnimatedCharacter.jumping || m_AnimatedCharacter.unfolding)
+                return; //wait
+            unfolding = false;
+            Respawn();
+        }
+
 		Movement();
 		Interactions();
 	}
@@ -137,7 +150,9 @@ public class GridPlayerCharacter : MonoBehaviour
 				// TODO: overlapping piece handling...
 				m_PlayerPiece.Place(placePostition, m_Facing);
 				m_Grid.m_Polluter.HandleHealing();
-				Respawn();
+                
+                //Respawn();
+                unfolding = true;
 			}
 		}
 	}
@@ -156,6 +171,7 @@ public class GridPlayerCharacter : MonoBehaviour
         if (unfoldScript && unfoldScript.UnfoldShapeDefinitionAmount() > 0)
         {
             int shapeDefinitionIndex = Random.Range(0, unfoldScript.UnfoldShapeDefinitionAmount());
+            m_currentUnfoldShapeDef = unfoldScript.shapeDefinitions[shapeDefinitionIndex];
             unfoldScript.UseUnfoldShapeDefinition(shapeDefinitionIndex);
         }
 
