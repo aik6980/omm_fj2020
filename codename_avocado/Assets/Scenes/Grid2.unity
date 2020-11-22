@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: ff1302aefaba1264cb58cea11d62fb69,
     type: 2}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -798,6 +798,7 @@ GameObject:
   - component: {fileID: 1703700765319623408}
   - component: {fileID: 2713911376495592172}
   - component: {fileID: 2713911376495592173}
+  - component: {fileID: 2713911376495592174}
   m_Layer: 0
   m_Name: WorldGrid
   m_TagString: Untagged
@@ -830,6 +831,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Grid: {fileID: 1703700765319623408}
+  m_PollutionExpansionTime: 3
+--- !u!114 &2713911376495592174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2713911376495592171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ebf7507f803834f87fd4e30d7286a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Distance: 20
 --- !u!1 &3406394814389820665 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8471382507787393641, guid: 20ce1c2f747bd2a4f9b7384a06e9cc80,

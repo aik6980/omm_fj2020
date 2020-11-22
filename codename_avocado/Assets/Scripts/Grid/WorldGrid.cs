@@ -27,7 +27,7 @@ public class WorldGrid : MonoBehaviour
 
 	private void Awake()
 	{
-		var world = WorldBuilder.GetOrCreateInstance().BuildDefaultTest(this, m_Distance, 1, 3, 3);//.BuildLevel(this, 1);//
+		var world = GetComponent<ILevelLoader>().LoadLevel(this);
 		m_FinalPiece = world.end_piece;
 		m_Polluter.AddVolcanoes(world.volcano_pieces);
 		m_Polluter.AddBlocks(world.block_pieces);
