@@ -8,6 +8,7 @@ public class WorldGrid : MonoBehaviour
     {
 		public GridPiece			start_piece;
 		public GridPiece			end_piece;
+		public List<GridPiece>		island_pieces;
 		public List<PollutionPiece> volcano_pieces;
 		public List<PollutionPiece>	block_pieces;
 	}
@@ -26,7 +27,7 @@ public class WorldGrid : MonoBehaviour
 
 	private void Awake()
 	{
-		var world = WorldBuilder.GetOrCreateInstance().BuildDefaultTest(this, m_Distance, 1, 3, 3);
+		var world = WorldBuilder.GetOrCreateInstance().BuildDefaultTest(this, m_Distance, 1, 3, 3);//.BuildLevel(this, 1);//
 		m_FinalPiece = world.end_piece;
 		m_Polluter.AddVolcanoes(world.volcano_pieces);
 		m_Polluter.AddBlocks(world.block_pieces);

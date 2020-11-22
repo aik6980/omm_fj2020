@@ -11,6 +11,11 @@ public class LevelReader : MonoSingleton<LevelReader>
 		{
 			public int x;
 			public int y;
+
+			public Vector2 ToVector2()
+            {
+				return new Vector2(x, y);
+            }
 		}
 
 		public Coordinates Start;

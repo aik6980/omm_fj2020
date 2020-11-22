@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -54,23 +55,24 @@ public class WorldBuilder : MonoSingleton<WorldBuilder>
 		return world;
 	}
 
-	public void BuildLevel(WorldGrid grid, int level_num)
+	public WorldGrid.WorldData BuildLevel(WorldGrid grid, int level_num)
     {
         var level = LevelReader.GetOrCreateInstance().GetLevelData(level_num);
+		WorldGrid.WorldData world = new WorldGrid.WorldData();
 
-		CreateRepresentation(new List<LevelReader.LevelData.Coordinates> { level.Start }, Color.green);
-		CreateRepresentation(new List<LevelReader.LevelData.Coordinates> { level.End }, Color.yellow);
-		CreateRepresentation(level.Solid, Color.white);
-		CreateRepresentation(level.Block, Color.black);
-		CreateRepresentation(level.Magma, Color.red);
+		world.start_piece = PlaceNewPiece(new BuilderShape(Color.green), level.Start, Direction.North);
+		world.end_piece = PlaceNewPiece(new BuilderShape(Color.cyan), level.End, Direction.North);
+		world.island_pieces = new List<GridPiece>(level.Solid.Select(coord => PlaceNewPiece(new BuilderShape(Color.white), coord, Direction.North)));
+		world.volcano_pieces = new List<PollutionPiece>(level.Magma.Select(coord => new PollutionPiece(grid, new Volcano(), coord.ToVector2())));
+		world.block_pieces = new List<PollutionPiece>(level.Block.Select(coord => new PollutionPiece(grid, new Shape(), coord.ToVector2())));
 
-		void CreateRepresentation(List<LevelReader.LevelData.Coordinates> coords, Color col)
-		{
-			coords.ForEach((LevelReader.LevelData.Coordinates coordinate) =>
-			{
-				var shape = new GridPiece(grid, new BuilderShape(col));
-				shape.Place(new Vector2(coordinate.x, coordinate.y), Direction.North);
-			});
+		return world;
+
+		GridPiece PlaceNewPiece(Shape shape, LevelReader.LevelData.Coordinates coord, Direction dir)
+        {
+			var piece = GridPiece.GeneratePiece(grid, shape);
+			piece.Place(coord.ToVector2(), dir);
+			return piece;
 		}
 	}
 
