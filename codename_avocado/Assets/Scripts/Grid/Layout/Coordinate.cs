@@ -74,9 +74,31 @@ public class Coordinate
 	public Vector2 GridPosition()
 	{
 		if (m_Piece != null)
-			return m_Piece.m_PlacedPosition + m_Position;
+			return TranslatedPosition(m_Piece.m_PlacedPosition, m_Piece.m_PlacedDirection);
 		else
-			return m_Position;
+			return TranslatedPosition(Vector2.zero, Direction.North);
+	}
+
+	public Vector2 TranslatedPosition(Vector2 rootPosition, Direction direction)
+	{
+		Vector2 translated = rootPosition;
+		switch (direction)
+		{
+			case Direction.North:
+				translated += m_Position;
+				break;
+			case Direction.East:
+				translated += new Vector2(m_Position.y, -m_Position.x);
+				break;
+			case Direction.South:
+				translated += new Vector2(m_Position.x, -m_Position.y);
+				break;
+			case Direction.West:
+				translated += new Vector2(-m_Position.y, m_Position.x);
+				break;
+		}
+
+		return translated;
 	}
 
 	public void Redecorate()

@@ -19,10 +19,10 @@ public class WorldGrid : MonoBehaviour
 	private void Awake()
 	{
 		var startPiece = GridPiece.GeneratePiece(this, new Square());
-		startPiece.Place(Vector2.zero);
+		startPiece.Place(Vector2.zero, Direction.North);
 
 		m_FinalPiece = GridPiece.GeneratePiece(this, new Square());
-		m_FinalPiece.Place(new Vector2(0, m_Distance));
+		m_FinalPiece.Place(new Vector2(0, m_Distance), Direction.North);
 		m_Polluter.InitialPollution();
 
 	}
@@ -50,11 +50,11 @@ public class WorldGrid : MonoBehaviour
 		}
 	}
 
-	public bool SupportsPlacement(Vector2 placement, GridPiece piece)
+	public bool SupportsPlacement(Vector2 placement, GridPiece piece, Direction direction)
 	{
 		for (int i = 0; i < piece.m_Coordinates.Count; ++i)
 		{
-			var coPosition = piece.m_Coordinates[i].m_Position + placement;
+			var coPosition = piece.m_Coordinates[i].TranslatedPosition(placement, direction);
 			if (m_Polluter.Polluted(coPosition))
 				return false;
 		}

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GridPiece
 {
+	public Direction m_PlacedDirection;
 	public Vector2 m_PlacedPosition;
 	public List<Vector2> m_Positions = new List<Vector2>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
@@ -76,16 +77,18 @@ public class GridPiece
 		return newPiece;
 	}
 
-	public void Place(Vector2 position)
+	public void Place(Vector2 position, Direction direction)
 	{
 		m_PlacedPosition = position;
+		m_PlacedDirection = direction;
 		m_Grid.LinkPiece(this);
 		RepresentCoordianates(m_Coordinates);
 	}
 
-	public PreviewPlacement PreviewPlacement(Vector2 position)
+	public PreviewPlacement PreviewPlacement(Vector2 position, Direction direction)
 	{
 		m_PlacedPosition = position;
+		m_PlacedDirection = direction;
 		var preview = new PreviewPlacement(RepresentCoordianates(m_Coordinates));
 		return preview;
 	}
@@ -174,6 +177,7 @@ public class PollutionPiece : GridPiece
 		// want random offset for each pollution
 		m_LastExpansion = Random.Range(Time.time, Time.time + (m_ExpansionTime / 2));
 
+		m_PlacedDirection = Direction.North;
 		m_PlacedPosition = position;
 		m_Grid.m_Polluter.m_PollutionCoordinates.AddRange(m_Coordinates);
 		RepresentCoordianates(m_Coordinates);

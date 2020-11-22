@@ -104,9 +104,9 @@ public class GridPlayerCharacter : MonoBehaviour
 		// always recreate for now, might switch directions...
 		ClearPreview();
 		Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
-		if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece))
+		if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing))
 		{
-			m_PreviewPlacement = m_PlayerPiece.PreviewPlacement(placePostition);
+			m_PreviewPlacement = m_PlayerPiece.PreviewPlacement(placePostition, m_Facing);
 		}
 	}
 
@@ -127,12 +127,12 @@ public class GridPlayerCharacter : MonoBehaviour
 			ClearPreview();
 
 			Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
-			if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece))
+			if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing))
 			{
                 OnPlaceDelegate?.Invoke(placePostition);
 
 				// TODO: overlapping piece handling...
-				m_PlayerPiece.Place(placePostition);
+				m_PlayerPiece.Place(placePostition, m_Facing);
 				m_Grid.m_Polluter.HandleHealing();
 				Respawn();
 			}
