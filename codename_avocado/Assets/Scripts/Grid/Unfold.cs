@@ -10,7 +10,6 @@ public class Unfold : MonoBehaviour
     [System.Serializable]
     public class SquareFace
     {
-        public int index;
         public int parent;
         public Vector2 parentSide;    //which edge of the parent it attaches to (x=right, y=fwd)
         public float angle;           //bent ones start at 90; larger faces are made of multiple unit faces at 0
@@ -19,6 +18,7 @@ public class Unfold : MonoBehaviour
     }
     //faces are oriented horizontally, inner side up if rotation is default
 
+    public UnfoldShapeDefinition[] shapeDefinitions;
     public List<SquareFace> faces =  new List<SquareFace>();
 
     public float edgeLength = 1.0f;
@@ -43,6 +43,16 @@ public class Unfold : MonoBehaviour
         
     }
 
+    bool AreFacesSpawned()
+    {
+        for (int i = 0; i < faces.Count; i++)
+        {
+            if (faces[i].model != null)
+                return true;
+        }
+
+        return false;
+    }
 
     void SpawnFaces()
     {
@@ -105,6 +115,24 @@ public class Unfold : MonoBehaviour
             f.model.position = p.model.TransformPoint(v + relRot * v);
             f.model.rotation = p.model.rotation * relRot;
         }
+    }
+
+    public void UseUnfoldShapeDefinition(int i)
+    {
+        bool areFacesSpawned = AreFacesSpawned();
+        if(areFacesSpawned)
+            UnSpawnFaces();
+
+        faces.Clear();
+        faces = new List<SquareFace>(shapeDefinitions[i].faces);
+
+        if(areFacesSpawned)
+            SpawnFaces();
+    }
+
+    public int UnfoldShapeDefinitionAmount()
+    {
+        return shapeDefinitions.Length;
     }
 
     public List<Vector2> GetUnfoldedNet()

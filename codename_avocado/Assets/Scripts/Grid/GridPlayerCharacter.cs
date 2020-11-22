@@ -151,6 +151,12 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	public void Respawn()
 	{
+        if (unfoldScript && unfoldScript.UnfoldShapeDefinitionAmount() > 0)
+        {
+            int shapeDefinitionIndex = Random.Range(0, unfoldScript.UnfoldShapeDefinitionAmount());
+            unfoldScript.UseUnfoldShapeDefinition(shapeDefinitionIndex);
+        }
+
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
 		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
 

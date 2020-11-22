@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: ff1302aefaba1264cb58cea11d62fb69,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -505,6 +505,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
+      propertyPath: shapeDefinitions.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
+        type: 3}
       propertyPath: faces.Array.data[0].model
       value: 
       objectReference: {fileID: 0}
@@ -541,32 +546,32 @@ PrefabInstance:
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: faces.Array.data[1].currentAngle
-      value: 83.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: faces.Array.data[2].currentAngle
-      value: 83.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: faces.Array.data[3].currentAngle
-      value: 83.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: faces.Array.data[4].currentAngle
-      value: 83.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: faces.Array.data[5].parent
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: faces.Array.data[5].currentAngle
-      value: 83.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
@@ -576,13 +581,25 @@ PrefabInstance:
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: progress
-      value: 0.067
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
+        type: 3}
+      propertyPath: shapeDefinitions.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3b665723151e2954387881b950299a3c,
+        type: 2}
+    - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
+        type: 3}
+      propertyPath: shapeDefinitions.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 76a6470544b07404b8b5f3c7131643b4,
+        type: 2}
     - target: {fileID: 4239536834826044499, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -863,7 +880,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83fc0e7dba673f64a9a7cc473edf346f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Level: 1
 --- !u!1 &3406394814389820665 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8471382507787393641, guid: 20ce1c2f747bd2a4f9b7384a06e9cc80,
