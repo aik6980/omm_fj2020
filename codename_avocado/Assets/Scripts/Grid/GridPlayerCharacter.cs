@@ -12,6 +12,7 @@ public enum Direction
 
 public class GridPlayerCharacter : MonoBehaviour
 {
+	public AnimatedCharacter m_AnimatedCharacter;
 	public GameState m_GameState;
 	public WorldGrid m_Grid;
 	public CharacterController m_Controller;
@@ -32,8 +33,6 @@ public class GridPlayerCharacter : MonoBehaviour
 
     private PreviewPlacement m_PreviewPlacement;
 
-
-
 	private void Start()
 	{
 		Respawn();
@@ -48,6 +47,9 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	private void Movement()
 	{
+		if (!m_AnimatedCharacter.ReachedDestination())
+			return;
+
 		bool north = Input.GetKey(KeyCode.W);
 		bool south = Input.GetKey(KeyCode.S);
 		bool east = Input.GetKey(KeyCode.D);
