@@ -13,9 +13,20 @@ public class AnimatedCharacter : MonoBehaviour
     public string[] animClips;
     public GameObject[] models;
 
+    public Transform facePivot;
+    public Transform armLPivot;
+    public Transform armRPivot;
+
+    public GameObject[] faces;
+    public GameObject[] arms;
+
     public bool moving = false;
     public bool jumping = false;
     //public bool needSpawn = false;
+
+    public GameObject face;
+    public GameObject armL;
+    public GameObject armR;
 
     public Vector3 offset;
 
@@ -32,6 +43,8 @@ public class AnimatedCharacter : MonoBehaviour
 
     void OnSpawn()
     {
+        if (!jumping)
+            Spawn();
         //needSpawn = true;
         //this.transform.rotation = player.transform.rotation;
         //this.transform.position = player.transform.position;
@@ -54,12 +67,27 @@ public class AnimatedCharacter : MonoBehaviour
         int n = Random.Range(0, 1000) % models.Length;
         for (int i = 0; i < models.Length; i++)
             models[i].SetActive(i == n);
+
+        PickDecor();
+    }
+
+    void PickDecor()
+    {
+        Debug.Log("pick");
+        int faceType = Random.Range(0, faces.Length);
+        int armType = Random.Range(0, arms.Length);
+        if (face) Destroy(face);
+        if (armL) Destroy(armL);
+        if (armR) Destroy(armR);
+        face = Instantiate(faces[faceType], facePivot.position, facePivot.rotation, facePivot);
+        armL = Instantiate(arms[armType], armLPivot.position, armLPivot.rotation * arms[armType].transform.rotation, armLPivot);
+        armR = Instantiate(arms[armType], armRPivot.position, armRPivot.rotation * arms[armType].transform.rotation, armRPivot);
     }
 
     void Update()
     {
         //hack
-        animation.transform.localPosition = Vector3.down * 0.8f;
+        //animation.transform.localPosition = Vector3.down * 0.8f;
 
         float dT = Time.deltaTime;
 
@@ -67,14 +95,19 @@ public class AnimatedCharacter : MonoBehaviour
         {
             if (animation.IsPlaying(animClips[2]))
             { //wait
+                Debug.Log("jumping...");
                 return;
             }
             else
             {
+                Debug.Log("jump done.");
                 jumping = false;
                 Spawn();
             }
         }
+
+        if (Random.value < 0.01f)
+            PickDecor();
 
         offset = player.transform.position - this.transform.position;
         //offset.z = ((player.transform.rotation.y - this.transform.rotation.y) + 180.0f) % 360.0f - 180.0f;
@@ -91,7 +124,8 @@ public class AnimatedCharacter : MonoBehaviour
         }
 
 
-        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, player.transform.rotation, 400.0f * dT);
+        Quaternion faceDir = moving ? Quaternion.LookRotation(offset) : player.transform.rotation;
+        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, faceDir, 400.0f * dT);
         this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, 5.0f * dT);
     }
 
