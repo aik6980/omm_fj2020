@@ -134,7 +134,7 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
 #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
                 float4 inputData_shadowCoord = input.shadowCoord;
 #elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
-                float4 inputData_shadowCoord = TransformWorldToShadowCoord(input.posWS);
+                float4 inputData_shadowCoord = TransformWorldToShadowCoord(input.posWS.xyz);
 #else
                 float4 inputData_shadowCoord = float4(0, 0, 0, 0);
 #endif
@@ -152,8 +152,9 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
 #endif
                 color.rgb *= attenuatedLightColor;
                 
-                bool shadowed = dot(input.normalWS, mainLight.direction) >= 0;
-                color.rgb = lerp(float3(0, 0, 0), color.rgb, shadowed);
+                // [Aik] commenting this out, so those facing away from light
+                //bool shadowed = dot(input.normalWS, mainLight.direction) >= 0;
+                //color.rgb = lerp(float3(0, 0, 0), color.rgb, shadowed);
 #endif
 
                 color = MixFog(color, input.fogCoord);
