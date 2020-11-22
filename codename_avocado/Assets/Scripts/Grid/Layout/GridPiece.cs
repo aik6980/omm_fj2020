@@ -12,9 +12,11 @@ public class GridPiece
 	public WorldGrid m_Grid;
 
 	public Shape m_Shape;
+	public GridTileBuilder.TileType m_TileType;
 
-	public GridPiece(WorldGrid grid, Shape shape)
+	public GridPiece(WorldGrid grid, Shape shape, GridTileBuilder.TileType tileType)
 	{
+		m_TileType = tileType;
 		m_Shape = shape;
 		m_Grid = grid;
 		m_Positions = shape.Coordinates();
@@ -26,7 +28,7 @@ public class GridPiece
 		List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
 		coordinaates.ForEach((Coordinate coordinate) =>
 		{
-			var coordinateRepGO = GameObject.Instantiate(m_Grid.m_CoordinatePrefab);
+			var coordinateRepGO = m_Grid.m_GridTileBuilder.InstantiateTile(m_TileType);
 			var rep = coordinateRepGO.GetComponent<CoordinateRepresentation>();
 			reps.Add(rep);
 			rep.Configure(coordinate);
@@ -67,13 +69,13 @@ public class GridPiece
 		}
 	}
 
-	public static GridPiece GeneratePiece(WorldGrid grid, Shape shapeOverride = null)
+	public static GridPiece GeneratePiece(WorldGrid grid, GridTileBuilder.TileType tileType, Shape shapeOverride = null)
 	{
 		Shape shape = shapeOverride;
 		if (shape == null)
 			shape = Shape.RandomShape();
 
-		GridPiece newPiece = new GridPiece(grid, shape);
+		GridPiece newPiece = new GridPiece(grid, shape, tileType);
 		return newPiece;
 	}
 
@@ -139,7 +141,7 @@ public class GridPiece
 public class BlockingPiece : PollutionPiece
 {
 	public BlockingPiece(WorldGrid grid, Shape shape, Vector2 position)
-		: base(grid, shape, position)
+		: base(grid, shape, position, GridTileBuilder.TileType.obstacle)
 	{
 	}
 
@@ -170,8 +172,8 @@ public class PollutionPiece : GridPiece
 
 	List<Vector2> m_CurrentExpansion = new List<Vector2>();
 
-	public PollutionPiece(WorldGrid grid, Shape shape, Vector2 position)
-		: base(grid, shape)
+	public PollutionPiece(WorldGrid grid, Shape shape, Vector2 position, GridTileBuilder.TileType tileType)
+		: base(grid, shape, tileType)
 	{
 		m_ExpansionTime = grid.m_Polluter.m_PollutionExpansionTime;
 		// want random offset for each pollution

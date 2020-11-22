@@ -20,7 +20,7 @@ public class WorldGrid : MonoBehaviour
 	public int m_Distance = 20;
 	public GridPolluter m_Polluter;
 
-
+	public GridTileBuilder m_GridTileBuilder;
 
 	//public Vector
 	public GridPiece m_FinalPiece;

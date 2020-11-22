@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4683538448211693355
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6156693609271057799}
+  - component: {fileID: 8282761495222976304}
+  - component: {fileID: 4683538448211693356}
+  - component: {fileID: 4683538448211693357}
+  - component: {fileID: 4683538448211693358}
+  - component: {fileID: 214925197453655938}
+  m_Layer: 0
+  m_Name: WorldGrid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6156693609271057799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683538448211693355}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8282761495222976304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683538448211693355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2f052648b5b8944692467678bb4186a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CoordinatePrefab: {fileID: 979360823693339932, guid: 570da0b217c9ea14d8d5e74fbd7b5889,
+    type: 3}
+  m_Distance: 20
+  m_Polluter: {fileID: 4683538448211693357}
+  m_GridTileBuilder: {fileID: 214925197453655938}
+--- !u!114 &4683538448211693356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683538448211693355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4911ad95c34e5e145b6a58842fb65989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4683538448211693357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683538448211693355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa797c22087c6e4693b92ffd1a2ed8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Grid: {fileID: 8282761495222976304}
+  m_PollutionExpansionTime: 3
+--- !u!114 &4683538448211693358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683538448211693355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83fc0e7dba673f64a9a7cc473edf346f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Level: 1
+--- !u!114 &214925197453655938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683538448211693355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0486802764c03ff4fa29cc388d34b994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_coordRepresentativePrefab: {fileID: 979360823693339932, guid: 570da0b217c9ea14d8d5e74fbd7b5889,
+    type: 3}
+  grass_tile:
+  - {fileID: 919132149155446097, guid: 3abd87a585e97154e9e8105655bf0b09, type: 3}
+  toxic_tile:
+  - {fileID: 919132149155446097, guid: d232f430d16bbd04fa464e032d784fc9, type: 3}
+  start_tile:
+  - {fileID: 919132149155446097, guid: 9282124b528a6444eb0c32560a967615, type: 3}
+  exit_tile:
+  - {fileID: 919132149155446097, guid: 9282124b528a6444eb0c32560a967615, type: 3}
+  obstacle_tile:
+  - {fileID: 919132149155446097, guid: a245e2dae465b554bab23855a5b5b672, type: 3}
+  floor_tile:
+  - {fileID: 919132149155446097, guid: 9282124b528a6444eb0c32560a967615, type: 3}

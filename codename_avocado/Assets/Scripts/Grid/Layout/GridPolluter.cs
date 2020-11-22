@@ -76,7 +76,7 @@ public class GridPolluter : MonoBehaviour
 
 	public void AddVolcano()
 	{
-		var pollutionPiece = new PollutionPiece(m_Grid, new Volcano(), RandomPollutant());
+		var pollutionPiece = new PollutionPiece(m_Grid, new Volcano(), RandomPollutant(), GridTileBuilder.TileType.toxic);
 		m_Pollution.Add(pollutionPiece);
 	}
 
