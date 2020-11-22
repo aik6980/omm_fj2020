@@ -129,4 +129,9 @@ public class AnimatedCharacter : MonoBehaviour
         this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, 5.0f * dT);
     }
 
+    public bool ReachedDestination()
+    {
+        return (this.transform.position - player.transform.position).sqrMagnitude < 0.1f;
+    }
+
 }
