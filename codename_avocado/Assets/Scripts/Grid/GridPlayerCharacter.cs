@@ -89,7 +89,11 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	private void MoveToCoordinate(Coordinate coordinate)
 	{
+		if (m_CurrentCoordinte != null)
+			m_CurrentCoordinte.m_PopulatedPlayer = null;
+
 		m_CurrentCoordinte = coordinate;
+		m_CurrentCoordinte.m_PopulatedPlayer = this;
 		Vector3 desiredPosition = new Vector3(m_CurrentCoordinte.GridPosition().x, 0f, m_CurrentCoordinte.GridPosition().y);
 		transform.position = desiredPosition;
 	}
@@ -161,7 +165,6 @@ public class GridPlayerCharacter : MonoBehaviour
 
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
 		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
-
-        OnSpawnDelegate?.Invoke();
+		OnSpawnDelegate?.Invoke();
 	}
 }

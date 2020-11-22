@@ -233,10 +233,15 @@ public class PollutionPiece : GridPiece
 
 		for (int i = 0; i < m_Grid.m_Coordinates.Count; ++i)
 		{
-			if (gridNeighborPositions.Contains(m_Grid.m_Coordinates[i].GridPosition()))
+			var expanded = m_Grid.m_Coordinates[i];
+			if (gridNeighborPositions.Contains(expanded.GridPosition()))
 			{
-				// heal any bridge piece neighbors... (todo: handle other pollution pieces if we have multiple polluters...)
-				m_Grid.m_Coordinates[i].Heal();
+				// player consumed by lava
+				if (expanded.m_PopulatedPlayer != null)
+					expanded.m_PopulatedPlayer.Respawn();
+
+				// heal any bridge piece neighbors (removes them from the board)...
+				expanded.Heal();
 			}
 		}
 
