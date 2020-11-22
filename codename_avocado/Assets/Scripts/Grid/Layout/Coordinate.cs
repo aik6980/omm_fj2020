@@ -163,8 +163,8 @@ public class PollutionCoordinate : Coordinate
 
 	public override bool CanBeHealed()
 	{
-		if (m_Position == Vector2.zero)
-			Debug.Log("HERE");
+		//if (m_Position == Vector2.zero)
+		//	Debug.Log("HERE");
 
 		bool blocked = m_Coordinates.TryGetValue(Direction.North, out var n);
 		blocked &= m_Coordinates.TryGetValue(Direction.South, out var s);

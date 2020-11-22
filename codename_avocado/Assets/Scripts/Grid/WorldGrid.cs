@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class WorldGrid : MonoBehaviour
 {
+	public struct WorldData
+    {
+		public GridPiece			start_piece;
+		public GridPiece			end_piece;
+		public List<PollutionPiece> volcano_pieces;
+		public List<PollutionPiece>	block_pieces;
+	}
+
 	public GameObject m_CoordinatePrefab;
 	public List<GridPiece> m_Pieces = new List<GridPiece>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
@@ -18,13 +26,10 @@ public class WorldGrid : MonoBehaviour
 
 	private void Awake()
 	{
-		var startPiece = GridPiece.GeneratePiece(this, new Square());
-		startPiece.Place(Vector2.zero, Direction.North);
-
-		m_FinalPiece = GridPiece.GeneratePiece(this, new Square());
-		m_FinalPiece.Place(new Vector2(0, m_Distance), Direction.North);
-		m_Polluter.InitialPollution();
-
+		var world = WorldBuilder.GetOrCreateInstance().BuildDefaultTest(this, m_Distance, 1, 3, 3);
+		m_FinalPiece = world.end_piece;
+		m_Polluter.AddVolcanoes(world.volcano_pieces);
+		m_Polluter.AddBlocks(world.block_pieces);
 	}
 
 

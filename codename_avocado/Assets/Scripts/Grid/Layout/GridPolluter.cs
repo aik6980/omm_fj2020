@@ -100,4 +100,28 @@ public class GridPolluter : MonoBehaviour
 		var position = new Vector2(randomX, randomY);
 		return position;
 	}
+
+	public void AddBlocks(List<PollutionPiece> pieces)
+	{
+		var pollutant = RandomPollutant();
+		while (m_PollutionCoordinates.Find((Coordinate c) => c.GridPosition() == pollutant) != null)
+		{
+			pollutant = RandomPollutant();
+		}
+
+		pieces.ForEach(piece =>
+		{
+			m_Pollution.Add(piece);
+			m_PollutionCoordinates.AddRange(piece.m_Coordinates);
+		});
+	}
+
+	public void AddVolcanoes(List<PollutionPiece> pieces)
+	{
+		pieces.ForEach(piece =>
+		{
+			m_Pollution.Add(piece);
+			//m_PollutionCoordinates.AddRange(piece.m_Coordinates);
+		});
+	}
 }
