@@ -106,3 +106,23 @@ public class Corner : Shape
 		return coords;
 	}
 }
+
+public class UnfoldedShape : Shape
+{
+    private Unfold unfoldScript;
+
+    public UnfoldedShape(Unfold unfoldScript)
+    {
+        this.unfoldScript = unfoldScript;
+    }
+
+    public override Color GetColor()
+    {
+        return Color.green;
+    }
+
+    public override List<Vector2> Coordinates()
+    {
+        return unfoldScript.GetUnfoldedNet();
+    }
+}

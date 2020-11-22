@@ -17,6 +17,7 @@ public class GridPlayerCharacter : MonoBehaviour
 	public CharacterController m_Controller;
 	private Coordinate m_CurrentCoordinte;
 	public GridPiece m_PlayerPiece;
+    public Unfold unfoldScript;
 
 	public Direction m_Facing = Direction.North;
 	public float m_Speed;
@@ -151,7 +152,7 @@ public class GridPlayerCharacter : MonoBehaviour
 	public void Respawn()
 	{
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
-		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid);
+		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
 
         OnSpawnDelegate?.Invoke();
 	}

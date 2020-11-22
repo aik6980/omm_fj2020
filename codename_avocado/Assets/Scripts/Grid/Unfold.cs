@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Unfold : MonoBehaviour
@@ -52,7 +54,7 @@ public class Unfold : MonoBehaviour
             }
             faces[i].currentAngle = faces[i].angle;
         }
-        UpdateTransforms();
+        UpdateTransforms(faces);
     }
 
     void UnSpawnFaces()
@@ -84,19 +86,19 @@ public class Unfold : MonoBehaviour
             f.currentAngle = Mathf.Max(0, f.currentAngle - unfoldAngVel * dT);
         }
 
-        UpdateTransforms();
+        UpdateTransforms(faces);
     }
 
 
-    void UpdateTransforms()
+    void UpdateTransforms(List<SquareFace> squareFaces)
     {
-        for (int i = 0; i < faces.Count; i++)
+        for (int i = 0; i < squareFaces.Count; i++)
         {
-            SquareFace f = faces[i];
+            SquareFace f = squareFaces[i];
             if (!(f.parent < i)) continue;   //has no parent
             if (f.model == null) continue;
 
-            SquareFace p = faces[faces[i].parent];
+            SquareFace p = squareFaces[squareFaces[i].parent];
             Vector3 v = new Vector3(f.parentSide.x, 0, f.parentSide.y) * edgeLength * 0.5f;
             Vector3 foldAxis = new Vector3(-f.parentSide.y, 0, f.parentSide.x);
             Quaternion relRot = Quaternion.AngleAxis(f.currentAngle, foldAxis);
@@ -105,6 +107,24 @@ public class Unfold : MonoBehaviour
         }
     }
 
+    public List<Vector2> GetUnfoldedNet()
+    {
+        List<Vector2> coordinates = new List<Vector2>(faces.Count);
+
+        Vector2 WorldCoordinates(int j)
+        {
+            if (j <= 0) return Vector2.zero;
+
+            return WorldCoordinates(faces[j].parent) + faces[j].parentSide;
+        }
+
+        for (int i = 0; i < faces.Count; ++i)
+        {
+            coordinates.Add(WorldCoordinates(i));
+        }
+
+        return coordinates;
+    }
 
     void OnValidate()
     {
@@ -116,6 +136,6 @@ public class Unfold : MonoBehaviour
             f.currentAngle = Mathf.Lerp(f.angle, 0.0f, progress);
         }
 
-        UpdateTransforms();
+        UpdateTransforms(faces);
     }
 }
