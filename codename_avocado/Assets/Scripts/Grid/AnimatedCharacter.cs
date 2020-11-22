@@ -36,7 +36,7 @@ public class AnimatedCharacter : MonoBehaviour
         if (gridPC)
         {
             gridPC.OnPlaceDelegate += OnPlace;
-            gridPC.OnSpawnDelegate += OnSpawn;
+            gridPC.OnSpawnDelegate.AddListener(OnSpawn);
         }
 
         Spawn();
