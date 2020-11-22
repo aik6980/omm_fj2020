@@ -35,7 +35,7 @@ public class WorldBuilder : MonoSingleton<WorldBuilder>
 			coords.ForEach((LevelReader.LevelData.Coordinates coordinate) =>
 			{
 				var shape = new GridPiece(grid, new BuilderShape(col));
-				shape.Place(new Vector2(coordinate.x, coordinate.y));
+				shape.Place(new Vector2(coordinate.x, coordinate.y), Direction.North);
 			});
 		}
 	}
