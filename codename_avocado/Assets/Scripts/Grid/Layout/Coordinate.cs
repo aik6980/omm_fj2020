@@ -11,6 +11,7 @@ public class Coordinate
 	public GridPiece m_Piece;
 
 	public CoordinateRepresentation m_Representation;
+	public GridPlayerCharacter m_PopulatedPlayer;
 
 	public Coordinate(GridPiece piece, Vector2 position)
 	{
