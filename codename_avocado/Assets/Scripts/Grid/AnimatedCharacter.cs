@@ -20,9 +20,10 @@ public class AnimatedCharacter : MonoBehaviour
     public GameObject[] faces;
     public GameObject[] arms;
 
+    //yeah i know, will refactor it :oP
     public bool moving = false;
     public bool jumping = false;
-    //public bool needSpawn = false;
+    public bool unfolding = false;
 
     public GameObject face;
     public GameObject armL;
@@ -45,10 +46,6 @@ public class AnimatedCharacter : MonoBehaviour
     {
         if (!jumping)
             Spawn();
-        //needSpawn = true;
-        //this.transform.rotation = player.transform.rotation;
-        //this.transform.position = player.transform.position;
-        //animation.Play(animClips[0]);
     }
 
     void OnPlace(Vector2 pos)
@@ -63,8 +60,32 @@ public class AnimatedCharacter : MonoBehaviour
     {
         this.transform.rotation = player.transform.rotation;
         this.transform.position = player.transform.position;
+        animation.gameObject.SetActive(true);
         animation.Play(animClips[0]);
+
+        //pick shape
+        //ToDo: based on unfold shape
         int n = Random.Range(0, 1000) % models.Length;
+        //i know, right now it's one to one :oP might not stay like that
+        switch (gridPC.m_currentUnfoldShapeDef.bodyShape)
+        {
+            case BodyShape.Cube:
+                n = 0;
+                break;
+            case BodyShape.L:
+                n = 1;
+                break;
+            case BodyShape.Long:
+                n = 2;
+                break;
+            case BodyShape.T:
+                n = 3;
+                break;
+
+            default:
+                n = Random.Range(0, 1000) % models.Length;
+                break;
+        }
         for (int i = 0; i < models.Length; i++)
             models[i].SetActive(i == n);
 
@@ -73,7 +94,7 @@ public class AnimatedCharacter : MonoBehaviour
 
     void PickDecor()
     {
-        Debug.Log("pick");
+        //Debug.Log("pick");
         int faceType = Random.Range(0, faces.Length);
         int armType = Random.Range(0, arms.Length);
         if (face) Destroy(face);
@@ -93,17 +114,39 @@ public class AnimatedCharacter : MonoBehaviour
 
         if (jumping)
         {
+            //there's a strict sequence here:
+            //1. play and finish faceplant anim
+            //2. activate Unfold and hide the character mesh
+            //3. play the procedural unfolding from 0 to 100% over some time
+            //4. THEN ready to respawn
             if (animation.IsPlaying(animClips[2]))
             { //wait
-                Debug.Log("jumping...");
+                //Debug.Log("jumping...");
                 return;
             }
             else
             {
                 Debug.Log("jump done.");
                 jumping = false;
+
+                unfolding = true;
+                unfold.progress = 0;
+                unfold.SpawnFaces();
+                animation.gameObject.SetActive(false);
+                return;
+                //Spawn();
+            }
+        }
+        if (unfolding)
+        {
+            if (unfold.Finished())
+            {
+                unfolding = false;
+                unfold.UnSpawnFaces();
                 Spawn();
             }
+            unfold.UnfoldStep(dT * 5.0f);
+            return;
         }
 
         if (Random.value < 0.01f)
