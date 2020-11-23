@@ -16,5 +16,7 @@ public class UnfoldShapeDefinition : ScriptableObject
 {
     public BodyShape bodyShape;
 
+    public Texture thumbnailTexture;
+
     public List<Unfold.SquareFace> faces;
 }

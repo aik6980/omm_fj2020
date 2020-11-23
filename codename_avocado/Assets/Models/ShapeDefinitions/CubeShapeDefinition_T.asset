@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a5c0d7ec75afa4a8827c61c02a9219, type: 3}
-  m_Name: CubeShapeDefinition_Key
+  m_Name: CubeShapeDefinition_T
   m_EditorClassIdentifier: 
   bodyShape: 0
-  thumbnailTexture: {fileID: 2800000, guid: a58ed13cceffda04c849b77fceb14ee9, type: 3}
+  thumbnailTexture: {fileID: 2800000, guid: 5c3ff21e8c37f8d4fb5ad144df9e419b, type: 3}
   faces:
   - parent: 0
     parentSide: {x: 0, y: 0}
@@ -39,14 +39,14 @@ MonoBehaviour:
     generation: 0
     currentAngle: 0
     model: {fileID: 0}
-  - parent: 1
-    parentSide: {x: 1, y: 0}
+  - parent: 3
+    parentSide: {x: -1, y: 0}
     angle: 90
     generation: 0
     currentAngle: 0
     model: {fileID: 0}
-  - parent: 2
-    parentSide: {x: -1, y: 0}
+  - parent: 3
+    parentSide: {x: 1, y: 0}
     angle: 90
     generation: 0
     currentAngle: 0

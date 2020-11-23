@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum Direction
 {
@@ -28,10 +29,9 @@ public class GridPlayerCharacter : MonoBehaviour
     //config
     public float[] heading = { 0, 180, 90, -90 };
 
-    public delegate void VoidFunction();
     public delegate void Vector2Function(Vector2 pos);
     public event Vector2Function OnPlaceDelegate = null;
-    public event VoidFunction OnSpawnDelegate = null;
+    public UnityEvent OnSpawnDelegate;
 
     private PreviewPlacement m_PreviewPlacement;
 
@@ -174,7 +174,7 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
         if (unfoldScript && unfoldScript.UnfoldShapeDefinitionAmount() > 0)
         {
-            int shapeDefinitionIndex = Random.Range(0, unfoldScript.UnfoldShapeDefinitionAmount());
+            int shapeDefinitionIndex = NextShapeQueue.Instance.PopNext();
             m_currentUnfoldShapeDef = unfoldScript.shapeDefinitions[shapeDefinitionIndex];
             unfoldScript.UseUnfoldShapeDefinition(shapeDefinitionIndex);
         }
