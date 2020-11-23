@@ -8,9 +8,10 @@ public class NextShapeQueue : MonoSingleton<NextShapeQueue>
     public bool randomized = true;
 
     [Range(1, 20)]
-    public int queueItemsDisplayed = 3;
+    public int queueItemsDisplayed = 2;
 
     public Unfold unfoldScript;
+    [SerializeField]
     private List<int> nextshapeQueue;
     private List<int> totalShapeQueue;
 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ConveyorQueueUI : MonoBehaviour
 {
     [Tooltip("When true, will show the selected shape in the UI as being the current one. Otherwise, will show the shape directly afterwards.")]
-    private bool showFirstImageAsActive = true;
+    public bool showFirstImageAsActive = true;
 
     public RawImage[] queuedImages;
     public Unfold unfoldScript;
@@ -16,19 +16,27 @@ public class ConveyorQueueUI : MonoBehaviour
     {
         int[] shapeDefIndices = NextShapeQueue.Instance.PeekAll();
 
-        int i = 0;
         if (showFirstImageAsActive)
         {
-            i = 1;
             //If queuedImages is empty this will error
             queuedImages[0].texture = gridPlayerCharacter.m_currentUnfoldShapeDef.thumbnailTexture;
+
+            for (int i = 1; i < Mathf.Min(shapeDefIndices.Length+1, queuedImages.Length); i++)
+            {
+                int shapeIndex = shapeDefIndices[i-1];
+                queuedImages[i].texture =
+                    unfoldScript.shapeDefinitions[shapeIndex].thumbnailTexture ?? Texture2D.redTexture;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Mathf.Min(shapeDefIndices.Length, queuedImages.Length); i++)
+            {
+                int shapeIndex = shapeDefIndices[i];
+                queuedImages[i].texture =
+                    unfoldScript.shapeDefinitions[shapeIndex].thumbnailTexture ?? Texture2D.redTexture;
+            }
         }
 
-        for (; i < Mathf.Min(shapeDefIndices.Length, queuedImages.Length); i++)
-        {
-            int shapeIndex = shapeDefIndices[i];
-            queuedImages[i].texture =
-                unfoldScript.shapeDefinitions[shapeIndex].thumbnailTexture ?? Texture2D.redTexture;
-        }
     }
 }

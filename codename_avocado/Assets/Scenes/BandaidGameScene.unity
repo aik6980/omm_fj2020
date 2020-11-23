@@ -443,8 +443,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomized: 1
-  queueItemsDisplayed: 3
+  queueItemsDisplayed: 2
   unfoldScript: {fileID: 198976562}
+  nextshapeQueue: 
 --- !u!4 &817420954
 Transform:
   m_ObjectHideFlags: 0
@@ -732,6 +733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55d377ee041789b4fad28bc9c098c96e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showFirstImageAsActive: 1
   queuedImages:
   - {fileID: 154397943}
   - {fileID: 624720004}
@@ -902,7 +904,7 @@ PrefabInstance:
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: shapeDefinitions.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
@@ -996,6 +998,27 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 76a6470544b07404b8b5f3c7131643b4,
         type: 2}
+    - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
+        type: 3}
+      propertyPath: shapeDefinitions.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5505391d546f4c545ae91359e881124d,
+        type: 2}
+    - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
+        type: 3}
+      propertyPath: faces.Array.data[4].generation
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
+        type: 3}
+      propertyPath: faces.Array.data[5].generation
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
+        type: 3}
+      propertyPath: maxGenerations
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4239536834826044499, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: m_LocalPosition.x
