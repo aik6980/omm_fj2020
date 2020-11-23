@@ -87,6 +87,7 @@ public class Unfold : MonoBehaviour
 
     public void UnfoldStep(float dT)
     {
+        /*
         for (int i = 0; i < faces.Count; i++)
         {
             SquareFace f = faces[i];
@@ -97,8 +98,11 @@ public class Unfold : MonoBehaviour
 
             f.currentAngle = Mathf.Max(0, f.currentAngle - unfoldAngVel * dT);
         }
-
+        
         UpdateTransforms(faces);
+        */
+        progress = Mathf.Clamp01(progress + dT);
+        OnValidate();
     }
 
     public bool Finished()
@@ -113,6 +117,19 @@ public class Unfold : MonoBehaviour
         }
 
         return true;
+    }
+
+    public int NumFlats()
+    {
+        int numFlats = 0;
+        for (int i = 0; i < faces.Count; i++)
+        {
+            SquareFace f = faces[i];
+            if (f.currentAngle <= 0) numFlats++;
+            if (!(f.parent < i)) continue;   //has no parent
+        }
+
+        return numFlats;
     }
 
     void UpdateTransforms(List<SquareFace> squareFaces)

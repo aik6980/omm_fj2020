@@ -206,7 +206,9 @@ public class AnimatedCharacter : MonoBehaviour
                     unfold.progress = 0;
                     unfold.SpawnFaces();
                     //hide model
+                    animtr.SetBool("unfolding", true);
                     animtr.gameObject.SetActive(false);
+                    unfold.gameObject.SendMessage("Anim_Unfold", SendMessageOptions.DontRequireReceiver);
                     return;
                 }
             }
@@ -220,12 +222,23 @@ public class AnimatedCharacter : MonoBehaviour
                 unfold.UnSpawnFaces();
                 Spawn();
             }
-            unfold.UnfoldStep(dT * 5.0f);
+            int preFlats = unfold.NumFlats();
+            unfold.UnfoldStep(4.0f * dT / Mathf.Max(1, unfold.maxGenerations));
+            int numFlats = unfold.NumFlats();
+            if (numFlats > preFlats)
+            {
+                Debug.Log(preFlats + " -> " + numFlats);
+                unfold.gameObject.SendMessage("Anim_Unfold", SendMessageOptions.DontRequireReceiver);
+            }
             return;
         }
 
         if (Random.value < 0.01f)
             PickDecor();
+
+        if (Random.value < 0.005f)
+            if (animtr)
+                animtr.SetBool("alt_idle", Random.value < 0.5f);
 
         offset = player.transform.position - this.transform.position;
         //offset.z = ((player.transform.rotation.y - this.transform.rotation.y) + 180.0f) % 360.0f - 180.0f;
