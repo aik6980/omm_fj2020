@@ -189,7 +189,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
 		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
-        Debug.Log("gpc_spawn");
+        //Debug.Log("gpc_spawn");
         OnSpawnDelegate?.Invoke();
 	}
 }

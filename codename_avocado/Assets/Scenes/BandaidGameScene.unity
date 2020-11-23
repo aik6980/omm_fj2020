@@ -1209,7 +1209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomized: 1
   queueItemsDisplayed: 2
-  unfoldScript: {fileID: 0}
+  unfoldScript: {fileID: 915620084}
   nextshapeQueue: 
 --- !u!4 &817420954
 Transform:
@@ -1503,8 +1503,20 @@ MonoBehaviour:
   - {fileID: 154397943}
   - {fileID: 624720004}
   - {fileID: 369209696}
-  unfoldScript: {fileID: 0}
+  unfoldScript: {fileID: 915620084}
   gridPlayerCharacter: {fileID: 2110301654}
+--- !u!114 &915620084 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1208057995953785870, guid: 7d1afb2db33d67b4ab8fdef1e65db1ba,
+    type: 3}
+  m_PrefabInstance: {fileID: 57686839}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e219c562cde032747932f45cdbb730f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &963379977
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -54,7 +54,7 @@ public class AnimatedCharacter : MonoBehaviour
         player = gpc.gameObject;
         if (gridPC)
         {
-            Debug.Log("setpc");
+            //Debug.Log("setpc");
             gridPC.OnPlaceDelegate += OnPlace;
             gridPC.OnSpawnDelegate.AddListener(OnSpawn);
         }
@@ -62,7 +62,7 @@ public class AnimatedCharacter : MonoBehaviour
 
     void OnSpawn()
     {
-        Debug.Log("onspawn", this);
+        //Debug.Log("onspawn", this);
         if (!jumping)
             Spawn();
     }
@@ -82,7 +82,7 @@ public class AnimatedCharacter : MonoBehaviour
 
     void Spawn()
     {
-        Debug.Log("spawn?", this);
+        //Debug.Log("spawn?", this);
         if (player == null) return;
         if (gridPC == null) return;
 
