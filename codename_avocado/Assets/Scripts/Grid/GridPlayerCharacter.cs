@@ -39,7 +39,15 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	private void Start()
 	{
-		Respawn();
+        if (m_AnimatedCharacter)
+        {
+            unfoldScript = m_AnimatedCharacter.unfold;
+            //m_AnimatedCharacter.player = this.gameObject;
+            //m_AnimatedCharacter.gridPC = this;
+            m_AnimatedCharacter.SetPC(this);
+        }
+
+        Respawn();
 		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
 	}
 
@@ -181,6 +189,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
 		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
-		OnSpawnDelegate?.Invoke();
+        //Debug.Log("gpc_spawn");
+        OnSpawnDelegate?.Invoke();
 	}
 }
