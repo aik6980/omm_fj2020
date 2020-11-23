@@ -11,9 +11,20 @@ public class ConveyorQueueUI : MonoBehaviour
     public RawImage[] queuedImages;
     public Unfold unfoldScript;
     public GridPlayerCharacter gridPlayerCharacter;
+    public Animator uiAnimator;
 
     public void UpdateTextures()
     {
+        StartCoroutine(PlayCycleAnimation());
+    }
+
+    IEnumerator PlayCycleAnimation()
+    {
+        uiAnimator.SetTrigger("Respawned");
+
+        yield return null;
+        yield return new WaitUntil(() => uiAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+
         int[] shapeDefIndices = NextShapeQueue.Instance.PeekAll();
 
         if (showFirstImageAsActive)
@@ -21,9 +32,9 @@ public class ConveyorQueueUI : MonoBehaviour
             //If queuedImages is empty this will error
             queuedImages[0].texture = gridPlayerCharacter.m_currentUnfoldShapeDef.thumbnailTexture;
 
-            for (int i = 1; i < Mathf.Min(shapeDefIndices.Length+1, queuedImages.Length); i++)
+            for (int i = 1; i < Mathf.Min(shapeDefIndices.Length + 1, queuedImages.Length); i++)
             {
-                int shapeIndex = shapeDefIndices[i-1];
+                int shapeIndex = shapeDefIndices[i - 1];
                 queuedImages[i].texture =
                     unfoldScript.shapeDefinitions[shapeIndex].thumbnailTexture ?? Texture2D.redTexture;
             }
@@ -37,6 +48,5 @@ public class ConveyorQueueUI : MonoBehaviour
                     unfoldScript.shapeDefinitions[shapeIndex].thumbnailTexture ?? Texture2D.redTexture;
             }
         }
-
     }
 }
