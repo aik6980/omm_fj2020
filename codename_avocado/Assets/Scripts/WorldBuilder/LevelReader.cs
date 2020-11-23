@@ -23,6 +23,8 @@ public class LevelReader : MonoSingleton<LevelReader>
 		public List<Coordinates> Solid = new List<Coordinates> { };
 		public List<Coordinates> Magma = new List<Coordinates> { };
 		public List<Coordinates> Block = new List<Coordinates> { };
+
+		public Vector2Int Dimension;
 	}
 
 	public LevelData GetLevelData(int level_num)
@@ -38,9 +40,14 @@ public class LevelReader : MonoSingleton<LevelReader>
 		var level = new LevelData();
 		var level_file = Resources.Load<TextAsset>(string.Format("Levels/Lv{0}", level_num));
 		var line = level_file.text.Split('\n');
+
+		var width = 0;
+		var height = line.Length;
+
 		for (int y = 0; y < line.Length; ++y)
 		{
 			var part = line[y].Split('\t');
+			width = Mathf.Max(width, part.Length);
 			for (int x = 0; x < part.Length; ++x)
 			{
 				switch (part[x])
@@ -68,6 +75,9 @@ public class LevelReader : MonoSingleton<LevelReader>
 			}
 
 		}
+
+		level.Dimension = new Vector2Int(width, height);
+
 		return level;
 	}
 }
