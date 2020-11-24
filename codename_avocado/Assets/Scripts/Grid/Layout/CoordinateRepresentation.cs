@@ -33,6 +33,7 @@ public class CoordinateRepresentation : MonoBehaviour
 		// position fix
 		m_mesh_object.transform.parent = this.transform;
 		m_mesh_object.transform.localPosition = Vector3.zero;
+		m_mesh_object.transform.Rotate(new Vector3(0f, 0f, 90f));
 
 		//Debug.Log(m_mesh_object.transform.position);
 		//Debug.Log("Spawned Coordinate: " + m_Coordinate.GridPosition().x.ToString() + "," +  m_Coordinate.GridPosition().y.ToString());
