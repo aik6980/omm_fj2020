@@ -2973,23 +2973,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 214925197453655938, guid: 0b4a5f8d50a5eaa41b4b43ca182c456c,
-        type: 3}
-      propertyPath: obstacle_tile.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 214925197453655938, guid: 0b4a5f8d50a5eaa41b4b43ca182c456c,
-        type: 3}
-      propertyPath: obstacle_tile.Array.data[1]
-      value: 
-      objectReference: {fileID: 919132149155446097, guid: 7508e8ab71535414e93549589aeb3bed,
-        type: 3}
-    - target: {fileID: 214925197453655938, guid: 0b4a5f8d50a5eaa41b4b43ca182c456c,
-        type: 3}
-      propertyPath: obstacle_tile.Array.data[2]
-      value: 
-      objectReference: {fileID: 919132149155446097, guid: 51cd0af5ce9a7fd4d9f6c18852a11395,
-        type: 3}
     - target: {fileID: 4683538448211693355, guid: 0b4a5f8d50a5eaa41b4b43ca182c456c,
         type: 3}
       propertyPath: m_Name
