@@ -48,10 +48,10 @@ public class GridTileBuilder : MonoBehaviour
             return Instantiate(gameObjects[Random.Range(0, gameObjects.Length)]);
         }
 
-        switch(coord.m_Type)
+        switch(coord.Type)
         {
             case TileType.grass: return GetRandomTile(grass_tile);
-            case TileType.toxic: return Instantiate(toxic_tile[(int)coord.m_ToxicLevel]);
+            case TileType.toxic: return Instantiate(toxic_tile[(int)coord.ToxicLevel]);
             case TileType.start: return GetRandomTile(start_tile);
             case TileType.exit: return GetRandomTile(exit_tile);
             case TileType.obstacle: return GetRandomTile(obstacle_tile);

@@ -10,13 +10,30 @@ public class Coordinate
 
 	//public Dictionary<Direction, Coordinate> m_Coordinates = new Dictionary<Direction, Coordinate>();
 	public GridPiece m_Piece;
-	public GridTileBuilder.TileType m_Type;
+    private GridTileBuilder.TileType m_Type;
 
-	public CoordinateRepresentation m_Representation;
+    public CoordinateRepresentation m_Representation;
 	public GridPlayerCharacter m_PopulatedPlayer;
     public GridTileBuilder.ToxicLevel  m_ToxicLevel = GridTileBuilder.ToxicLevel.none;
 
-    public Coordinate(WorldGrid world_grid, GridPiece piece, Vector2Int position, bool bustin_makes_me_feel_good)
+	public event System.Action<Coordinate, GridTileBuilder.TileType, GridTileBuilder.ToxicLevel> OnCoordinateTypeChanged;
+
+	public void SetCoordType(GridTileBuilder.TileType type, GridTileBuilder.ToxicLevel toxic_level)
+    {
+		if (m_Type != type || m_ToxicLevel != toxic_level)
+		{
+			GridTileBuilder.TileType previous_type = m_Type;
+			GridTileBuilder.ToxicLevel previous_toxicity = m_ToxicLevel;
+			m_Type = type;
+			m_ToxicLevel = toxic_level;
+			OnCoordinateTypeChanged?.Invoke(this, previous_type, previous_toxicity);
+        }
+	}
+
+    public GridTileBuilder.TileType Type { get => m_Type; }
+	public GridTileBuilder.ToxicLevel ToxicLevel { get => m_ToxicLevel; }
+
+	public Coordinate(WorldGrid world_grid, GridPiece piece, Vector2Int position, bool bustin_makes_me_feel_good)
 	{
 		m_Worldgrid = world_grid;
 		m_Position = position;

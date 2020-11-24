@@ -171,7 +171,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
 				// TODO: overlapping piece handling...
 				m_PlayerPiece.Place(placePostition, m_Facing);
-				m_Grid.UpdateTileRepresentation(m_PlayerPiece);
+				//m_Grid.UpdateTileRepresentation(m_PlayerPiece);
 				//m_Grid.m_Pieces.Add(m_PlayerPiece);
 				m_Grid.m_Polluter.HandleHealing();
 
