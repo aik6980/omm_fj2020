@@ -8,7 +8,8 @@ public enum BodyShape
     Cube,
     L,
     Long,
-    T
+    T,
+    Z
 }
 
 [CreateAssetMenu(fileName = "ShapeDefinition", menuName = "ScriptableObjects/UnfoldShapeDefinition", order = 1)]
