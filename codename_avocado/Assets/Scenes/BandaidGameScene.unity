@@ -2978,6 +2978,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldGrid
       objectReference: {fileID: 0}
+    - target: {fileID: 4683538448211693358, guid: 0b4a5f8d50a5eaa41b4b43ca182c456c,
+        type: 3}
+      propertyPath: Level
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6156693609271057799, guid: 0b4a5f8d50a5eaa41b4b43ca182c456c,
         type: 3}
       propertyPath: m_LocalPosition.x
