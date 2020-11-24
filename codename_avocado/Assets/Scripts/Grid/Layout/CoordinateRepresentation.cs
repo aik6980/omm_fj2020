@@ -34,7 +34,7 @@ public class CoordinateRepresentation : MonoBehaviour
 		m_mesh_object.transform.parent = this.transform;
 		m_mesh_object.transform.localPosition = Vector3.zero;
 
-		Debug.Log(m_mesh_object.transform.position);
+		//Debug.Log(m_mesh_object.transform.position);
 		//Debug.Log("Spawned Coordinate: " + m_Coordinate.GridPosition().x.ToString() + "," +  m_Coordinate.GridPosition().y.ToString());
 	}
 
