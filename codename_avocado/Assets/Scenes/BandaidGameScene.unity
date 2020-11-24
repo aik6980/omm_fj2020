@@ -1171,10 +1171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf9ab7eeafede344a949a0fc974b8ec3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomized: 1
+  randomized: 0
   queueItemsDisplayed: 2
+  conveyorQueue: {fileID: 11400000, guid: c8a589381cc247f45aaad8ccd3416118, type: 2}
   unfoldScript: {fileID: 915620084}
-  nextshapeQueue: 
 --- !u!4 &817420954
 Transform:
   m_ObjectHideFlags: 0
