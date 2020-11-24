@@ -72,7 +72,13 @@ public class GridPolluter : MonoBehaviour
 		return position;
 	}
 
-	public void AddBlocks(List<PollutionPiece> pieces)
+    public void Reset()
+    {
+		m_Pollution.Clear();
+		m_PollutionCoordinates.Clear();
+	}
+
+    public void AddBlocks(List<PollutionPiece> pieces)
 	{
 		var pollutant = RandomPollutant();
 		while (m_PollutionCoordinates.Find((Coordinate c) => c.GridPosition() == pollutant) != null)

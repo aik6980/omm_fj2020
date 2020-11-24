@@ -36,6 +36,11 @@ public class WorldGrid : MonoBehaviour
 	
 	public void InitialiseGrid(Vector2Int dim)
     {
+		if (m_coord_grid_representation != null)
+        {
+			m_coord_grid_representation.ForEach((x, y, coord_rep) => Destroy(coord_rep.gameObject));
+		}
+
 		m_coord_grid = new Coordinate[dim.x, dim.y];
 		m_coord_grid_representation = new CoordinateRepresentation[dim.x, dim.y];
 		m_coord_grid.ForEach((x, y, coord) =>
@@ -104,9 +109,11 @@ public class WorldGrid : MonoBehaviour
 		m_world_data = GetComponent<ILevelLoader>().LoadLevel(this);
 		m_FinalPiece = m_world_data.end_piece;
 
+		m_Polluter.Reset();
 		m_Polluter.AddVolcanoes(m_world_data.volcano_pieces);
 		m_Polluter.AddBlocks(m_world_data.block_pieces);
 
+		m_Coordinates.Clear();
 		m_Coordinates.AddRange(m_world_data.start_piece.Coordinates);
 		for (int y = 0; y < m_coord_grid.GetLength(1); ++y)
 		{
