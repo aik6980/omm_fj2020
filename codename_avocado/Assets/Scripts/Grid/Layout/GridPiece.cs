@@ -256,7 +256,7 @@ public class ToxicPiece : PollutionPiece
 			{
 				// player consumed by lava
 				if (expanded.m_PopulatedPlayer != null)
-					expanded.m_PopulatedPlayer.Respawn();
+					expanded.m_PopulatedPlayer.Die();
 
 				// heal any bridge piece neighbors (removes them from the board)...
 				expanded.Heal();
