@@ -183,7 +183,7 @@ public class BlockingPiece : PollutionPiece
 
 public class ToxicPiece : PollutionPiece
 {
-	public float m_ExpansionTime = 5f;
+	public float m_ExpansionTime = 9999.0f;
 	private float m_LastExpansion = -1f;
 
 	List<Vector2Int> m_CurrentExpansion = new List<Vector2Int>();
@@ -194,7 +194,9 @@ public class ToxicPiece : PollutionPiece
 		m_ToxicLevel = GridTileBuilder.ToxicLevel.pool;
 		m_ExpansionTime = grid.m_Polluter.m_PollutionExpansionTime;
 		// want random offset for each pollution
-		m_LastExpansion = Random.Range(Time.time, Time.time + (m_ExpansionTime / 2));
+		//m_LastExpansion = Random.Range(Time.time, Time.time + (m_ExpansionTime / 2));
+		var variation = grid.m_Polluter.m_PollutionExpansionTimeVariation;
+		m_LastExpansion = Time.time + Random.Range(m_ExpansionTime - variation, m_ExpansionTime + variation);
 
 		m_PlacedDirection = Direction.North;
 		//m_Grid.m_Polluter.m_PollutionCoordinates.AddRange(m_Coordinates);

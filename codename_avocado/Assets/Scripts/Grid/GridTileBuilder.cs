@@ -16,6 +16,9 @@ public class GridTileBuilder : MonoBehaviour
     public GameObject[] obstacle_tile;
     public GameObject[] floor_tile;
 
+    // toxic
+    public GameObject[] toxic_vfx;
+
     public enum TileType
     {
         grass,
@@ -67,4 +70,6 @@ public class GridTileBuilder : MonoBehaviour
         representation.Configure(coord, this);
         return representation;
     }
+
+
 }

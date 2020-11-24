@@ -25,6 +25,7 @@ public class LevelReader : MonoSingleton<LevelReader>
 		public List<Coordinates> Block = new List<Coordinates> { };
 
 		public Vector2Int Dimension;
+		public LevelConfigData Config;
 	}
 
 	public LevelData GetLevelData(int level_num)
@@ -38,7 +39,13 @@ public class LevelReader : MonoSingleton<LevelReader>
 		/// 5	Pre-gen island/ground
 		///
 		var level = new LevelData();
-		var level_file = Resources.Load<TextAsset>(string.Format("Levels/Lv{0}", level_num));
+
+		var level_config_json_file	= Resources.Load<TextAsset>(string.Format("Levels/Lv{0}.cfg", level_num));
+		var level_config = JsonUtility.FromJson<LevelConfigData>(level_config_json_file.text);
+		level.Config = level_config;
+
+		var level_file			= Resources.Load<TextAsset>(string.Format("Levels/Lv{0}", level_num));
+
 		var line = level_file.text.Split('\n');
 
 		var width = 0;

@@ -11,7 +11,8 @@ public class GridPolluter : MonoBehaviour
 	private int m_ObstacleRange = 3;
 	private int m_ObstacleCount = 3;
 
-	public float m_PollutionExpansionTime = 3f;
+	public float m_PollutionExpansionTime = 9999.0f;
+	public float m_PollutionExpansionTimeVariation = 0.0f;
 
 	private void Update()
 	{

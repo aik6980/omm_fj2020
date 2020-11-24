@@ -13,7 +13,6 @@ public class WorldGrid : MonoBehaviour
 		public List<GridPiece>		island_pieces;
 		public List<PollutionPiece> volcano_pieces;
 		public List<PollutionPiece>	block_pieces;
-
 	}
 
 	public GameObject m_CoordinatePrefab;
@@ -33,7 +32,7 @@ public class WorldGrid : MonoBehaviour
 	private WorldData					m_world_data;
 	public Coordinate[,]				m_coord_grid;
 	public CoordinateRepresentation[,]	m_coord_grid_representation;
-
+	
 	public void InitialiseGrid(Vector2Int dim)
     {
 		m_coord_grid = new Coordinate[dim.x, dim.y];
@@ -54,6 +53,7 @@ public class WorldGrid : MonoBehaviour
 	{
 		m_world_data = GetComponent<ILevelLoader>().LoadLevel(this);
 		m_FinalPiece = m_world_data.end_piece;
+
 		m_Polluter.AddVolcanoes(m_world_data.volcano_pieces);
 		m_Polluter.AddBlocks(m_world_data.block_pieces);
 

@@ -1,0 +1,4 @@
+{
+	"ToxicSpreadTime": 10,
+	"ToxicSpreadTimeVariation": 2
+}
