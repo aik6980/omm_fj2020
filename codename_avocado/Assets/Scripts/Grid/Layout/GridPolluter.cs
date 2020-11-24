@@ -83,7 +83,7 @@ public class GridPolluter : MonoBehaviour
 		pieces.ForEach(piece =>
 		{
 			m_Pollution.Add(piece);
-			m_PollutionCoordinates.AddRange(piece.m_Coordinates);
+			m_PollutionCoordinates.AddRange(piece.Coordinates);
 		});
 	}
 
@@ -92,7 +92,7 @@ public class GridPolluter : MonoBehaviour
 		pieces.ForEach(piece =>
 		{
 			m_Pollution.Add(piece);
-			m_PollutionCoordinates.AddRange(piece.m_Coordinates);
+			m_PollutionCoordinates.AddRange(piece.Coordinates);
 		});
 	}
 }

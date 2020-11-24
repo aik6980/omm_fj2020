@@ -32,37 +32,41 @@ public class GridPlayerCharacter : MonoBehaviour
     public delegate void Vector2Function(Vector2 pos);
     public event Vector2Function OnPlaceDelegate = null;
     public UnityEvent OnSpawnDelegate;
+    public UnityEvent OnDeathDelegate;
 
     private PreviewPlacement m_PreviewPlacement;
 
-    public bool unfolding;
+    public bool waitingToRespawn;
 
     private void Awake()
     {
-		m_Grid.OnLevelLoaded += coords => Respawn();
+        CheckLink();
+        m_Grid.OnLevelLoaded += coords => Respawn();
     }
 
     private void Start()
 	{
-        if (m_AnimatedCharacter)
-        {
-            unfoldScript = m_AnimatedCharacter.unfold;
-            //m_AnimatedCharacter.player = this.gameObject;
-            //m_AnimatedCharacter.gridPC = this;
-            m_AnimatedCharacter.SetPC(this);
-        }
-
+        CheckLink();
 		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
 	}
 
-	void Update()
+    void CheckLink()
+    {
+        if (m_AnimatedCharacter && m_AnimatedCharacter.gridPC != this)
+        {
+            unfoldScript = m_AnimatedCharacter.unfold;
+            m_AnimatedCharacter.SetPC(this);
+        }
+    }
+
+    void Update()
 	{
         //ugly hack, sorry :oP
-        if (unfolding)
+        if (waitingToRespawn)
         {
-            if (m_AnimatedCharacter.jumping || m_AnimatedCharacter.unfolding)
+            if (m_AnimatedCharacter.jumping || m_AnimatedCharacter.unfolding || m_AnimatedCharacter.dying)
                 return; //wait
-            unfolding = false;
+            waitingToRespawn = false;
             Respawn();
         }
 
@@ -167,12 +171,12 @@ public class GridPlayerCharacter : MonoBehaviour
 
 				// TODO: overlapping piece handling...
 				m_PlayerPiece.Place(placePostition, m_Facing);
-				m_Grid.UpdateTileRepresentation(m_PlayerPiece);
+				//m_Grid.UpdateTileRepresentation(m_PlayerPiece);
 				//m_Grid.m_Pieces.Add(m_PlayerPiece);
 				m_Grid.m_Polluter.HandleHealing();
-                
+
                 //Respawn();
-                unfolding = true;
+                waitingToRespawn = true;
 			}
 		}
 	}
@@ -186,6 +190,13 @@ public class GridPlayerCharacter : MonoBehaviour
 		}
 	}
 
+    public void Die()
+    {
+        OnDeathDelegate?.Invoke();
+        waitingToRespawn = true;
+        //Respawn();
+    }
+
 	public void Respawn()
 	{
         if (unfoldScript && unfoldScript.UnfoldShapeDefinitionAmount() > 0)
@@ -197,7 +208,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
 		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, m_Grid.m_Coordinates[0].m_Position, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
-        //Debug.Log("gpc_spawn");
+        Debug.Log("gpc_spawn");
         OnSpawnDelegate?.Invoke();
 	}
 }

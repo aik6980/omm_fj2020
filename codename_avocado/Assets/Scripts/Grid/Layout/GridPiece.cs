@@ -15,7 +15,18 @@ public class GridPiece
 	public GridTileBuilder.ToxicLevel m_ToxicLevel = GridTileBuilder.ToxicLevel.none;
 
 
-	public List<Coordinate>			m_Coordinates = new List<Coordinate>();
+	public event System.Action<GridPiece> OnCoordinatesChanged;
+	protected void SignalCoordsChanged()
+    {
+		OnCoordinatesChanged?.Invoke(this);
+	}
+
+	protected List<Coordinate>			m_Coordinates = new List<Coordinate>();
+
+	public IEnumerable<Coordinate>		Coordinates
+    {
+		get => m_Coordinates;
+	}
 
 	public GridPiece(WorldGrid grid, Shape shape, Vector2Int coords, GridTileBuilder.TileType tileType)
 	{
@@ -79,9 +90,10 @@ public class GridPiece
 
 		for (int i = 0; i < m_Coordinates.Count; ++i)
 		{
-			m_Coordinates[i].m_Type = m_TileType;
-			m_Coordinates[i].m_ToxicLevel = toxicity.Count > i ? toxicity[i] : GridTileBuilder.ToxicLevel.none;
+			m_Coordinates[i].SetCoordType(m_TileType, toxicity.Count > i ? toxicity[i] : GridTileBuilder.ToxicLevel.none);
 		}
+
+		OnCoordinatesChanged?.Invoke(this);
 	}
 
     public PreviewPlacement PreviewPlacement(Vector2 position, Direction direction)
@@ -93,6 +105,7 @@ public class GridPiece
 		m_Coordinates = GetCoordinatesForShape(m_origin_coords, direction, m_Shape.Coordinates());
 
 		var preview = new PreviewPlacement(m_Grid.UpdateTileRepresentation(this));
+		OnCoordinatesChanged?.Invoke(this);
 		return preview;
 	}
 
@@ -106,6 +119,9 @@ public class GridPiece
 
 	public void CoordinateHealed(Coordinate coordinate)
 	{
+		Debug.LogError("WHOOPS!!!");
+		Debug.Assert(false);
+		return;
 		m_Coordinates.Remove(coordinate);
 		if (CheckHealedPiece(coordinate))
 		{
@@ -125,6 +141,7 @@ public class GridPiece
 
 		//PopulateCoords(m_Coordinates);
 		RedecorateCords();
+		OnCoordinatesChanged?.Invoke(this);
 	}
 
 	protected virtual bool CheckHealedPiece(Coordinate coordinate)
@@ -203,9 +220,42 @@ public class ToxicPiece : PollutionPiece
 		//m_Grid.RepresentCoordianates(this);
 		//PopulateCoords(m_Grid.m_Polluter.m_PollutionCoordinates);
 		RedecorateCords();
+
+        OnCoordinatesChanged += ToxicPiece_OnCoordinatesChanged;
 	}
 
-	public override void TickPollution()
+    private void ToxicPiece_OnCoordinatesChanged(GridPiece piece)
+    {
+		m_Coordinates.ForEach(coord =>
+		{
+			coord.OnCoordinateTypeChanged += Coord_OnCoordinateTypeChanged;
+		});
+    }
+
+	private void Coord_OnCoordinateTypeChanged(Coordinate coordinate, GridTileBuilder.TileType previous_type, GridTileBuilder.ToxicLevel previous_level)
+    {
+		if (previous_type == GridTileBuilder.TileType.toxic &&
+			coordinate.Type != GridTileBuilder.TileType.toxic)
+		{
+			coordinate.OnCoordinateTypeChanged -= Coord_OnCoordinateTypeChanged;
+			m_Coordinates.Remove(coordinate);
+		}
+
+		// TODO: Fix this pool to healable_pool
+		if (previous_level == GridTileBuilder.ToxicLevel.pool &&
+			coordinate.ToxicLevel == GridTileBuilder.ToxicLevel.none)
+        {
+			var copy = new List<Coordinate>(m_Coordinates);
+			m_Coordinates.Clear();
+			copy.ForEach(coord =>
+			{
+				coord.SetCoordType(GridTileBuilder.TileType.floor, GridTileBuilder.ToxicLevel.none);
+			});
+			m_Grid.m_Polluter.m_Pollution.Remove(this);
+        }
+	}
+
+    public override void TickPollution()
 	{
 		if (m_LastExpansion > 0f)
 		{
@@ -258,7 +308,7 @@ public class ToxicPiece : PollutionPiece
 			{
 				// player consumed by lava
 				if (expanded.m_PopulatedPlayer != null)
-					expanded.m_PopulatedPlayer.Respawn();
+					expanded.m_PopulatedPlayer.Die();
 
 				// heal any bridge piece neighbors (removes them from the board)...
 				expanded.Heal();
@@ -270,19 +320,19 @@ public class ToxicPiece : PollutionPiece
 		for (int i = 0; i < newCoords.Count; ++i)
 		{
 			m_Coordinates.Add(newCoords[i]);
-			newCoords[i].m_Type = m_TileType;
-			newCoords[i].m_ToxicLevel = GridTileBuilder.ToxicLevel.small_spill;//toxicity.Count > i ? toxicity[i] : GridTileBuilder.ToxicLevel.none;
+			newCoords[i].SetCoordType(m_TileType, GridTileBuilder.ToxicLevel.small_spill);//toxicity.Count > i ? toxicity[i] : GridTileBuilder.ToxicLevel.none;
 		}
 		m_Coordinates.ForEach(coord =>
 		{
-			if (coord.m_ToxicLevel != GridTileBuilder.ToxicLevel.pool &&
-				coord.m_ToxicLevel != GridTileBuilder.ToxicLevel.healable_pool)
+			if (coord.ToxicLevel != GridTileBuilder.ToxicLevel.pool &&
+				coord.ToxicLevel != GridTileBuilder.ToxicLevel.healable_pool)
 			{
-				coord.m_ToxicLevel = coord.CanBeHealed() ? GridTileBuilder.ToxicLevel.small_spill : GridTileBuilder.ToxicLevel.big_spill;
+				coord.SetCoordType(coord.Type, coord.CanBeHealed() ? GridTileBuilder.ToxicLevel.small_spill : GridTileBuilder.ToxicLevel.big_spill);
 			}
 		});
 
-		m_Grid.UpdateTileRepresentation(this);
+		SignalCoordsChanged();
+		//m_Grid.UpdateTileRepresentation(this);
 	}
 
 	//protected override Coordinate BuildCoordinate(Vector2 position)
