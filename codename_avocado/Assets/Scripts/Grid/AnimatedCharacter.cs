@@ -22,6 +22,7 @@ public class AnimatedCharacter : MonoBehaviour
 
     public GameObject[] faces;
     public GameObject[] arms;
+    public GameObject deathFace;
 
     //yeah i know, will refactor it :oP
     public bool moving = false;
@@ -74,6 +75,9 @@ public class AnimatedCharacter : MonoBehaviour
         dying = true;
         if (animtr)
             animtr.SetBool("dead", true);
+        if (face) Destroy(face);
+        face = Instantiate(deathFace, facePivot.position, facePivot.rotation, facePivot);
+
     }
 
     void OnPlace(Vector2 pos)
@@ -269,12 +273,15 @@ public class AnimatedCharacter : MonoBehaviour
         if (animtr)
             animtr.ResetTrigger("Reset");
 
-        if (Random.value < 0.01f)
-            PickDecor();
+        if (!dying)
+        {
+            if (Random.value < 0.01f)
+                PickDecor();
 
-        if (Random.value < 0.005f)
-            if (animtr)
-                animtr.SetBool("alt_idle", Random.value < 0.5f);
+            if (Random.value < 0.005f)
+                if (animtr)
+                    animtr.SetBool("alt_idle", Random.value < 0.5f);
+        }
 
         offset = player.transform.position - this.transform.position;
         //offset.z = ((player.transform.rotation.y - this.transform.rotation.y) + 180.0f) % 360.0f - 180.0f;
