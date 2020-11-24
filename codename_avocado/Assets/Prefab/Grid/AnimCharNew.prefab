@@ -699,13 +699,13 @@ PrefabInstance:
         type: 3}
       propertyPath: shapeDefinitions.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 978563cc11094844fbc3deb8c497da09,
+      objectReference: {fileID: 11400000, guid: 76a6470544b07404b8b5f3c7131643b4,
         type: 2}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
       propertyPath: shapeDefinitions.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 978563cc11094844fbc3deb8c497da09,
+      objectReference: {fileID: 11400000, guid: 3b665723151e2954387881b950299a3c,
         type: 2}
     - target: {fileID: 4239536834826044498, guid: 6648b24008e78e44e9287740a5f28a49,
         type: 3}
