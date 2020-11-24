@@ -20,6 +20,8 @@ public class Unfold : MonoBehaviour
     //faces are oriented horizontally, inner side up if rotation is default
 
     public UnfoldShapeDefinition[] shapeDefinitions;
+
+    public int currentShapeDefIndex = 0;
     public List<SquareFace> faces =  new List<SquareFace>();
 
     public float edgeLength = 1.0f;
@@ -32,6 +34,8 @@ public class Unfold : MonoBehaviour
     [Range(0,1)]
     public float progress;
 
+    [InspectorButton("UseShapeDef")]
+    public bool __;
     [InspectorButton("SpawnFaces", "UnfoldStep_", "UnSpawnFaces")]
     public bool _;
 
@@ -149,6 +153,11 @@ public class Unfold : MonoBehaviour
         }
     }
 
+    public void UseShapeDef()
+    {
+        UseUnfoldShapeDefinition(currentShapeDefIndex);
+    }
+
     public void UseUnfoldShapeDefinition(int i)
     {
         bool areFacesSpawned = AreFacesSpawned();
@@ -158,7 +167,9 @@ public class Unfold : MonoBehaviour
         faces.Clear();
         faces = new List<SquareFace>(shapeDefinitions[i].faces);
 
-        if(areFacesSpawned)
+        currentShapeDefIndex = i;
+
+        if (areFacesSpawned)
             SpawnFaces();
     }
 
@@ -201,7 +212,8 @@ public class Unfold : MonoBehaviour
         for (int i = 0; i < faces.Count; i++)
         {
             SquareFace f = faces[i];
-            f.generation = (f.parent < i) ? (faces[f.parent].generation + 1) : 0;
+            f.generation = (f.parent >= i) ? 0
+                           : (f.angle <= 0 ? faces[f.parent].generation : faces[f.parent].generation + 1);
             maxGenerations = Mathf.Max(maxGenerations, f.generation);
         }
 

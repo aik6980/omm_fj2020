@@ -28,7 +28,7 @@ public class WorldGrid : MonoBehaviour
 	//public Vector
 	public GridPiece m_FinalPiece;
 
-	public event System.Action<List<Coordinate>> OnLevelLoaded;
+	public event System.Action<IEnumerable<Coordinate>> OnLevelLoaded;
 
 	private WorldData					m_world_data;
 	public Coordinate[,]				m_coord_grid;
@@ -37,9 +37,11 @@ public class WorldGrid : MonoBehaviour
 	public void InitialiseGrid(Vector2Int dim)
     {
 		m_coord_grid = new Coordinate[dim.x, dim.y];
+		m_coord_grid_representation = new CoordinateRepresentation[dim.x, dim.y];
 		m_coord_grid.ForEach((x, y, coord) =>
 		{
 			m_coord_grid[x, y] = new Coordinate(this, new Vector2Int(x, y), GridTileBuilder.TileType.floor);
+            m_coord_grid[x, y].OnCoordinateTypeChanged += WorldGrid_OnCoordinateTypeChanged;
 		});
 		//for (int y = 0; y < dim.y; ++y)
 		//{
@@ -50,14 +52,19 @@ public class WorldGrid : MonoBehaviour
 		//}
 	}
 
-	private void Awake()
+    private void WorldGrid_OnCoordinateTypeChanged(Coordinate coord, GridTileBuilder.TileType previous_type, GridTileBuilder.ToxicLevel toxicity)
+	{
+		m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]?.Configure(coord, m_GridTileBuilder);
+	}
+
+    private void Awake()
 	{
 		m_world_data = GetComponent<ILevelLoader>().LoadLevel(this);
 		m_FinalPiece = m_world_data.end_piece;
 		m_Polluter.AddVolcanoes(m_world_data.volcano_pieces);
 		m_Polluter.AddBlocks(m_world_data.block_pieces);
 
-		m_Coordinates.AddRange(m_world_data.start_piece.m_Coordinates);
+		m_Coordinates.AddRange(m_world_data.start_piece.Coordinates);
 		for (int y = 0; y < m_coord_grid.GetLength(1); ++y)
 		{
 			for (int x = 0; x < m_coord_grid.GetLength(0); ++x)
@@ -67,7 +74,7 @@ public class WorldGrid : MonoBehaviour
 			}
 		}
 
-		OnLevelLoaded?.Invoke(m_world_data.start_piece.m_Coordinates);
+		OnLevelLoaded?.Invoke(m_world_data.start_piece.Coordinates);
 		BuildTileRepresentation();
 	}
 
@@ -89,7 +96,7 @@ public class WorldGrid : MonoBehaviour
 
 	public void BuildTileRepresentation()
 	{
-		m_coord_grid_representation = new CoordinateRepresentation[m_coord_grid.GetLength(0), m_coord_grid.GetLength(1)];
+		//m_coord_grid_representation = new CoordinateRepresentation[m_coord_grid.GetLength(0), m_coord_grid.GetLength(1)];
 		m_coord_grid.ForEach((x, y, coord) =>
 		{
 			m_coord_grid_representation[x, y] = m_GridTileBuilder.InstantiateTile(coord);
@@ -99,7 +106,7 @@ public class WorldGrid : MonoBehaviour
 	public List<CoordinateRepresentation> UpdateTileRepresentation(GridPiece piece)
 	{
 		List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
-		foreach (var coord in piece.m_Coordinates)
+		foreach (var coord in piece.Coordinates)
         {
 			m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(coord, m_GridTileBuilder);
 			reps.Add(m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]);
@@ -125,7 +132,7 @@ public class WorldGrid : MonoBehaviour
 
 	public bool IsFinalCoordinate(Coordinate coordinate)
 	{
-		return m_FinalPiece.m_Coordinates.Contains(coordinate);
+		return m_FinalPiece.Coordinates.Contains(coordinate);
 	}
 
 	public static Vector2 OffsetDirection(Vector2 start, Direction direction)
@@ -147,10 +154,9 @@ public class WorldGrid : MonoBehaviour
 
 	public bool SupportsPlacement(Vector2 placement, GridPiece piece, Direction direction)
 	{
-		for (int i = 0; i < piece.m_Coordinates.Count; ++i)
+		foreach (var coord in piece.Coordinates)
 		{
-			var coPosition = piece.m_Coordinates[i].m_Position;//.TranslatedPosition(placement, direction);
-			if (m_Polluter.Polluted(coPosition))
+			if (m_Polluter.Polluted(coord.m_Position))
 				return false;
 		}
 

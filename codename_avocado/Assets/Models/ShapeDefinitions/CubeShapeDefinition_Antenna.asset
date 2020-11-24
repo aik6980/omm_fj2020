@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a5c0d7ec75afa4a8827c61c02a9219, type: 3}
+  m_Name: CubeShapeDefinition_Antenna
+  m_EditorClassIdentifier: 
+  bodyShape: 0
+  thumbnailTexture: {fileID: 2800000, guid: 1e284e91fd3064a4a8f1d6063aabe593, type: 3}
+  faces:
+  - parent: 0
+    parentSide: {x: 0, y: 0}
+    angle: 0
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 0
+    parentSide: {x: 0, y: 1}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 1
+    parentSide: {x: 0, y: 1}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 2
+    parentSide: {x: 0, y: 1}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 2
+    parentSide: {x: -1, y: 0}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 2
+    parentSide: {x: 1, y: 0}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 4
+    parentSide: {x: -1, y: 0}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 5
+    parentSide: {x: 1, y: 0}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 6
+    parentSide: {x: 0, y: 1}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 7
+    parentSide: {x: 0, y: 1}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 8
+    parentSide: {x: 0, y: 1}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 10
+    parentSide: {x: -1, y: 0}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 10
+    parentSide: {x: 1, y: 0}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
+  - parent: 11
+    parentSide: {x: -1, y: 0}
+    angle: 90
+    generation: 0
+    currentAngle: 0
+    model: {fileID: 0}
