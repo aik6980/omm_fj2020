@@ -92,6 +92,8 @@ MonoBehaviour:
   - {fileID: 8047883988237794894, guid: 15b5e572ade9e684a89b96d19203f1ee, type: 3}
   - {fileID: 6566144069150435693, guid: 1d04287a238e8124bab2125b41dfafd1, type: 3}
   - {fileID: 8198991070410397129, guid: 246241be6ad61ff4eb80870bd44b5688, type: 3}
+  deathFace: {fileID: 4332486542197031088, guid: 4beb100d54b0ece4d9751a10d6b44457,
+    type: 3}
   moving: 0
   jumping: 0
   unfolding: 0
