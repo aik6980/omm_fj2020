@@ -37,7 +37,12 @@ public class GridPlayerCharacter : MonoBehaviour
 
     public bool unfolding;
 
-	private void Start()
+    private void Awake()
+    {
+		m_Grid.OnLevelLoaded += coords => Respawn();
+    }
+
+    private void Start()
 	{
         if (m_AnimatedCharacter)
         {
@@ -47,7 +52,6 @@ public class GridPlayerCharacter : MonoBehaviour
             m_AnimatedCharacter.SetPC(this);
         }
 
-        Respawn();
 		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
 	}
 
@@ -97,6 +101,7 @@ public class GridPlayerCharacter : MonoBehaviour
 	private bool AttemptMove(Direction direction)
 	{
 		Coordinate nextCoordinate = null;
+
 		if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
 		{
 			Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
@@ -117,6 +122,7 @@ public class GridPlayerCharacter : MonoBehaviour
 		m_CurrentCoordinte.m_PopulatedPlayer = this;
 		Vector3 desiredPosition = new Vector3(m_CurrentCoordinte.GridPosition().x, 0f, m_CurrentCoordinte.GridPosition().y);
 		transform.position = desiredPosition;
+		m_PlayerPiece.m_origin_coords = m_CurrentCoordinte.m_Position;
 	}
 
 	private void CheckWinCondition()
@@ -132,7 +138,7 @@ public class GridPlayerCharacter : MonoBehaviour
 		// always recreate for now, might switch directions...
 		ClearPreview();
 		Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
-		if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing))
+		//if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing))
 		{
 			m_PreviewPlacement = m_PlayerPiece.PreviewPlacement(placePostition, m_Facing);
 		}
@@ -161,6 +167,8 @@ public class GridPlayerCharacter : MonoBehaviour
 
 				// TODO: overlapping piece handling...
 				m_PlayerPiece.Place(placePostition, m_Facing);
+				m_Grid.UpdateTileRepresentation(m_PlayerPiece);
+				//m_Grid.m_Pieces.Add(m_PlayerPiece);
 				m_Grid.m_Polluter.HandleHealing();
                 
                 //Respawn();
@@ -187,8 +195,8 @@ public class GridPlayerCharacter : MonoBehaviour
             unfoldScript.UseUnfoldShapeDefinition(shapeDefinitionIndex);
         }
 
+		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, m_Grid.m_Coordinates[0].m_Position, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
-		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
         //Debug.Log("gpc_spawn");
         OnSpawnDelegate?.Invoke();
 	}

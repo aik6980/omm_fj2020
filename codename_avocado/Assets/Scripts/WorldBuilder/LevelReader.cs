@@ -12,9 +12,9 @@ public class LevelReader : MonoSingleton<LevelReader>
 			public int x;
 			public int y;
 
-			public Vector2 ToVector2()
+			public Vector2Int ToVector2Int()
             {
-				return new Vector2(x, y);
+				return new Vector2Int(x, y);
             }
 		}
 

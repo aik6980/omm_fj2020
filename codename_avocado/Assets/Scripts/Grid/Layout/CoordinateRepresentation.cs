@@ -10,13 +10,31 @@ public class CoordinateRepresentation : MonoBehaviour
 
 	public Vector3 m_DefaultPosition;
 
+	private GameObject m_mesh_object;
 
-	public void Configure(Coordinate coordinate)
+
+	public void Configure(Coordinate coordinate, GridTileBuilder builder)
 	{
 		m_Coordinate = coordinate;
 		transform.position = new Vector3(m_Coordinate.GridPosition().x, -.5f, m_Coordinate.GridPosition().y);
 		m_DefaultPosition = transform.position;
 		m_Coordinate.Decorate(this);
+
+		if (m_mesh_object)
+        {
+			Destroy(m_mesh_object);
+			m_mesh_object = null;
+
+		}
+
+		m_mesh_object = builder.GetTile(coordinate);
+        m_mesh_object.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+		
+		// position fix
+		m_mesh_object.transform.parent = this.transform;
+		m_mesh_object.transform.localPosition = Vector3.zero;
+
+		Debug.Log(m_mesh_object.transform.position);
 		//Debug.Log("Spawned Coordinate: " + m_Coordinate.GridPosition().x.ToString() + "," +  m_Coordinate.GridPosition().y.ToString());
 	}
 

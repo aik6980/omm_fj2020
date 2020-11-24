@@ -167,15 +167,15 @@ public class Unfold : MonoBehaviour
         return shapeDefinitions.Length;
     }
 
-    public List<Vector2> GetUnfoldedNet()
+    public List<Vector2Int> GetUnfoldedNet()
     {
-        List<Vector2> coordinates = new List<Vector2>(faces.Count);
+        List<Vector2Int> coordinates = new List<Vector2Int>(faces.Count);
 
-        Vector2 WorldCoordinates(int j)
+        Vector2Int WorldCoordinates(int j)
         {
-            if (j <= 0) return Vector2.zero;
+            if (j <= 0) return Vector2Int.zero;
 
-            return WorldCoordinates(faces[j].parent) + faces[j].parentSide;
+            return WorldCoordinates(faces[j].parent) + Vector2Int.RoundToInt(faces[j].parentSide);
         }
 
         for (int i = 0; i < faces.Count; ++i)

@@ -108,7 +108,10 @@ MonoBehaviour:
   grass_tile:
   - {fileID: 919132149155446097, guid: 3abd87a585e97154e9e8105655bf0b09, type: 3}
   toxic_tile:
+  - {fileID: 919132149155446097, guid: 9282124b528a6444eb0c32560a967615, type: 3}
   - {fileID: 919132149155446097, guid: d232f430d16bbd04fa464e032d784fc9, type: 3}
+  - {fileID: 919132149155446097, guid: a245e2dae465b554bab23855a5b5b672, type: 3}
+  - {fileID: 919132149155446097, guid: 3abd87a585e97154e9e8105655bf0b09, type: 3}
   start_tile:
   - {fileID: 919132149155446097, guid: 9282124b528a6444eb0c32560a967615, type: 3}
   exit_tile:

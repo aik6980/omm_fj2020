@@ -20,22 +20,11 @@ public class GridPolluter : MonoBehaviour
 
 	public void CheckExpandPollution()
 	{
-		m_Pollution.ForEach((PollutionPiece piece) =>
+		var copy = new List<PollutionPiece>(m_Pollution);
+		copy.ForEach((PollutionPiece piece) =>
 		{
 			piece.TickPollution();
 		});
-	}
-
-	public void InitialPollution()
-	{
-		// only one volcano for now...
-		AddVolcano();
-
-
-		for (int i = 0; i < m_ObstacleCount; ++i)
-		{
-			AddBlock();
-		}
 	}
 
 	public bool Polluted(Vector2 coPosition)
@@ -74,25 +63,6 @@ public class GridPolluter : MonoBehaviour
 		return true;
 	}
 
-	public void AddVolcano()
-	{
-		var pollutionPiece = new PollutionPiece(m_Grid, new Volcano(), RandomPollutant(), GridTileBuilder.TileType.toxic);
-		m_Pollution.Add(pollutionPiece);
-	}
-
-	public void AddBlock()
-	{
-		var pollutant = RandomPollutant();
-		while (m_PollutionCoordinates.Find((Coordinate c) => c.GridPosition() == pollutant) != null)
-		{
-			pollutant = RandomPollutant();
-		}
-
-		var pollutionPiece = new BlockingPiece(m_Grid, new Shape(), pollutant);
-		m_Pollution.Add(pollutionPiece);
-		m_PollutionCoordinates.AddRange(pollutionPiece.m_Coordinates);
-	}
-
 	private Vector2 RandomPollutant()
 	{
 		int randomX = Random.Range(0, m_ObstacleRange);
@@ -121,7 +91,7 @@ public class GridPolluter : MonoBehaviour
 		pieces.ForEach(piece =>
 		{
 			m_Pollution.Add(piece);
-			//m_PollutionCoordinates.AddRange(piece.m_Coordinates);
+			m_PollutionCoordinates.AddRange(piece.m_Coordinates);
 		});
 	}
 }
