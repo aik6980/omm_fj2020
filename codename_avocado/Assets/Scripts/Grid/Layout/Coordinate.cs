@@ -63,7 +63,7 @@ public class Coordinate
 			Direction d = (Direction)i;
 			//if (!TryMove(d, ref coord))
 			var nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, d);
-			if (nextCoordinate.IsPollutable())
+			if (nextCoordinate != null && nextCoordinate.IsPollutable())
 			{
 				var emptyNeighbor = /*Vector2Int.RoundToInt(WorldGrid.OffsetDirection(m_Position, d))*/nextCoordinate.m_Position;
 				if (!neighbors.Contains(emptyNeighbor))
@@ -102,7 +102,7 @@ public class Coordinate
 
 		// should store World grid here as a parent
 		nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, direction);
-		if(nextCoordinate.IsPassable())
+		if(nextCoordinate != null && nextCoordinate.IsPassable())
         {
 			return true;
         }
