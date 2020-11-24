@@ -133,7 +133,8 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
 		if (m_Grid.IsFinalCoordinate(m_CurrentCoordinte))
 		{
-			m_GameState.GameOver();
+			//m_GameState.GameOver();
+			m_Grid.LoadNextLevel();
 		}
 	}
 

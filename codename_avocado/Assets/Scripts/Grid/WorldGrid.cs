@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -58,24 +59,7 @@ public class WorldGrid : MonoBehaviour
 
     private void Awake()
 	{
-		m_world_data = GetComponent<ILevelLoader>().LoadLevel(this);
-		m_FinalPiece = m_world_data.end_piece;
-
-		m_Polluter.AddVolcanoes(m_world_data.volcano_pieces);
-		m_Polluter.AddBlocks(m_world_data.block_pieces);
-
-		m_Coordinates.AddRange(m_world_data.start_piece.Coordinates);
-		for (int y = 0; y < m_coord_grid.GetLength(1); ++y)
-		{
-			for (int x = 0; x < m_coord_grid.GetLength(0); ++x)
-			{
-				if (!m_Coordinates.Contains(m_coord_grid[x, y]))
-					m_Coordinates.Add(m_coord_grid[x, y]);
-			}
-		}
-
-		OnLevelLoaded?.Invoke(m_world_data.start_piece.Coordinates);
-		BuildTileRepresentation();
+		LoadNextLevel();
 	}
 
 	public Coordinate GetCoordinate(Vector2 pos)
@@ -115,7 +99,29 @@ public class WorldGrid : MonoBehaviour
 		return reps;
 	}
 
-	public List<CoordinateRepresentation> RepresentCoordianates(GridPiece piece)
+    public void LoadNextLevel()
+    {
+		m_world_data = GetComponent<ILevelLoader>().LoadLevel(this);
+		m_FinalPiece = m_world_data.end_piece;
+
+		m_Polluter.AddVolcanoes(m_world_data.volcano_pieces);
+		m_Polluter.AddBlocks(m_world_data.block_pieces);
+
+		m_Coordinates.AddRange(m_world_data.start_piece.Coordinates);
+		for (int y = 0; y < m_coord_grid.GetLength(1); ++y)
+		{
+			for (int x = 0; x < m_coord_grid.GetLength(0); ++x)
+			{
+				if (!m_Coordinates.Contains(m_coord_grid[x, y]))
+					m_Coordinates.Add(m_coord_grid[x, y]);
+			}
+		}
+
+		OnLevelLoaded?.Invoke(m_world_data.start_piece.Coordinates);
+		BuildTileRepresentation();
+	}
+
+    public List<CoordinateRepresentation> RepresentCoordianates(GridPiece piece)
 	{
 		List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
 		//piece.m_Coordinates.ForEach((Coordinate coordinate) =>
