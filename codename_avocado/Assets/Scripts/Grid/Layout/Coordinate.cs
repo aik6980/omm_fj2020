@@ -196,8 +196,8 @@ public class Coordinate
 		
 		for(int i=0; i< System.Enum.GetValues(typeof(Direction)).Length; ++i)
         {
-			var coord = m_Worldgrid.GetNextCoordinate(m_Position, (Direction)i);
-			if(coord.m_Type != GridTileBuilder.TileType.toxic)
+			var nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, (Direction)i);
+			if(nextCoordinate != null && nextCoordinate.m_Type != GridTileBuilder.TileType.toxic)
             {
 				return true;
             }
