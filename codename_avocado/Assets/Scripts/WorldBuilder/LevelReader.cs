@@ -41,8 +41,16 @@ public class LevelReader : MonoSingleton<LevelReader>
 		var level = new LevelData();
 
 		var level_config_json_file	= Resources.Load<TextAsset>(string.Format("Levels/Lv{0}.cfg", level_num));
-		var level_config = JsonUtility.FromJson<LevelConfigData>(level_config_json_file.text);
-		level.Config = level_config;
+
+		if (level_config_json_file != null)
+		{
+			var level_config = JsonUtility.FromJson<LevelConfigData>(level_config_json_file.text);
+			level.Config = level_config;
+		}
+		else
+		{
+			level.Config = new LevelConfigData(){ ToxicSpreadTime = 15f, ToxicSpreadTimeVariation = 5f };
+		}
 
 		var level_file			= Resources.Load<TextAsset>(string.Format("Levels/Lv{0}", level_num));
 
