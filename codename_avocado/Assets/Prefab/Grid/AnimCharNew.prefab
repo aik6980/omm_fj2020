@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundPrefab: {fileID: 6381351944034280620, guid: f0926c26a5fc1ea479da11c59337773a,
     type: 3}
+  spawnSounds: []
   stepSounds: []
   jumpSounds: []
   unfoldSounds:
@@ -167,6 +168,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundPrefab: {fileID: 6381351944034280620, guid: f0926c26a5fc1ea479da11c59337773a,
     type: 3}
+  spawnSounds:
+  - {fileID: 8300000, guid: cbb7043e1979d7448a6cf80c3b3c282f, type: 3}
+  - {fileID: 8300000, guid: a3a5fa4abb8273a4e9d3288318122212, type: 3}
+  - {fileID: 8300000, guid: 8915226688582a64da61cbaa9b81682a, type: 3}
+  - {fileID: 8300000, guid: 13876abfce17818469f884d61a746710, type: 3}
   stepSounds:
   - {fileID: 8300000, guid: f841f073971076749b03645fc8f3d348, type: 3}
   - {fileID: 8300000, guid: d7b3347d12674cc4c8ebaaa9e4285a30, type: 3}

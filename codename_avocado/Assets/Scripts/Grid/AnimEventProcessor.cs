@@ -6,6 +6,7 @@ public class AnimEventProcessor : MonoBehaviour
 {
     public GameObject soundPrefab;
 
+    public AudioClip[] spawnSounds;
     public AudioClip[] stepSounds;
     public AudioClip[] jumpSounds;
     public AudioClip[] unfoldSounds;
@@ -84,4 +85,8 @@ public class AnimEventProcessor : MonoBehaviour
         */
     }
 
+    void Anim_Spawn()
+    {
+        PlaySoundFrom(ref spawnSounds, 1.0f);
+    }
 }
