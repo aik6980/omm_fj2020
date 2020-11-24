@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CubeShapeDefinition_Gun
   m_EditorClassIdentifier: 
   bodyShape: 0
-  thumbnailTexture: {fileID: 2800000, guid: 1e284e91fd3064a4a8f1d6063aabe593, type: 3}
+  thumbnailTexture: {fileID: 2800000, guid: 0cb349ba3fd2e7944b09f9ff3a52c989, type: 3}
   faces:
   - parent: 0
     parentSide: {x: 0, y: 0}

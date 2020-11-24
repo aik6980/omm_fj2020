@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CubeShapeDefinition_Key
   m_EditorClassIdentifier: 
   bodyShape: 0
-  thumbnailTexture: {fileID: 2800000, guid: a58ed13cceffda04c849b77fceb14ee9, type: 3}
+  thumbnailTexture: {fileID: 2800000, guid: d25eb7b778163f74e93f6da297fc3985, type: 3}
   faces:
   - parent: 0
     parentSide: {x: 0, y: 0}
@@ -24,30 +24,30 @@ MonoBehaviour:
   - parent: 0
     parentSide: {x: 0, y: 1}
     angle: 90
-    generation: 0
+    generation: 1
     currentAngle: 0
     model: {fileID: 0}
   - parent: 1
     parentSide: {x: 0, y: 1}
     angle: 90
-    generation: 0
+    generation: 2
     currentAngle: 0
     model: {fileID: 0}
   - parent: 2
     parentSide: {x: 0, y: 1}
     angle: 90
-    generation: 0
+    generation: 3
     currentAngle: 0
     model: {fileID: 0}
   - parent: 1
     parentSide: {x: 1, y: 0}
     angle: 90
-    generation: 0
+    generation: 2
     currentAngle: 0
     model: {fileID: 0}
   - parent: 2
     parentSide: {x: -1, y: 0}
     angle: 90
-    generation: 0
+    generation: 3
     currentAngle: 0
     model: {fileID: 0}
