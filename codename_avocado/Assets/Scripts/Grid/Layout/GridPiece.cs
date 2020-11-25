@@ -388,8 +388,8 @@ public class PreviewPlacement
 		m_Reps = reps;
 		m_Reps.ForEach((CoordinateRepresentation rep) =>
 		{
-			rep.SetColor(Color.white);
-			rep.Offset(0.2f);
+			//rep.SetColor(Color.white);
+			//rep.Offset(0.2f);
 		});
 	}
 
@@ -398,8 +398,8 @@ public class PreviewPlacement
 		//m_Reps.ForEach((CoordinateRepresentation rep) => GameObject.Destroy(rep.gameObject));
 		m_Reps.ForEach((CoordinateRepresentation rep) =>
 		{
-			rep.SetColor(Color.cyan);
-			rep.Offset(0.0f);
+			//rep.SetColor(Color.cyan);
+			//rep.Offset(0.0f);
 		});
 	}
 }

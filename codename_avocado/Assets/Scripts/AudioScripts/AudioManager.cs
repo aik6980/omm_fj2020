@@ -5,9 +5,6 @@ using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
-
-    public static AudioManager instance;
-
     public AudioMixerGroup mixerGroup;
 
     public Sound[] sounds;
@@ -31,16 +28,6 @@ public class AudioManager : MonoBehaviour
         currentEnv2Volume = getSoundVolume("Env_BG_Coniferous");
 
         musLayerVolumeMultiplier = 0.0f;
-
-        if (instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
 
         foreach (Sound s in sounds)
         {
@@ -101,7 +88,7 @@ public class AudioManager : MonoBehaviour
                 Debug.Log("'Healed' Ambience/Music triggered");
                 StartCoroutine("FadeSoundIn");
             }
-            
+
         }
         if (musLayerVolumeMultiplier == 1.0f)
         {
