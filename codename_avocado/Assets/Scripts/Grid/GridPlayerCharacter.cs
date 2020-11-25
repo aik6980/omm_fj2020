@@ -40,6 +40,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Awake");
         CheckLink();
         m_Grid.OnLevelLoaded += coords => Respawn();
     }

@@ -12,6 +12,7 @@ public class AnimEventProcessor : MonoBehaviour
     public AudioClip[] failSounds;      //play when tying but cannot unfold
     public AudioClip[] unfoldSounds;
     public AudioClip[] deathSounds;
+    public AudioClip[] bodyfallSounds;
 
     void Start()
     {
@@ -94,5 +95,11 @@ public class AnimEventProcessor : MonoBehaviour
     void Anim_Fail()
     {
         PlaySoundFrom(ref failSounds, 1.0f);
+    }
+
+    void Anim_Bodyfall()
+    {
+        PlaySoundFrom(ref bodyfallSounds, 1.0f);
+        Debug.Log("Bodyfall Has Played");
     }
 }
