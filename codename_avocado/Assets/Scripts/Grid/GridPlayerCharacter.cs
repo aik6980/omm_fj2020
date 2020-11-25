@@ -37,6 +37,7 @@ public class GridPlayerCharacter : MonoBehaviour
     private PreviewPlacement m_PreviewPlacement;
 
     public bool waitingToRespawn;
+    public bool canUnfold;
 
     private void Awake()
     {
@@ -49,7 +50,9 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
         CheckLink();
 		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
-	}
+        canUnfold = false;
+
+    }
 
     void CheckLink()
     {
@@ -99,8 +102,9 @@ public class GridPlayerCharacter : MonoBehaviour
 		m_Facing = direction;
         transform.rotation = Quaternion.Euler(0, heading[(int)direction], 0);
 
-		if (!AttemptMove(direction))
-			PreparePlacement();
+        //if (!AttemptMove(direction))
+        AttemptMove(direction);
+        PreparePlacement();
 	}
 
 	private bool AttemptMove(Direction direction)
@@ -143,16 +147,29 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
 		// always recreate for now, might switch directions...
 		ClearPreview();
+
 		Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
 		//if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing))
 		{
 			m_PreviewPlacement = m_PlayerPiece.PreviewPlacement(placePostition, m_Facing);
 		}
-	}
+
+        //bool canPlace = m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing);
+        //unfoldScript.ShowPrevis(canPlace ? Color.green : Color.red);
+        canUnfold = m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing);
+        Debug.Log(canUnfold + " at " + placePostition.ToString() + m_Facing.ToString());
+    }
+
+    public bool CanUnfold()
+    {
+        //Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
+        //return m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing);
+        return canUnfold;
+    }
 
 	private void Interactions()
 	{
-		if (m_PreviewPlacement != null && Input.GetKeyDown(KeyCode.Space))
+		if (/*m_PreviewPlacement != null &&*/ Input.GetKeyDown(KeyCode.Space))
 		{
 			TryPlacePiece();
 		}
@@ -190,7 +207,9 @@ public class GridPlayerCharacter : MonoBehaviour
 			m_PreviewPlacement.Clear();
 			m_PreviewPlacement = null;
 		}
-	}
+
+        //unfoldScript.HidePrevis();
+    }
 
     public void Die()
     {
@@ -210,6 +229,8 @@ public class GridPlayerCharacter : MonoBehaviour
 
 		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, m_Grid.m_Coordinates[0].m_Position, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
+        canUnfold = false;
+
         Debug.Log("gpc_spawn");
         OnSpawnDelegate?.Invoke();
 	}
