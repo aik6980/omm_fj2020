@@ -51,7 +51,8 @@ public class CoordinateRepresentation : MonoBehaviour
 			// position/rotation fix
 			m_mesh_object.transform.parent = this.transform;
 			m_mesh_object.transform.localPosition = Vector3.zero;
-			m_mesh_object.transform.Rotate(new Vector3(0f, 0f, 90f));
+
+			m_mesh_object.transform.Rotate(new Vector3(0f, 0f, 90f * Random.Range(0, 3)));
 
 			// add VFX 
 			if(coordinate.Type == GridTileBuilder.TileType.toxic)
