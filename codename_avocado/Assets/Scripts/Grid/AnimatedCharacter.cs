@@ -40,6 +40,9 @@ public class AnimatedCharacter : MonoBehaviour
 
     public Vector3 offset;
 
+    public float unfoldedWait = 0.5f;
+    public float unfoldedTimer;
+
     void Start()
     {
         if (gridPC)
@@ -219,6 +222,7 @@ public class AnimatedCharacter : MonoBehaviour
                     unfolding = true;
                     unfold.progress = 0;
                     unfold.SpawnFaces();
+                    unfoldedTimer = 0;
                     //hide model
                     animation.gameObject.SetActive(false);
                     return;
@@ -256,10 +260,13 @@ public class AnimatedCharacter : MonoBehaviour
         {
             if (unfold.Finished())
             {
+                unfoldedTimer += Time.deltaTime;
+                if (unfoldedTimer < unfoldedWait) return;
                 unfolding = false;
                 unfold.UnSpawnFaces();
                 Spawn();
             }
+            unfoldedTimer = 0;
             int preFlats = unfold.NumFlats();
             unfold.UnfoldStep(4.0f * dT / Mathf.Max(1, unfold.maxGenerations));
             int numFlats = unfold.NumFlats();
