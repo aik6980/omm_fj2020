@@ -35,7 +35,7 @@ public class WorldGrid : MonoBehaviour
 	public CoordinateRepresentation[,]	m_coord_grid_representation;
 	private GameObject					m_Environment;
 	
-	public void InitialiseGrid(Vector2Int dim, string environment_name, Vector3 env_offset)
+	public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset)
     {
 		if (m_Environment != null)
         {
@@ -58,6 +58,26 @@ public class WorldGrid : MonoBehaviour
 			m_coord_grid[x, y] = new Coordinate(this, new Vector2Int(x, y), GridTileBuilder.TileType.floor);
             m_coord_grid[x, y].OnCoordinateTypeChanged += WorldGrid_OnCoordinateTypeChanged;
 		});
+
+        var conveyorQueue = Resources.Load<ManualConveyorQueue>(string.Format("Levels/Lv{0}_Queue", level_num));
+        if (conveyorQueue != null)
+        {
+            NextShapeQueue.Instance.conveyorQueue = conveyorQueue;
+            NextShapeQueue.Instance.randomized = false;
+            NextShapeQueue.Instance.loopQueue = conveyorQueue.loopQueue;
+
+            NextShapeQueue.Instance.Awake();
+        }
+        else
+        {
+			//TODO: Reset
+            NextShapeQueue.Instance.conveyorQueue = null;
+            NextShapeQueue.Instance.loopQueue = false;
+            NextShapeQueue.Instance.randomized = true;
+
+			NextShapeQueue.Instance.Awake();
+        }
+
 		//for (int y = 0; y < dim.y; ++y)
 		//{
 		//	for (int x = 0; x < dim.x; ++x)

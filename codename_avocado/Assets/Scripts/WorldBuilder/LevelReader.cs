@@ -18,6 +18,7 @@ public class LevelReader : MonoSingleton<LevelReader>
             }
 		}
 
+        public int levelNumber;
 		public Coordinates Start;
 		public Coordinates End;
 		public List<Coordinates> Solid = new List<Coordinates> { };
@@ -39,6 +40,8 @@ public class LevelReader : MonoSingleton<LevelReader>
 		/// 5	Pre-gen island/ground
 		///
 		var level = new LevelData();
+
+        level.levelNumber = level_num;
 
 		var level_config_json_file	= Resources.Load<TextAsset>(string.Format("Levels/Lv{0}.cfg", level_num));
 
