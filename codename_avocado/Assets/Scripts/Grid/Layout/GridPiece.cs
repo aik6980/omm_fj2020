@@ -243,8 +243,7 @@ public class ToxicPiece : PollutionPiece
 			m_Coordinates.Remove(coordinate);
 		}
 
-		// TODO: Fix this pool to healable_pool
-		if (previous_level == GridTileBuilder.ToxicLevel.pool &&
+		if (previous_level == GridTileBuilder.ToxicLevel.healable_pool &&
 			coordinate.ToxicLevel == GridTileBuilder.ToxicLevel.none)
         {
 			var copy = new List<Coordinate>(m_Coordinates);
@@ -345,14 +344,19 @@ public class ToxicPiece : PollutionPiece
 			m_Coordinates.Add(newCoords[i]);
 			newCoords[i].SetCoordType(m_TileType, GridTileBuilder.ToxicLevel.small_spill);//toxicity.Count > i ? toxicity[i] : GridTileBuilder.ToxicLevel.none;
 		}
-		m_Coordinates.ForEach(coord =>
-		{
-			if (coord.ToxicLevel != GridTileBuilder.ToxicLevel.pool &&
-				coord.ToxicLevel != GridTileBuilder.ToxicLevel.healable_pool)
-			{
-				coord.SetCoordType(coord.Type, coord.CanBeHealed() ? GridTileBuilder.ToxicLevel.small_spill : GridTileBuilder.ToxicLevel.big_spill);
-			}
-		});
+		//m_Coordinates.ForEach(coord =>
+		//{
+		//	if (coord.ToxicLevel == GridTileBuilder.ToxicLevel.pool ||
+		//		coord.ToxicLevel == GridTileBuilder.ToxicLevel.healable_pool)
+		//	{
+		//		var new_toxicity = coord.CanBeHealed() ? GridTileBuilder.ToxicLevel.healable_pool : GridTileBuilder.ToxicLevel.pool;
+		//		coord.SetCoordType(coord.Type, new_toxicity);
+		//	}
+		//	else
+        //    {
+		//		coord.SetCoordType(coord.Type, coord.CanBeHealed() ? GridTileBuilder.ToxicLevel.small_spill : GridTileBuilder.ToxicLevel.big_spill);
+        //    }
+		//});
 
 		SignalCoordsChanged();
 		//m_Grid.UpdateTileRepresentation(this);

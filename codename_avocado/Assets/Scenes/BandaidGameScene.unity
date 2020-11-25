@@ -129,6 +129,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1166520874290357198, guid: 7d1afb2db33d67b4ab8fdef1e65db1ba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 739006a8897e4fa4da6cda7f4df91441, type: 2}
+    - target: {fileID: 1351942973712108442, guid: 7d1afb2db33d67b4ab8fdef1e65db1ba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 739006a8897e4fa4da6cda7f4df91441, type: 2}
     - target: {fileID: 2463925055642042062, guid: 7d1afb2db33d67b4ab8fdef1e65db1ba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -189,6 +199,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: AnimCharNew
       objectReference: {fileID: 0}
+    - target: {fileID: 2903627854790163414, guid: 7d1afb2db33d67b4ab8fdef1e65db1ba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 739006a8897e4fa4da6cda7f4df91441, type: 2}
+    - target: {fileID: 4903335995381814360, guid: 7d1afb2db33d67b4ab8fdef1e65db1ba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 739006a8897e4fa4da6cda7f4df91441, type: 2}
+    - target: {fileID: 6326574996961622472, guid: 7d1afb2db33d67b4ab8fdef1e65db1ba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 739006a8897e4fa4da6cda7f4df91441, type: 2}
+    - target: {fileID: 7087779358609052949, guid: 7d1afb2db33d67b4ab8fdef1e65db1ba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 739006a8897e4fa4da6cda7f4df91441, type: 2}
+    - target: {fileID: 8858777725444837019, guid: 7d1afb2db33d67b4ab8fdef1e65db1ba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 739006a8897e4fa4da6cda7f4df91441, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d1afb2db33d67b4ab8fdef1e65db1ba, type: 3}
 --- !u!1 &113825927
@@ -2539,6 +2574,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WorldGrid
+      objectReference: {fileID: 0}
+    - target: {fileID: 4683538448211693358, guid: 0b4a5f8d50a5eaa41b4b43ca182c456c,
+        type: 3}
+      propertyPath: Level
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6156693609271057799, guid: 0b4a5f8d50a5eaa41b4b43ca182c456c,
         type: 3}

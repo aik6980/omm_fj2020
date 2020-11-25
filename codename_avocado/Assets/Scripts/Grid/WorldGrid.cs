@@ -177,13 +177,15 @@ public class WorldGrid : MonoBehaviour
 
 	public bool SupportsPlacement(Vector2 placement, GridPiece piece, Direction direction)
 	{
-		foreach (var coord in piece.Coordinates)
-		{
-			if (m_Polluter.Polluted(coord.m_Position))
-				return false;
-		}
+		return piece.Coordinates.All(coord => coord.CanBeHealed());
 
-		return true;
+		//foreach (var coord in piece.Coordinates)
+		//{
+		//	if (m_Polluter.Polluted(coord.m_Position))
+		//		return false;
+		//}
+		//
+		//return true;
 	}
 
 	public void LinkPiece(GridPiece piece)

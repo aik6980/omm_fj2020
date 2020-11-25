@@ -2,7 +2,7 @@
 	"EnvironmentName": "Env_Rocky",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
-	"EnvironmentOffsetZ": -0.25,
+	"EnvironmentOffsetZ": 2.67,
 	"ToxicSpreadTime": 10,
 	"ToxicSpreadTimeVariation": 2
 }
