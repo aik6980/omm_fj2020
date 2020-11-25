@@ -22,6 +22,7 @@ public class Unfold : MonoBehaviour
     public UnfoldShapeDefinition[] shapeDefinitions;
 
     public int currentShapeDefIndex = 0;
+    public UnfoldShapeDefinition m_currentShapeDef;
     public List<SquareFace> faces =  new List<SquareFace>();
 
     public float edgeLength = 1.0f;
@@ -30,6 +31,7 @@ public class Unfold : MonoBehaviour
     public int maxGenerations = 0;
 
     public GameObject facePrefab;
+
 
     [Range(0,1)]
     public float progress;
@@ -67,6 +69,8 @@ public class Unfold : MonoBehaviour
             if (faces[i].model == null)
             {
                 faces[i].model = Instantiate(facePrefab, this.transform.position, this.transform.rotation, this.transform).transform;
+                if (m_currentShapeDef && m_currentShapeDef.color != Color.white)
+                    faces[i].model.GetComponentInChildren<Renderer>().material.color = m_currentShapeDef.color;
             }
             faces[i].currentAngle = faces[i].angle;
         }
@@ -168,6 +172,7 @@ public class Unfold : MonoBehaviour
         faces = new List<SquareFace>(shapeDefinitions[i].faces);
 
         currentShapeDefIndex = i;
+        m_currentShapeDef = shapeDefinitions[i];
 
         if (areFacesSpawned)
             SpawnFaces();

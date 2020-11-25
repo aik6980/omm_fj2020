@@ -7,15 +7,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1208057995953785869}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5530974e1b8411545b9a1af9496b5e5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   soundPrefab: {fileID: 6381351944034280620, guid: f0926c26a5fc1ea479da11c59337773a,
     type: 3}
+  spawnSounds: []
   stepSounds: []
   jumpSounds: []
+  failSounds: []
   unfoldSounds:
   - {fileID: 8300000, guid: 009f56bdb9a480342882d8d54d282873, type: 3}
   - {fileID: 8300000, guid: 27a9d44ebc070f74eb63d758d6775823, type: 3}
@@ -24,6 +26,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 050691463198fc2439b5fc2a501f758b, type: 3}
   - {fileID: 8300000, guid: cb286ee10b1b6854d834066c6858158d, type: 3}
   - {fileID: 8300000, guid: 6ffcdf08b3c5c4b4fb92c0647fac2f1d, type: 3}
+  deathSounds: []
 --- !u!1 &2463925055642042063
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,6 +169,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundPrefab: {fileID: 6381351944034280620, guid: f0926c26a5fc1ea479da11c59337773a,
     type: 3}
+  spawnSounds:
+  - {fileID: 8300000, guid: cbb7043e1979d7448a6cf80c3b3c282f, type: 3}
+  - {fileID: 8300000, guid: a3a5fa4abb8273a4e9d3288318122212, type: 3}
+  - {fileID: 8300000, guid: 8915226688582a64da61cbaa9b81682a, type: 3}
+  - {fileID: 8300000, guid: 13876abfce17818469f884d61a746710, type: 3}
   stepSounds:
   - {fileID: 8300000, guid: f841f073971076749b03645fc8f3d348, type: 3}
   - {fileID: 8300000, guid: d7b3347d12674cc4c8ebaaa9e4285a30, type: 3}
@@ -174,12 +182,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: be31018edd5d451468c3ca70351ff360, type: 3}
   - {fileID: 8300000, guid: 11a8ed951572b87418a646052fe9733e, type: 3}
   jumpSounds:
-  - {fileID: 8300000, guid: 9f854a85e2e6af14cbfe98e00ecf93fa, type: 3}
-  - {fileID: 8300000, guid: d95c173f59ff60b4f9a7dd1479c54e13, type: 3}
-  - {fileID: 8300000, guid: 4b0e88e190b349a48af4be52b4775cb0, type: 3}
-  - {fileID: 8300000, guid: eaf41fc019c71a0469c57183649c4413, type: 3}
-  - {fileID: 8300000, guid: a461003e6ea87b44583f1289ccc1df96, type: 3}
-  - {fileID: 8300000, guid: f65a131d134f86b418c7ea175e4d9b2a, type: 3}
+  - {fileID: 8300000, guid: cbb7043e1979d7448a6cf80c3b3c282f, type: 3}
+  - {fileID: 8300000, guid: a3a5fa4abb8273a4e9d3288318122212, type: 3}
+  - {fileID: 8300000, guid: 8915226688582a64da61cbaa9b81682a, type: 3}
+  - {fileID: 8300000, guid: 13876abfce17818469f884d61a746710, type: 3}
+  failSounds: []
   unfoldSounds:
   - {fileID: 8300000, guid: 009f56bdb9a480342882d8d54d282873, type: 3}
   - {fileID: 8300000, guid: 27a9d44ebc070f74eb63d758d6775823, type: 3}
@@ -188,6 +195,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 050691463198fc2439b5fc2a501f758b, type: 3}
   - {fileID: 8300000, guid: cb286ee10b1b6854d834066c6858158d, type: 3}
   - {fileID: 8300000, guid: 6ffcdf08b3c5c4b4fb92c0647fac2f1d, type: 3}
+  deathSounds:
+  - {fileID: 8300000, guid: f497970377c53b94aa814ea5a54a84ed, type: 3}
+  - {fileID: 8300000, guid: 90f50fb262908d24e9d1b5ae768cd462, type: 3}
+  - {fileID: 8300000, guid: 4f8ef54f5a890f049a276521b80940c4, type: 3}
+  - {fileID: 8300000, guid: db40beac126a4e040ac080c97efbefea, type: 3}
 --- !u!1 &4700312655288644219
 GameObject:
   m_ObjectHideFlags: 0
