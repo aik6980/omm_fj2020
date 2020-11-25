@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyShape: 2
   thumbnailTexture: {fileID: 2800000, guid: 88e3cd293b7a41843ac354ab37c46af8, type: 3}
+  color: {r: 0.882353, g: 0.89019614, b: 0.6039216, a: 1}
   faces:
   - parent: 0
     parentSide: {x: 0, y: 0}

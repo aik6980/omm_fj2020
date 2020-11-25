@@ -18,6 +18,7 @@ public class UnfoldShapeDefinition : ScriptableObject
     public BodyShape bodyShape;
 
     public Texture thumbnailTexture;
+    public Color color = Color.white;
 
     public List<Unfold.SquareFace> faces;
 }

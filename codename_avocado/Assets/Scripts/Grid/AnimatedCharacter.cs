@@ -153,7 +153,13 @@ public class AnimatedCharacter : MonoBehaviour
                 break;
         }
         for (int i = 0; i < models.Length; i++)
+        {
             models[i].SetActive(i == n);
+            if (models[i].active)
+            {
+                models[i].GetComponent<Renderer>().materials[0].color = gridPC.m_currentUnfoldShapeDef.color;
+            }
+        }
 
         PickDecor();
     }
@@ -216,7 +222,7 @@ public class AnimatedCharacter : MonoBehaviour
                 {//wait
                     //ToDo: make sure it reaches the target transform by the time the anim ends
                     float timeLeft = asi.length * 1.0f - asi.normalizedTime;
-                    Debug.Log("jumping..." + timeLeft);
+                    //Debug.Log("jumping..." + timeLeft);
                 } else
                 {//finished
                     Debug.Log("jump done.");
@@ -228,6 +234,7 @@ public class AnimatedCharacter : MonoBehaviour
                     //hide model
                     animtr.SetBool("unfolding", true);
                     animtr.gameObject.SetActive(false);
+                    //since it's disabled (to hide), wouldn't play on animtr.gameobject
                     unfold.gameObject.SendMessage("Anim_Unfold", SendMessageOptions.DontRequireReceiver);
                     return;
                 }
@@ -261,7 +268,7 @@ public class AnimatedCharacter : MonoBehaviour
             {//wait
              //ToDo: make sure it reaches the target transform by the time the anim ends
                 float timeLeft = asi.length * 1.0f - asi.normalizedTime;
-                Debug.Log("dying..." + timeLeft);
+                //Debug.Log("dying..." + timeLeft);
             }
             else
             {//finished

@@ -9,6 +9,7 @@ public class AnimEventProcessor : MonoBehaviour
     public AudioClip[] spawnSounds;
     public AudioClip[] stepSounds;
     public AudioClip[] jumpSounds;
+    public AudioClip[] failSounds;      //play when tying but cannot unfold
     public AudioClip[] unfoldSounds;
     public AudioClip[] deathSounds;
 
@@ -88,5 +89,10 @@ public class AnimEventProcessor : MonoBehaviour
     void Anim_Spawn()
     {
         PlaySoundFrom(ref spawnSounds, 1.0f);
+    }
+
+    void Anim_Fail()
+    {
+        PlaySoundFrom(ref failSounds, 1.0f);
     }
 }
