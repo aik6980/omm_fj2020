@@ -907,7 +907,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomized: 0
-  queueItemsDisplayed: 2
+  loopQueue: 0
+  queueItemsDisplayed: 3
   conveyorQueue: {fileID: 11400000, guid: c8a589381cc247f45aaad8ccd3416118, type: 2}
   unfoldScript: {fileID: 915620084}
 --- !u!4 &817420954
@@ -943,26 +944,6 @@ PrefabInstance:
       propertyPath: uiAnimator
       value: 
       objectReference: {fileID: 2011951058}
-    - target: {fileID: 1570321975944562277, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_Texture
-      value: 
-      objectReference: {fileID: 2800000, guid: 88e3cd293b7a41843ac354ab37c46af8, type: 3}
-    - target: {fileID: 2063035372775504233, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 67.04836
-      objectReference: {fileID: 0}
-    - target: {fileID: 5529396204670522704, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 99.20769
-      objectReference: {fileID: 0}
-    - target: {fileID: 5529396204670522711, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_Texture
-      value: 
-      objectReference: {fileID: 2800000, guid: 88e3cd293b7a41843ac354ab37c46af8, type: 3}
     - target: {fileID: 5529396204681362261, guid: a5ad2c2cc8359e64fb268ed08862ed42,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1072,46 +1053,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ConveyorQueueBackground
-      objectReference: {fileID: 0}
-    - target: {fileID: 5529396204931402634, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_Texture
-      value: 
-      objectReference: {fileID: 2800000, guid: 88e3cd293b7a41843ac354ab37c46af8, type: 3}
-    - target: {fileID: 5529396204931402634, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.54901963
-      objectReference: {fileID: 0}
-    - target: {fileID: 5529396204931402635, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 67.04836
-      objectReference: {fileID: 0}
-    - target: {fileID: 5529396204950763444, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_Texture
-      value: 
-      objectReference: {fileID: 2800000, guid: 88e3cd293b7a41843ac354ab37c46af8, type: 3}
-    - target: {fileID: 5529396204950763445, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 188.22565
-      objectReference: {fileID: 0}
-    - target: {fileID: 5529396204950763445, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5529396204950763445, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 239.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 5529396204950763445, guid: a5ad2c2cc8359e64fb268ed08862ed42,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 188.22565
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5ad2c2cc8359e64fb268ed08862ed42, type: 3}

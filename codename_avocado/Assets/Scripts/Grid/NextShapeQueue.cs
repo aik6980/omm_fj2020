@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 public class NextShapeQueue : MonoSingleton<NextShapeQueue>
 {
     public bool randomized = true;
+    public bool loopQueue = false;
 
     [Range(1, 20)]
     public int queueItemsDisplayed = 2;
@@ -65,20 +66,28 @@ public class NextShapeQueue : MonoSingleton<NextShapeQueue>
 
     private void EnqueueBack()
     {
-        if (!randomized && authoredShapeQueue.Count != 0)
+        if (!randomized)
         {
-            int index;
-            do
+            if (authoredShapeQueue.Count != 0 || loopQueue)
             {
-                var shape = authoredShapeQueue.Dequeue();
-                index = unfoldScript.shapeDefinitions.ToList().IndexOf(shape);
-            } while (index == -1 && authoredShapeQueue.Count != 0);
+                if (authoredShapeQueue.Count == 0 && loopQueue)
+                {
+                    authoredShapeQueue = new Queue<UnfoldShapeDefinition>(conveyorQueue.shapeQueue);
+                }
 
-            if (index != -1)
-            {
-                nextshapeQueue.Add(index);
+                int index;
+                do
+                {
+                    var shape = authoredShapeQueue.Dequeue();
+                    index = unfoldScript.shapeDefinitions.ToList().IndexOf(shape);
+                } while (index == -1 && authoredShapeQueue.Count != 0);
 
-                return;
+                if (index != -1)
+                {
+                    nextshapeQueue.Add(index);
+
+                    return;
+                }
             }
         }
 
