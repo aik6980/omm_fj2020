@@ -89,7 +89,7 @@ public class WorldBuilder : MonoSingleton<WorldBuilder>
 		world.start_piece = PlaceNewPiece(new BuilderShape(Color.green), level.Start, Direction.North, GridTileBuilder.TileType.start);
 		world.end_piece = PlaceNewPiece(new BuilderShape(Color.cyan), level.End, Direction.North, GridTileBuilder.TileType.exit);
 		world.island_pieces = new List<GridPiece>(level.Solid.Select(coord => PlaceNewPiece(new BuilderShape(Color.white), coord, Direction.North, GridTileBuilder.TileType.grass)));
-		world.volcano_pieces = new List<PollutionPiece>(level.Magma.Select(coord => PlacePollution(new ToxicPiece(grid, new Volcano(), coord.ToVector2Int()), coord)));
+		world.volcano_pieces = new List<PollutionPiece>(level.Magma.Select(coord => PlacePollution(new ToxicPiece(grid, new Volcano(), coord.ToVector2Int(), level.Config.MaxSpreadDistance), coord)));
 		world.block_pieces = new List<PollutionPiece>(level.Block.Select(coord => PlacePollution(new BlockingPiece(grid, new Shape(), coord.ToVector2Int()), coord)));
 
 		return world;
