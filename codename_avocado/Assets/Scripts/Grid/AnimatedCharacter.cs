@@ -24,17 +24,24 @@ public class AnimatedCharacter : MonoBehaviour
     public GameObject[] arms;
     public GameObject deathFace;
 
+    public Material mat_canUnfold;
+    public Material mat_cannotUnfold;
+
     //yeah i know, will refactor it :oP
     public bool moving = false;
     public bool jumping = false;
     public bool unfolding = false;
     public bool dying = false;
+    public bool havePrevis = false;
 
     public GameObject face;
     public GameObject armL;
     public GameObject armR;
 
     public Vector3 offset;
+
+    public float unfoldedWait = 0.5f;
+    public float unfoldedTimer;
 
     void Start()
     {
@@ -196,6 +203,10 @@ public class AnimatedCharacter : MonoBehaviour
             //2. activate Unfold and hide the character mesh
             //3. play the procedural unfolding from 0 to 100% over some time
             //4. THEN ready to respawn
+
+            if (havePrevis)
+                unfold.HidePrevis();
+
             if (animation)
             {
                 if (animation.IsPlaying(animClips[2]))
@@ -211,6 +222,7 @@ public class AnimatedCharacter : MonoBehaviour
                     unfolding = true;
                     unfold.progress = 0;
                     unfold.SpawnFaces();
+                    unfoldedTimer = 0;
                     //hide model
                     animation.gameObject.SetActive(false);
                     return;
@@ -248,10 +260,13 @@ public class AnimatedCharacter : MonoBehaviour
         {
             if (unfold.Finished())
             {
+                unfoldedTimer += Time.deltaTime;
+                if (unfoldedTimer < unfoldedWait) return;
                 unfolding = false;
                 unfold.UnSpawnFaces();
                 Spawn();
             }
+            unfoldedTimer = 0;
             int preFlats = unfold.NumFlats();
             unfold.UnfoldStep(4.0f * dT / Mathf.Max(1, unfold.maxGenerations));
             int numFlats = unfold.NumFlats();
@@ -278,6 +293,7 @@ public class AnimatedCharacter : MonoBehaviour
                 Debug.Log("death done.");
                 dying = false;
             }
+            return;
         }
 
         if (animtr)
@@ -311,15 +327,28 @@ public class AnimatedCharacter : MonoBehaviour
             }
         }
 
+
         if (animtr)
         {
-            moving = offset.magnitude > 0.1f;
+            moving = offset.magnitude > 0.1f || Quaternion.Angle(this.transform.rotation, player.transform.rotation) > 10.0f;
             animtr.SetBool("moving", moving);
         }
 
-        Quaternion faceDir = moving ? Quaternion.LookRotation(offset) : player.transform.rotation;
+        Quaternion faceDir = offset.magnitude > 0.1f ? Quaternion.LookRotation(offset) : player.transform.rotation;
         this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, faceDir, 400.0f * dT);
         this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, 5.0f * dT);
+
+        if (moving)
+        {
+            if (havePrevis)
+                unfold.HidePrevis();
+            havePrevis = false;
+        } else
+        {
+            if (!havePrevis)
+                unfold.ShowPrevis(gridPC.canUnfold ? mat_canUnfold : mat_cannotUnfold);
+            havePrevis = true;
+        }
     }
 
     public bool ReachedDestination()

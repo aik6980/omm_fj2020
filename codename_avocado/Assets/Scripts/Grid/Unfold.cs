@@ -88,6 +88,28 @@ public class Unfold : MonoBehaviour
         }
     }
 
+    public void ShowPrevis(Material mat)
+    {
+        SpawnFaces();
+
+        for (int i = 0; i < faces.Count; i++)
+        {
+            faces[i].currentAngle = 0;
+            if (faces[i].model)
+            {
+                Renderer[] rs = faces[i].model.GetComponentsInChildren<Renderer>();
+                foreach(Renderer r in rs) r.material = mat;
+            }
+        }
+
+        UpdateTransforms(faces);
+    }
+
+    public void HidePrevis()
+    {
+        UnSpawnFaces();
+    }
+
     void UnfoldStep_()
     {
         UnfoldStep(0.1f);
