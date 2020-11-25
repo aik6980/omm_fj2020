@@ -147,6 +147,9 @@ public class AnimatedCharacter : MonoBehaviour
             case BodyShape.T:
                 n = 3;
                 break;
+            case BodyShape.Z:
+                n = 4;
+                break;
 
             default:
                 n = Random.Range(0, 1000) % models.Length;

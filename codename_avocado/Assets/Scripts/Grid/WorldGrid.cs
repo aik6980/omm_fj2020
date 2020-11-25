@@ -33,9 +33,19 @@ public class WorldGrid : MonoBehaviour
 	private WorldData					m_world_data;
 	public Coordinate[,]				m_coord_grid;
 	public CoordinateRepresentation[,]	m_coord_grid_representation;
+	private GameObject					m_Environment;
 	
-	public void InitialiseGrid(Vector2Int dim)
+	public void InitialiseGrid(Vector2Int dim, string environment_name, Vector3 env_offset)
     {
+		if (m_Environment != null)
+        {
+			Destroy(m_Environment);
+        }
+
+		GameObject env_prefab = Resources.Load<GameObject>(string.Format("Environments/Env_{0}", environment_name));
+		m_Environment = Instantiate(env_prefab);
+		m_Environment.transform.position += env_offset;
+
 		if (m_coord_grid_representation != null)
         {
 			m_coord_grid_representation.ForEach((x, y, coord_rep) => Destroy(coord_rep.gameObject));

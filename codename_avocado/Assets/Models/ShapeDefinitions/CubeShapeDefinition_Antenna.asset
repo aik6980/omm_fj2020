@@ -24,79 +24,79 @@ MonoBehaviour:
     model: {fileID: 0}
   - parent: 0
     parentSide: {x: 0, y: 1}
-    angle: 90
+    angle: 0
     generation: 0
     currentAngle: 0
     model: {fileID: 0}
   - parent: 1
     parentSide: {x: 0, y: 1}
     angle: 90
-    generation: 0
+    generation: 1
     currentAngle: 0
     model: {fileID: 0}
   - parent: 2
     parentSide: {x: 0, y: 1}
     angle: 90
-    generation: 0
+    generation: 2
     currentAngle: 0
     model: {fileID: 0}
   - parent: 2
     parentSide: {x: -1, y: 0}
     angle: 90
-    generation: 0
+    generation: 2
     currentAngle: 0
     model: {fileID: 0}
   - parent: 2
     parentSide: {x: 1, y: 0}
     angle: 90
-    generation: 0
+    generation: 2
     currentAngle: 0
     model: {fileID: 0}
   - parent: 4
     parentSide: {x: -1, y: 0}
-    angle: 90
-    generation: 0
+    angle: 0
+    generation: 2
     currentAngle: 0
     model: {fileID: 0}
   - parent: 5
     parentSide: {x: 1, y: 0}
-    angle: 90
-    generation: 0
+    angle: 0
+    generation: 2
     currentAngle: 0
     model: {fileID: 0}
   - parent: 6
     parentSide: {x: 0, y: 1}
-    angle: 90
-    generation: 0
+    angle: 0
+    generation: 2
     currentAngle: 0
     model: {fileID: 0}
   - parent: 7
     parentSide: {x: 0, y: 1}
-    angle: 90
-    generation: 0
+    angle: 0
+    generation: 2
     currentAngle: 0
     model: {fileID: 0}
   - parent: 8
     parentSide: {x: 0, y: 1}
     angle: 90
-    generation: 0
+    generation: 3
     currentAngle: 0
     model: {fileID: 0}
   - parent: 10
     parentSide: {x: -1, y: 0}
     angle: 90
-    generation: 0
+    generation: 4
     currentAngle: 0
     model: {fileID: 0}
   - parent: 10
     parentSide: {x: 1, y: 0}
     angle: 90
-    generation: 0
+    generation: 4
     currentAngle: 0
     model: {fileID: 0}
   - parent: 11
     parentSide: {x: -1, y: 0}
-    angle: 90
-    generation: 0
+    angle: 0
+    generation: 4
     currentAngle: 0
     model: {fileID: 0}

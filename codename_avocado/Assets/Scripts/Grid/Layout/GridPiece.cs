@@ -202,12 +202,14 @@ public class ToxicPiece : PollutionPiece
 {
 	public float m_ExpansionTime = 9999.0f;
 	private float m_LastExpansion = -1f;
+	private int m_MaxSpread = 0;
 
 	List<Vector2Int> m_CurrentExpansion = new List<Vector2Int>();
 
-	public ToxicPiece(WorldGrid grid, Shape shape, Vector2Int position)
+	public ToxicPiece(WorldGrid grid, Shape shape, Vector2Int position, int max_spread)
 		: base(grid, shape, position, GridTileBuilder.TileType.toxic)
 	{
+		m_MaxSpread = max_spread;
 		m_ToxicLevel = GridTileBuilder.ToxicLevel.pool;
 		m_ExpansionTime = grid.m_Polluter.m_PollutionExpansionTime;
 		// want random offset for each pollution
@@ -278,12 +280,33 @@ public class ToxicPiece : PollutionPiece
 		{
 			m_Coordinates[i].AppendEmptyNeighbors(ref m_CurrentExpansion);
 		}
+
+		if (m_MaxSpread > 0)
+		{
+			var source_tiles = m_Coordinates
+				.Where(coord => coord.ToxicLevel == GridTileBuilder.ToxicLevel.healable_pool || coord.ToxicLevel == GridTileBuilder.ToxicLevel.pool)
+				.Select(coord => coord.m_Position)
+				.ToList();
+			m_CurrentExpansion.RemoveAll(vec =>
+			{
+				int max_dist = source_tiles.Aggregate(9999999, (acc, src_vec) => System.Math.Min(ManhattenDistance(vec, src_vec), acc));
+				return max_dist > m_MaxSpread;
+			});
+		}
+
+		int ManhattenDistance(Vector2Int a, Vector2Int b)
+        {
+			return System.Math.Abs(a.x - b.x) + System.Math.Abs(a.y - b.y);
+        }
 	}
 
 	private void Expand()
 	{
 		if (m_CurrentExpansion.Count == 0)
 			GenerateExpansion();
+
+		if (m_CurrentExpansion.Count == 0)
+			return;
 
 		List<Vector2Int> coordsToGrow = new List<Vector2Int>();
 		// only do one for now...
