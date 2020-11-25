@@ -70,6 +70,9 @@ public class GridTileBuilder : MonoBehaviour
         representation.Configure(coord, this);
         return representation;
     }
-
-
+    public GameObject InstantiateToxicVFX()
+    {
+        return Instantiate(toxic_vfx[0]);
+        
+    }
 }

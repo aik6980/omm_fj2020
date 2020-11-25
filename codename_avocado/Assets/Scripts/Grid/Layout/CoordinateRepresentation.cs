@@ -14,6 +14,8 @@ public class CoordinateRepresentation : MonoBehaviour
 	private GridTileBuilder.ToxicLevel m_previous_toxicity;
 	private GameObject m_mesh_object = null;
 
+	// Toxic decoration
+	private GameObject m_vfx_object = null;
 
 	public void Configure(Coordinate coordinate, GridTileBuilder builder)
 	{
@@ -33,6 +35,12 @@ public class CoordinateRepresentation : MonoBehaviour
         {
 			Destroy(m_mesh_object);
 			m_mesh_object = null;
+
+			if(m_vfx_object != null)
+            {
+				Destroy(m_vfx_object);
+				m_vfx_object = null;
+			}
 		}
 
 		if (is_changed())
@@ -44,6 +52,14 @@ public class CoordinateRepresentation : MonoBehaviour
 			m_mesh_object.transform.parent = this.transform;
 			m_mesh_object.transform.localPosition = Vector3.zero;
 			m_mesh_object.transform.Rotate(new Vector3(0f, 0f, 90f));
+
+			// add VFX 
+			if(coordinate.Type == GridTileBuilder.TileType.toxic)
+            {
+				m_vfx_object = builder.InstantiateToxicVFX();
+				m_vfx_object.transform.parent = this.transform;
+				m_vfx_object.transform.localPosition = Vector3.zero;
+			}
 
 			m_previous_type = coordinate.Type;
 			m_previous_toxicity = coordinate.ToxicLevel;

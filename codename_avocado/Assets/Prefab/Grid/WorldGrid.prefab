@@ -52,9 +52,6 @@ MonoBehaviour:
   m_Distance: 20
   m_Polluter: {fileID: 4683538448211693357}
   m_GridTileBuilder: {fileID: 214925197453655938}
-  m_level_config:
-    ToxicSpreadTime: 0
-    ToxicSpreadTimeVariation: 0
 --- !u!114 &4683538448211693356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,4 +143,5 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: b8e026d22b9cad2468088c9e96315af3, type: 3}
   - {fileID: 919132149155446097, guid: 2d457618613687b4ba018e155e8bb392, type: 3}
   - {fileID: 919132149155446097, guid: 0ffa0097e3c21254cadb1fae14bb6b03, type: 3}
-  toxic_vfx: []
+  toxic_vfx:
+  - {fileID: 7660929494081966083, guid: f6789ddaed9e554458683d76346b080f, type: 3}
