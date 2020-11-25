@@ -42,7 +42,7 @@ public class NextShapeQueue : MonoSingleton<NextShapeQueue>
     }
 
     // Start is called before the first frame update
-    void Awake()
+    public void Awake()
     {
         nextshapeQueue = new List<int>(queueItemsDisplayed);
         totalShapeQueue = new List<int>(0);
