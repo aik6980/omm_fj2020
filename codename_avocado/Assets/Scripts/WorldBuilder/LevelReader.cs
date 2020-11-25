@@ -49,7 +49,7 @@ public class LevelReader : MonoSingleton<LevelReader>
 		}
 		else
 		{
-			level.Config = new LevelConfigData(){ MaxSpreadDistance = 0, ToxicSpreadTime = 15f, ToxicSpreadTimeVariation = 5f };
+			level.Config = new LevelConfigData(){ EnvironmentName = "Rocky", MaxSpreadDistance = 0, ToxicSpreadTime = 15f, ToxicSpreadTimeVariation = 5f };
 		}
 
 		var level_file			= Resources.Load<TextAsset>(string.Format("Levels/Lv{0}", level_num));
