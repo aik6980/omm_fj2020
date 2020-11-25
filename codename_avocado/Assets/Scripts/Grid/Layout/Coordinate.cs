@@ -27,7 +27,26 @@ public class Coordinate
 			m_Type = type;
 			m_ToxicLevel = toxic_level;
 			OnCoordinateTypeChanged?.Invoke(this, previous_type, previous_toxicity);
-        }
+
+			for (int i = 0; i < System.Enum.GetValues(typeof(Direction)).Length; ++i)
+			{
+				Direction d = (Direction)i;
+				var nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, d);
+				if (nextCoordinate != null && nextCoordinate.Type == GridTileBuilder.TileType.toxic)
+				{
+					if (nextCoordinate.ToxicLevel == GridTileBuilder.ToxicLevel.pool ||
+						nextCoordinate.ToxicLevel == GridTileBuilder.ToxicLevel.healable_pool)
+					{
+						var new_toxicity = nextCoordinate.CanBeHealed() ? GridTileBuilder.ToxicLevel.healable_pool : GridTileBuilder.ToxicLevel.pool;
+						nextCoordinate.SetCoordType(nextCoordinate.Type, new_toxicity);
+					}
+					else
+					{
+						nextCoordinate.SetCoordType(nextCoordinate.Type, nextCoordinate.CanBeHealed() ? GridTileBuilder.ToxicLevel.small_spill : GridTileBuilder.ToxicLevel.big_spill);
+					}
+				}
+			}
+		}
 	}
 
     public GridTileBuilder.TileType Type { get => m_Type; }
@@ -214,7 +233,7 @@ public class Coordinate
 		for(int i=0; i< System.Enum.GetValues(typeof(Direction)).Length; ++i)
         {
 			var nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, (Direction)i);
-			if(nextCoordinate != null && nextCoordinate.m_Type != GridTileBuilder.TileType.toxic)
+			if(nextCoordinate == null || nextCoordinate.m_Type != GridTileBuilder.TileType.toxic)
             {
 				return true;
             }
