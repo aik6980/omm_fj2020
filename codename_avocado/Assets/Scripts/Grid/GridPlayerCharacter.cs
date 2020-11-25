@@ -113,7 +113,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
 		if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
 		{
-			Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
+			//Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
 			ClearPreview();
 			MoveToCoordinate(nextCoordinate);
 			CheckWinCondition();
@@ -179,7 +179,7 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
 		// check if can place piece in front of player...
 		Coordinate nextCoordinate = null;
-		if (!m_CurrentCoordinte.TryMove(m_Facing, ref nextCoordinate))
+		//if (!m_CurrentCoordinte.TryMove(m_Facing, ref nextCoordinate))
 		{
 			ClearPreview();
 
