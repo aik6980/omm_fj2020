@@ -20,6 +20,12 @@ public class Coordinate
 
 	public void SetCoordType(GridTileBuilder.TileType type, GridTileBuilder.ToxicLevel toxic_level)
     {
+		if (Type == GridTileBuilder.TileType.start ||
+			Type == GridTileBuilder.TileType.exit)
+        {
+			return;
+        }
+
 		if (m_Type != type || m_ToxicLevel != toxic_level)
 		{
 			GridTileBuilder.TileType previous_type = m_Type;
