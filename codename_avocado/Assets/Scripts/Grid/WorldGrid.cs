@@ -116,6 +116,8 @@ public class WorldGrid : MonoBehaviour
 
     public void LoadNextLevel()
     {
+        Debug.Log("LoadNextLevel");
+
 		m_world_data = GetComponent<ILevelLoader>().LoadLevel(this);
 		m_FinalPiece = m_world_data.end_piece;
 
