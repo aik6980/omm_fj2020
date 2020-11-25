@@ -13,6 +13,7 @@ public class AnimEventProcessor : MonoBehaviour
     public AudioClip[] unfoldSounds;
     public AudioClip[] deathSounds;
     public AudioClip[] bodyfallSounds;
+    public AudioClip[] burnSounds;
 
     void Start()
     {
@@ -100,6 +101,10 @@ public class AnimEventProcessor : MonoBehaviour
     void Anim_Bodyfall()
     {
         PlaySoundFrom(ref bodyfallSounds, 1.0f);
-        Debug.Log("Bodyfall Has Played");
+    }
+
+    void Anim_Burn()
+    {
+        PlaySoundFrom(ref burnSounds, 1.0f);
     }
 }
