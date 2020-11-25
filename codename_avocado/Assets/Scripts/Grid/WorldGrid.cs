@@ -42,7 +42,7 @@ public class WorldGrid : MonoBehaviour
 			Destroy(m_Environment);
         }
 
-		GameObject env_prefab = Resources.Load<GameObject>(string.Format("Environments/Env_{0}", environment_name));
+		GameObject env_prefab = Resources.Load<GameObject>(string.Format("Environments/{0}", environment_name));
 		m_Environment = Instantiate(env_prefab);
 		m_Environment.transform.position += env_offset;
 
