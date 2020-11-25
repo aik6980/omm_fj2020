@@ -125,7 +125,7 @@ MonoBehaviour:
   start_tile:
   - {fileID: 919132149155446097, guid: b4af11d481aa52f49971507a8cbe4a70, type: 3}
   exit_tile:
-  - {fileID: 919132149155446097, guid: 3036f08c4a6864842a22223afbca67c5, type: 3}
+  - {fileID: 5294510488349694578, guid: 2068fee096899fa48b3de5643a1c6a02, type: 3}
   obstacle_tile:
   - {fileID: 919132149155446097, guid: a245e2dae465b554bab23855a5b5b672, type: 3}
   - {fileID: 919132149155446097, guid: 7508e8ab71535414e93549589aeb3bed, type: 3}
