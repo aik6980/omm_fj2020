@@ -64,7 +64,7 @@ public class LevelReader : MonoSingleton<LevelReader>
 
 		for (int y = 0; y < line.Length; ++y)
 		{
-			var part = line[y].Split(',');
+			var part = line[y].Split(',', '\t');
 			width = Mathf.Max(width, part.Length);
 			for (int x = 0; x < part.Length; ++x)
 			{
