@@ -6,6 +6,8 @@ public class AnimEventProcessor : MonoBehaviour
 {
     public GameObject soundPrefab;
 
+    public GameObject cloudPrefab;
+
     public AudioClip[] spawnSounds;
     public AudioClip[] stepSounds;
     public AudioClip[] jumpSounds;
@@ -40,6 +42,12 @@ public class AnimEventProcessor : MonoBehaviour
     void Anim_Step()
     {
         PlaySoundFrom(ref stepSounds, 0.5f);
+
+        if (cloudPrefab)
+        {
+            GameObject go = Instantiate(cloudPrefab, this.transform.position, this.transform.rotation);
+        }
+
         /*
         GameObject go = Instantiate(soundPrefab, this.transform.position, this.transform.rotation);
         AudioSource src = go.GetComponent<AudioSource>();
