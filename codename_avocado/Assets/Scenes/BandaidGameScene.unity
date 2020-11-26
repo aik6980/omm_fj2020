@@ -2363,36 +2363,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2011951057}
     m_Modifications:
-    - target: {fileID: 8795265648786548386, guid: 4fe44dee6f3191448882bc678cc0dfff,
-        type: 3}
-      propertyPath: m_margin.z
-      value: 2.5732281
-      objectReference: {fileID: 0}
-    - target: {fileID: 8795265648786548386, guid: 4fe44dee6f3191448882bc678cc0dfff,
-        type: 3}
-      propertyPath: m_fontSizeMax
-      value: 36
-      objectReference: {fileID: 0}
-    - target: {fileID: 8795265648786548386, guid: 4fe44dee6f3191448882bc678cc0dfff,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 36
-      objectReference: {fileID: 0}
-    - target: {fileID: 8795265648786548386, guid: 4fe44dee6f3191448882bc678cc0dfff,
-        type: 3}
-      propertyPath: m_margin.x
-      value: -0.70028615
-      objectReference: {fileID: 0}
-    - target: {fileID: 8795265648786548386, guid: 4fe44dee6f3191448882bc678cc0dfff,
-        type: 3}
-      propertyPath: m_HorizontalAlignment
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8795265648786548386, guid: 4fe44dee6f3191448882bc678cc0dfff,
-        type: 3}
-      propertyPath: m_VerticalAlignment
-      value: 256
-      objectReference: {fileID: 0}
     - target: {fileID: 8795265648786548387, guid: 4fe44dee6f3191448882bc678cc0dfff,
         type: 3}
       propertyPath: m_LocalPosition.x
