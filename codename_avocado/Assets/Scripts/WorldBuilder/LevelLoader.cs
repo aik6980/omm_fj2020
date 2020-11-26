@@ -13,6 +13,12 @@ public class LevelLoader : MonoBehaviour, ILevelLoader
 
     public WorldGrid.WorldData LoadLevel(WorldGrid grid)
     {
+        LaunchGameScript ls = LaunchGameScript.singleton;
+        if (ls)
+        {
+            this.Level = ls.levelToLoad++;
+        }
+
         return WorldBuilder.GetOrCreateInstance().BuildLevel(grid, this.Level++);
     }
 }

@@ -1842,7 +1842,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1339647480}
-  - component: {fileID: 1339647479}
   - component: {fileID: 1339647478}
   m_Layer: 0
   m_Name: MenuSceneManager
@@ -1861,18 +1860,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea07858d4ffdf154c9de38721b99f00c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1339647479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1339647477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 401d2536b99c0a64a956af472fb2d40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1339647480

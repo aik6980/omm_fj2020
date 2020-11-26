@@ -5,10 +5,40 @@ using UnityEngine.SceneManagement;
 
 public class LaunchGameScript : MonoBehaviour
 {
-    public void LaunchGameScene1() {
+    public static LaunchGameScript singleton;
+
+    public int levelToLoad = 0;
+
+    public void Awake()
+    {
+        if (singleton != null) return;
+        singleton = this;
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    public void LaunchGameScene1()
+    {
         SceneManager.LoadScene("BandaidGameScene");
     }
 
+    public void LaunchGameScene(int num)
+    {
+        Debug.Log("launch level " + num);
+        singleton.levelToLoad = num;
+
+        SceneManager.LoadScene("BandaidGameScene");
+        //StartCoroutine(LaunchLevel(num));
+    }
+    /*
+    IEnumerator LaunchLevel(int num)
+    {
+        SceneManager.LoadScene("BandaidGameScene");
+
+        yield return new WaitForEndOfFrame();
+
+        LevelLoader loader =
+    }
+    */
 }
 
 
