@@ -337,7 +337,7 @@ public class AnimatedCharacter : MonoBehaviour
             animtr.SetBool("moving", moving);
         }
 
-        Quaternion faceDir = offset.magnitude > 0.1f ? Quaternion.LookRotation(offset) : player.transform.rotation;
+        Quaternion faceDir = offset.magnitude > 0.5f ? Quaternion.LookRotation(offset) : player.transform.rotation;
         this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, faceDir, 400.0f * dT);
         this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, 5.0f * dT);
 
@@ -356,7 +356,8 @@ public class AnimatedCharacter : MonoBehaviour
 
     public bool ReachedDestination()
     {
-        return (this.transform.position - player.transform.position).sqrMagnitude < 0.1f;
+        return (this.transform.position - player.transform.position).sqrMagnitude < 0.2f
+             && Quaternion.Angle(this.transform.rotation, player.transform.rotation) < 40.0f;
     }
 
 }

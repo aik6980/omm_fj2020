@@ -119,8 +119,8 @@ public class GridPlayerCharacter : MonoBehaviour
 		if (west)
 			direction = Direction.West;
 
-		m_Facing = direction;
-        transform.rotation = Quaternion.Euler(0, heading[(int)direction], 0);
+		//m_Facing = direction;
+        //transform.rotation = Quaternion.Euler(0, heading[(int)direction], 0);
 
         //if (!AttemptMove(direction))
         AttemptMove(direction);
@@ -131,7 +131,18 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
 		Coordinate nextCoordinate = null;
 
-		if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
+        if (m_Facing != direction)
+        {//just turn
+            m_Facing = direction;
+            transform.rotation = Quaternion.Euler(0, heading[(int)direction], 0);
+
+            ClearPreview();
+            MoveToCoordinate(m_CurrentCoordinte);
+            CheckWinCondition();
+            return true;
+        }
+
+        if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
 		{
 			//Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
 			ClearPreview();
