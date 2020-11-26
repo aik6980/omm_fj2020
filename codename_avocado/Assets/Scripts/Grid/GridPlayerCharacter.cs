@@ -174,7 +174,7 @@ public class GridPlayerCharacter : MonoBehaviour
             //ToDo: activate win dialog instead and let THAT handle this
             m_GameState.Success();
 
-            //AudioManager.GetOrCreateInstance().PlaySFX("UI_Level_Complete");
+            AudioManager.GetOrCreateInstance().PlaySFX("UI_Level_Complete");
 
             waitingForLevelToLoad = true;
 			//m_Grid.LoadNextLevel();
