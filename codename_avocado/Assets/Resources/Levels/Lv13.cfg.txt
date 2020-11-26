@@ -1,10 +1,10 @@
 {
-	"Name": "2-4: KEY PARTY!",
+	"Name": "2-5: SHOWDOWN - BOSSBOX",
 	"EnvironmentName": "Env_Rocky",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
 	"EnvironmentOffsetZ": 14.67,
-	"MaxSpreadDistance": 3,
-	"ToxicSpreadTime": 30,
-	"ToxicSpreadTimeVariation": 3
+	"MaxSpreadDistance": 0,
+	"ToxicSpreadTime": 5,
+	"ToxicSpreadTimeVariation": 4
 }
