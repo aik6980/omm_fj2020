@@ -1,5 +1,5 @@
 {
-	"Name": "2-3 ToxiCity",
+	"Name": "2-3 LOCKDOWN",
 	"EnvironmentName": "Env_Rocky",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,

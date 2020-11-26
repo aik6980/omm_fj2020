@@ -1,5 +1,5 @@
 {
-	"Name": "1-2: STONE FOREST RUN",
+	"Name": "1-1: STONE FOREST RUN",
 	"EnvironmentName": "Env_Rocky",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
