@@ -15,5 +15,6 @@ MonoBehaviour:
   loopQueue: 1
   shapeQueue:
   - {fileID: 11400000, guid: 5af01940d8281354596b3d84a7b71249, type: 2}
-  - {fileID: 11400000, guid: 44f7f9f2e89faf6468fe698cfb32c08e, type: 2}
+  - {fileID: 11400000, guid: 5505391d546f4c545ae91359e881124d, type: 2}
   - {fileID: 11400000, guid: 48b717969777292498fbefa0698be2bb, type: 2}
+  - {fileID: 11400000, guid: 44f7f9f2e89faf6468fe698cfb32c08e, type: 2}
