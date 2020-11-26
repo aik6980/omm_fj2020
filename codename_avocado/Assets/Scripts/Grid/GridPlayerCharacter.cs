@@ -158,11 +158,15 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
 		if (m_Grid.IsFinalCoordinate(m_CurrentCoordinte))
 		{
-			//m_GameState.GameOver();
+            //m_GameState.GameOver();
 
-			AudioManager.GetOrCreateInstance().PlaySFX("UI_Level_Complete");
-			waitingForLevelToLoad = true;
-			m_Grid.LoadNextLevel();
+            //ToDo: activate win dialog instead and let THAT handle this
+            m_GameState.Success();
+
+            //AudioManager.GetOrCreateInstance().PlaySFX("UI_Level_Complete");
+
+            waitingForLevelToLoad = true;
+			//m_Grid.LoadNextLevel();
 		}
 	}
 
