@@ -36,18 +36,33 @@ public class GridPlayerCharacter : MonoBehaviour
 
     private PreviewPlacement m_PreviewPlacement;
 
+	public bool waitingForLevelToLoad;
     public bool waitingToRespawn;
     public bool canUnfold;
     public bool hasMoved;
 
     private void Awake()
     {
-        //Debug.Log("Awake");
-        CheckLink();
-        m_Grid.OnLevelLoaded += coords => Respawn();
-    }
+		//Debug.Log("Awake");
+		CheckLink();
+		waitingForLevelToLoad = true;
+        m_Grid.OnLevelLoaded += M_Grid_OnLevelLoaded;
+        m_Grid.OnLevelReady += M_Grid_OnLevelReadyLoaded;
+	}
 
-    private void Start()
+    private void M_Grid_OnLevelLoaded(IEnumerable<Coordinate> obj)
+    {
+		Respawn();
+		m_AnimatedCharacter.gameObject.SetActive(false);
+	}
+
+	private void M_Grid_OnLevelReadyLoaded(IEnumerable<Coordinate> obj)
+	{
+		m_AnimatedCharacter.gameObject.SetActive(true);
+		waitingForLevelToLoad = false;
+	}
+
+	private void Start()
 	{
         CheckLink();
 		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
@@ -66,6 +81,9 @@ public class GridPlayerCharacter : MonoBehaviour
 
     void Update()
 	{
+		if (waitingForLevelToLoad)
+			return;
+
         //ugly hack, sorry :oP
         if (waitingToRespawn)
         {
@@ -143,6 +161,7 @@ public class GridPlayerCharacter : MonoBehaviour
 			//m_GameState.GameOver();
 
 			AudioManager.GetOrCreateInstance().PlaySFX("UI_Level_Complete");
+			waitingForLevelToLoad = true;
 			m_Grid.LoadNextLevel();
 		}
 	}

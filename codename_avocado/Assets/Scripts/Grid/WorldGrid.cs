@@ -29,6 +29,7 @@ public class WorldGrid : MonoBehaviour
 	public GridPiece m_FinalPiece;
 
 	public event System.Action<IEnumerable<Coordinate>> OnLevelLoaded;
+	public event System.Action<IEnumerable<Coordinate>> OnLevelReady;
 
 	private WorldData					m_world_data;
 	public Coordinate[,]				m_coord_grid;
@@ -36,8 +37,9 @@ public class WorldGrid : MonoBehaviour
 	private GameObject					m_Environment;
 
 	public TMPro.TMP_Text				m_Levelname;
-	
-	public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset)
+    public bool m_LevelReady;
+
+    public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset)
     {
 		if (m_Environment != null)
         {
@@ -96,6 +98,7 @@ public class WorldGrid : MonoBehaviour
 
     private void Awake()
 	{
+		m_LevelReady = false;
 		LoadNextLevel();
 	}
 
@@ -115,18 +118,21 @@ public class WorldGrid : MonoBehaviour
 		return m_coord_grid[x, y];
 	}
 
-	public void BuildTileRepresentation()
-	{
-		//m_coord_grid_representation = new CoordinateRepresentation[m_coord_grid.GetLength(0), m_coord_grid.GetLength(1)];
-		m_coord_grid.ForEach((x, y, coord) =>
-		{
-			m_coord_grid_representation[x, y] = m_GridTileBuilder.InstantiateTile(coord);
-		});
-	}
+	//public void BuildTileRepresentation()
+	//{
+	//	//m_coord_grid_representation = new CoordinateRepresentation[m_coord_grid.GetLength(0), m_coord_grid.GetLength(1)];
+	//	m_coord_grid.ForEach((x, y, coord) =>
+	//	{
+	//		m_coord_grid_representation[x, y] = m_GridTileBuilder.InstantiateTile(coord);
+	//	});
+	//}
 
 	public List<CoordinateRepresentation> UpdateTileRepresentation(GridPiece piece)
 	{
 		List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
+		if (!m_LevelReady)
+			return reps;
+
 		foreach (var coord in piece.Coordinates)
         {
 			m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(coord, m_GridTileBuilder);
@@ -138,7 +144,8 @@ public class WorldGrid : MonoBehaviour
 
     public void LoadNextLevel()
     {
-        Debug.Log("LoadNextLevel");
+		//Debug.Log("LoadNextLevel");
+		m_LevelReady = false;
 
 		m_world_data = GetComponent<ILevelLoader>().LoadLevel(this);
 		m_FinalPiece = m_world_data.end_piece;
@@ -158,8 +165,40 @@ public class WorldGrid : MonoBehaviour
 			}
 		}
 
+		//BuildTileRepresentation();
 		OnLevelLoaded?.Invoke(m_world_data.start_piece.Coordinates);
-		BuildTileRepresentation();
+		StartCoroutine(TileAnimation(true));
+	}
+
+	private IEnumerator TileAnimation(bool forwards)
+    {
+		IEnumerator AnimateOne(int x, int y, bool fwds)
+		{
+			m_coord_grid_representation[x, y] = m_GridTileBuilder.InstantiateTile(m_coord_grid[x, y]);
+			Vector3 final_pos = m_coord_grid_representation[x, y].transform.position;
+			Vector3 start_pos = final_pos - new Vector3(0f, 10f, 10f);
+			float a = 0.0f;
+			while (a < 1.0f)
+            {
+				a = Mathf.Clamp(a + (Time.deltaTime * 1.8f), 0.0f, 1.0f);
+				m_coord_grid_representation[x, y].transform.position =
+					fwds ? Vector3.Slerp(start_pos, final_pos, a) : Vector3.Slerp(final_pos, start_pos, a);
+				yield return null;
+            }
+		}
+
+		for (int y = 0; y < m_coord_grid.GetLength(1); ++y)
+		{
+			for (int x = 0; x < m_coord_grid.GetLength(0); ++x)
+			{
+				StartCoroutine(AnimateOne(x, y, forwards));
+				yield return new WaitForSeconds(0.01f);
+			}
+		}
+
+
+		m_LevelReady = true;
+		OnLevelReady?.Invoke(m_world_data.start_piece.Coordinates);
 	}
 
     public List<CoordinateRepresentation> RepresentCoordianates(GridPiece piece)
