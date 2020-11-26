@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class ExitGameScript : MonoBehaviour
 {
 
-    public void doExitGame() {
+    public void doExitGame()
+    {
         Application.Quit();        
     }
 }

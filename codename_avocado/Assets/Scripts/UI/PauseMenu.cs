@@ -61,4 +61,13 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1;
         Application.LoadLevel(0);
     }
+
+    public void QuitGame()
+    {
+        root.SetActive(false);
+
+        Time.timeScale = 1;
+        Application.Quit();
+    }
+
 }
