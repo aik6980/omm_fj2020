@@ -43,12 +43,12 @@ public class Coordinate
 					if (nextCoordinate.ToxicLevel == GridTileBuilder.ToxicLevel.pool ||
 						nextCoordinate.ToxicLevel == GridTileBuilder.ToxicLevel.healable_pool)
 					{
-						var new_toxicity = nextCoordinate.CanBeHealed() ? GridTileBuilder.ToxicLevel.healable_pool : GridTileBuilder.ToxicLevel.pool;
+						var new_toxicity = nextCoordinate.CanBeHealed(false) ? GridTileBuilder.ToxicLevel.healable_pool : GridTileBuilder.ToxicLevel.pool;
 						nextCoordinate.SetCoordType(nextCoordinate.Type, new_toxicity);
 					}
 					else
 					{
-						nextCoordinate.SetCoordType(nextCoordinate.Type, nextCoordinate.CanBeHealed() ? GridTileBuilder.ToxicLevel.small_spill : GridTileBuilder.ToxicLevel.big_spill);
+						nextCoordinate.SetCoordType(nextCoordinate.Type, nextCoordinate.CanBeHealed(false) ? GridTileBuilder.ToxicLevel.small_spill : GridTileBuilder.ToxicLevel.big_spill);
 					}
 				}
 			}
@@ -203,7 +203,7 @@ public class Coordinate
 		return m_Piece.GetColor();
 	}
 
-	public bool CanBeHealed()
+	public bool CanBeHealed(bool isSuperPowered)
 	{
 		switch(m_Type)
         {
@@ -215,7 +215,7 @@ public class Coordinate
 			case GridTileBuilder.TileType.obstacle:
 				return false;
 			case GridTileBuilder.TileType.toxic:
-				return CanBeHealed_Toxic();
+				return isSuperPowered ? true : CanBeHealed_Toxic();
 
         }
 
@@ -274,12 +274,12 @@ public class PollutionCoordinate : Coordinate
 
 	public override Color GetColor()
 	{
-		Color color = CanBeHealed() ? Color.yellow : Color.red;
+		Color color = CanBeHealed(false) ? Color.yellow : Color.red;
 		// we are the source
 		if (IsCenterPollutant())
 		{
 			// need a spout at the center?
-			color = CanBeHealed() ? Color.black : Color.red;
+			color = CanBeHealed(false) ? Color.black : Color.red;
 		}
 
 		return color;
