@@ -36,17 +36,33 @@ public class GridPlayerCharacter : MonoBehaviour
 
     private PreviewPlacement m_PreviewPlacement;
 
+	public bool waitingForLevelToLoad;
     public bool waitingToRespawn;
     public bool canUnfold;
+    public bool hasMoved;
 
     private void Awake()
     {
-        //Debug.Log("Awake");
-        CheckLink();
-        m_Grid.OnLevelLoaded += coords => Respawn();
-    }
+		//Debug.Log("Awake");
+		CheckLink();
+		waitingForLevelToLoad = true;
+        m_Grid.OnLevelLoaded += M_Grid_OnLevelLoaded;
+        m_Grid.OnLevelReady += M_Grid_OnLevelReadyLoaded;
+	}
 
-    private void Start()
+    private void M_Grid_OnLevelLoaded(IEnumerable<Coordinate> obj)
+    {
+		Respawn();
+		m_AnimatedCharacter.gameObject.SetActive(false);
+	}
+
+	private void M_Grid_OnLevelReadyLoaded(IEnumerable<Coordinate> obj)
+	{
+		m_AnimatedCharacter.gameObject.SetActive(true);
+		waitingForLevelToLoad = false;
+	}
+
+	private void Start()
 	{
         CheckLink();
 		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
@@ -65,6 +81,9 @@ public class GridPlayerCharacter : MonoBehaviour
 
     void Update()
 	{
+		if (waitingForLevelToLoad)
+			return;
+
         //ugly hack, sorry :oP
         if (waitingToRespawn)
         {
@@ -72,9 +91,10 @@ public class GridPlayerCharacter : MonoBehaviour
                 return; //wait
             waitingToRespawn = false;
             Respawn();
+            PreparePlacement();
         }
 
-		Movement();
+        Movement();
 		Interactions();
 	}
 
@@ -83,10 +103,10 @@ public class GridPlayerCharacter : MonoBehaviour
 		if (!m_AnimatedCharacter.ReachedDestination())
 			return;
 
-		bool north = Input.GetKey(KeyCode.W);
-		bool south = Input.GetKey(KeyCode.S);
-		bool east = Input.GetKey(KeyCode.D);
-		bool west = Input.GetKey(KeyCode.A);
+		bool north = Input.GetKey(KeyCode.W) || Input.GetAxisRaw("Vertical") > 0.1f;
+		bool south = Input.GetKey(KeyCode.S) || Input.GetAxisRaw("Vertical") < -0.1f;
+		bool east = Input.GetKey(KeyCode.D) || Input.GetAxisRaw("Horizontal") > 0.1f;
+		bool west = Input.GetKey(KeyCode.A) || Input.GetAxisRaw("Horizontal") < -0.1f;
 
 		if (!north && !south && !east && !west)
 			return;
@@ -99,8 +119,8 @@ public class GridPlayerCharacter : MonoBehaviour
 		if (west)
 			direction = Direction.West;
 
-		m_Facing = direction;
-        transform.rotation = Quaternion.Euler(0, heading[(int)direction], 0);
+		//m_Facing = direction;
+        //transform.rotation = Quaternion.Euler(0, heading[(int)direction], 0);
 
         //if (!AttemptMove(direction))
         AttemptMove(direction);
@@ -111,7 +131,18 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
 		Coordinate nextCoordinate = null;
 
-		if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
+        if (m_Facing != direction)
+        {//just turn
+            m_Facing = direction;
+            transform.rotation = Quaternion.Euler(0, heading[(int)direction], 0);
+
+            ClearPreview();
+            MoveToCoordinate(m_CurrentCoordinte);
+            CheckWinCondition();
+            return true;
+        }
+
+        if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
 		{
 			//Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
 			ClearPreview();
@@ -138,10 +169,15 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
 		if (m_Grid.IsFinalCoordinate(m_CurrentCoordinte))
 		{
-			//m_GameState.GameOver();
+            //m_GameState.GameOver();
 
-			AudioManager.GetOrCreateInstance().PlaySFX("UI_Level_Complete");
-			m_Grid.LoadNextLevel();
+            //ToDo: activate win dialog instead and let THAT handle this
+            m_GameState.Success();
+
+            //AudioManager.GetOrCreateInstance().PlaySFX("UI_Level_Complete");
+
+            waitingForLevelToLoad = true;
+			//m_Grid.LoadNextLevel();
 		}
 	}
 
@@ -171,7 +207,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	private void Interactions()
 	{
-		if (/*m_PreviewPlacement != null &&*/ Input.GetKeyDown(KeyCode.Space))
+		if (/*m_PreviewPlacement != null &&*/ Input.GetKeyDown(KeyCode.Space) || Input.GetAxisRaw("Jump") > 0.1f)
 		{
 			TryPlacePiece();
 		}
