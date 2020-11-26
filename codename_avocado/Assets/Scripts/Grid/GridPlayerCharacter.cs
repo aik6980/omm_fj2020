@@ -41,7 +41,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Awake");
+        //Debug.Log("Awake");
         CheckLink();
         m_Grid.OnLevelLoaded += coords => Respawn();
     }
@@ -139,6 +139,8 @@ public class GridPlayerCharacter : MonoBehaviour
 		if (m_Grid.IsFinalCoordinate(m_CurrentCoordinte))
 		{
 			//m_GameState.GameOver();
+
+			AudioManager.GetOrCreateInstance().PlaySFX("UI_Level_Complete");
 			m_Grid.LoadNextLevel();
 		}
 	}
@@ -157,7 +159,7 @@ public class GridPlayerCharacter : MonoBehaviour
         //bool canPlace = m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing);
         //unfoldScript.ShowPrevis(canPlace ? Color.green : Color.red);
         canUnfold = m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing);
-        Debug.Log(canUnfold + " at " + placePostition.ToString() + m_Facing.ToString());
+        //Debug.Log(canUnfold + " at " + placePostition.ToString() + m_Facing.ToString());
     }
 
     public bool CanUnfold()
@@ -231,7 +233,7 @@ public class GridPlayerCharacter : MonoBehaviour
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
         canUnfold = false;
 
-        Debug.Log("gpc_spawn");
+        //Debug.Log("gpc_spawn");
         OnSpawnDelegate?.Invoke();
 	}
 }

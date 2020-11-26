@@ -3,11 +3,12 @@ using System;
 using UnityEngine;
 using System.Collections;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : MonoSingleton<AudioManager>
 {
     public AudioMixerGroup mixerGroup;
 
     public Sound[] sounds;
+    public Sound[] sfx;
 
 
     public float musLerpSmooth = 1;
@@ -30,6 +31,15 @@ public class AudioManager : MonoBehaviour
         musLayerVolumeMultiplier = 0.0f;
 
         foreach (Sound s in sounds)
+        {
+            s.source = gameObject.AddComponent<AudioSource>();
+            s.source.clip = s.clip;
+            s.source.loop = s.loop;
+
+            s.source.outputAudioMixerGroup = mixerGroup;
+        }
+
+        foreach (Sound s in sfx)
         {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
@@ -69,6 +79,20 @@ public class AudioManager : MonoBehaviour
         if (s == null)
         {
             Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+
+        s.source.volume = s.volume * (1f + UnityEngine.Random.Range(-s.volumeVariance / 2f, s.volumeVariance / 2f));
+        s.source.pitch = s.pitch * (1f + UnityEngine.Random.Range(-s.pitchVariance / 2f, s.pitchVariance / 2f));
+        s.source.Play();
+    }
+
+    public void PlaySFX(string sound)
+    {
+        Sound s = Array.Find(sfx, item => item.name == sound);
+        if (s == null)
+        {
+            Debug.LogWarning("SFX: " + name + " not found!");
             return;
         }
 

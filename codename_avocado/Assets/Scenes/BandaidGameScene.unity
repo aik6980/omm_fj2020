@@ -2536,6 +2536,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 212662689612118301, guid: 603de29a2002f334e85757fe33113b19,
+        type: 3}
+      propertyPath: sfx.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212662689612118301, guid: 603de29a2002f334e85757fe33113b19,
+        type: 3}
+      propertyPath: sfx.Array.data[0].name
+      value: UI_Level_Complete
+      objectReference: {fileID: 0}
+    - target: {fileID: 212662689612118301, guid: 603de29a2002f334e85757fe33113b19,
+        type: 3}
+      propertyPath: sfx.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: f90e03a3fc37bbf4bad2fc0cd5bdb661, type: 3}
+    - target: {fileID: 212662689612118301, guid: 603de29a2002f334e85757fe33113b19,
+        type: 3}
+      propertyPath: sfx.Array.data[0].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212662689612118301, guid: 603de29a2002f334e85757fe33113b19,
+        type: 3}
+      propertyPath: sfx.Array.data[0].pitch
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3979563114582550520, guid: 603de29a2002f334e85757fe33113b19,
         type: 3}
       propertyPath: m_Name
