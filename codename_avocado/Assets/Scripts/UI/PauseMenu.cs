@@ -6,6 +6,9 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject root;
 
+    //TEMP HACK
+    public GridPlayerCharacter player;
+
 
     void Start()
     {
@@ -38,8 +41,23 @@ public class PauseMenu : MonoBehaviour
         root.SetActive(false);
     }
 
+    public void Restart()
+    {
+        root.SetActive(false);
+
+        Time.timeScale = 1;
+        LaunchGameScript ls = LaunchGameScript.singleton;
+        if (ls)
+        {
+            ls.levelToLoad--;
+        }
+        player.m_Grid.LoadNextLevel();
+    }
+
     public void QuitToMenu()
     {
+        root.SetActive(false);
+
         Time.timeScale = 1;
         Application.LoadLevel(0);
     }

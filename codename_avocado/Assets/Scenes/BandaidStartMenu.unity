@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1699,7 +1699,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 665.4055, y: -11.948486}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 160, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &370253845
 MonoBehaviour:
@@ -4150,6 +4150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 401d2536b99c0a64a956af472fb2d40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelToLoad: 0
 --- !u!1 &1218978319
 GameObject:
   m_ObjectHideFlags: 0
@@ -5499,8 +5500,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 665.4055, y: 108.05151}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 665.4055, y: 103}
+  m_SizeDelta: {x: 160, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1638444367
 MonoBehaviour:
@@ -6785,7 +6786,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 665.4055, y: 215.05151}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 160, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1876554083
 MonoBehaviour:
