@@ -338,7 +338,7 @@ public class AnimatedCharacter : MonoBehaviour
         }
 
         Quaternion faceDir = offset.magnitude > 0.5f ? Quaternion.LookRotation(offset) : player.transform.rotation;
-        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, faceDir, 400.0f * dT);
+        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, faceDir, 800.0f * dT);
         this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, 5.0f * dT);
 
         if (moving)
