@@ -1,9 +1,9 @@
 {
 	"Name": "2-5: SHOWDOWN - BOSSBOX",
-	"EnvironmentName": "Env_Rocky",
+	"EnvironmentName": "Environment_24x36",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
-	"EnvironmentOffsetZ": 14.67,
+	"EnvironmentOffsetZ": 0,
 	"MaxSpreadDistance": 0,
 	"ToxicSpreadTime": 5,
 	"ToxicSpreadTimeVariation": 4

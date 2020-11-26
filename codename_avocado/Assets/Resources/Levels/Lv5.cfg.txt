@@ -1,9 +1,9 @@
 {
 	"Name": "0-5: TOXIC BAND",
-	"EnvironmentName": "Env_Rocky",
+	"EnvironmentName": "Environment_24x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
-	"EnvironmentOffsetZ": 2.67,
+	"EnvironmentOffsetZ": 0,
 	"MaxSpreadDistance": 5,
 	"ToxicSpreadTime": 15,
 	"ToxicSpreadTimeVariation": 10

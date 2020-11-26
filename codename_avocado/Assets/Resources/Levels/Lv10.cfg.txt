@@ -1,9 +1,9 @@
 {
 	"Name": "2-2: A MAZE IN TIME",
-	"EnvironmentName": "Env_Rocky",
+	"EnvironmentName": "Environment_24x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
-	"EnvironmentOffsetZ": 2.67,
+	"EnvironmentOffsetZ": 0,
 	"MaxSpreadDistance": 0,
 	"ToxicSpreadTime": 20,
 	"ToxicSpreadTimeVariation": 4

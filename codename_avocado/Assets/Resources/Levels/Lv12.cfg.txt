@@ -1,9 +1,9 @@
 {
 	"Name": "2-4: KEY PARTY!",
-	"EnvironmentName": "Env_Rocky",
+	"EnvironmentName": "Environment_24x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
-	"EnvironmentOffsetZ": 14.67,
+	"EnvironmentOffsetZ": 0,
 	"MaxSpreadDistance": 3,
 	"ToxicSpreadTime": 30,
 	"ToxicSpreadTimeVariation": 3
