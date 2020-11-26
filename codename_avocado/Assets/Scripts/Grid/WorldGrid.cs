@@ -187,13 +187,19 @@ public class WorldGrid : MonoBehaviour
             }
 		}
 
-		for (int y = 0; y < m_coord_grid.GetLength(1); ++y)
-		{
+		IEnumerator AnimateRow(int y, bool fwds)
+        {
 			for (int x = 0; x < m_coord_grid.GetLength(0); ++x)
 			{
 				StartCoroutine(AnimateOne(x, y, forwards));
-				yield return new WaitForSeconds(0.01f);
+				yield return new WaitForSeconds(0.02f);
 			}
+        }
+
+		for (int y = 0; y < m_coord_grid.GetLength(1); ++y)
+		{
+			StartCoroutine(AnimateRow(y, forwards));
+				yield return new WaitForSeconds(0.06f);
 		}
 
 
