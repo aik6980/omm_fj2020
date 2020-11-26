@@ -98,5 +98,6 @@ MonoBehaviour:
   - name: UI_Level_Complete
     clip: {fileID: 8300000, guid: f90e03a3fc37bbf4bad2fc0cd5bdb661, type: 3}
     audio_source: {fileID: 0}
-  music_interval: 30
-  music_interval_variation: 0
+  music_interval: 40
+  music_interval_variation: 10
+  crossfade_duration: 3

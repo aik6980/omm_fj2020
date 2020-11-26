@@ -2,6 +2,8 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class AudioManager : MonoSingleton<AudioManager>
 {
@@ -12,9 +14,11 @@ public class AudioManager : MonoSingleton<AudioManager>
     public MusicData[] music_data;
     public SFXData[] sfx_data;
 
-    public float music_interval = 5;
+    public float music_interval;
     public float music_interval_variation;
-    int current_track = 0;
+    public float crossfade_duration;
+
+    Queue<int> current_playlist;
 
     //public float musLerpSmooth = 1;
     //public float envVolumeMultiplier = 0.1f;
@@ -83,29 +87,12 @@ public class AudioManager : MonoSingleton<AudioManager>
 
     void Start()
     {
-        //Play("Mus_Layer_A");
-        //Play("Mus_Layer_B");
-        //Play("Env_BG_Desolate");
-        //Play("Env_BG_Coniferous");
-
-        //Sound s = Array.Find(sounds, item => item.name == "Env_BG_Coniferous");
-        //s.source.volume = 0.0f;
-        //Sound s2 = Array.Find(sounds, item => item.name == "Env_BG_Desolate");
-        //s2.source.volume = envVolumeMultiplier;
-
+        current_playlist = GeneratePlaylist();
+        // play first track
+        SwitchTrack();
+        // then switch track every interval
         StartCoroutine(SwitchTrackInterval());
     }
-
-    //float getSoundVolume(string sound)
-    //{
-    //    Sound s = Array.Find(sounds, item => item.name == sound);
-    //    if (s == null)
-    //    {
-    //        Debug.LogWarning("Sound: " + name + " not found!");
-    //    }
-
-    //    return s.volume;
-    //}
 
     public void PlayMusic(string name)
     {
@@ -162,44 +149,40 @@ public class AudioManager : MonoSingleton<AudioManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            //PlayMusic("Music_a");
-            //StopMusic("Music_b");
 
-            //StartCoroutine(StartFade(m_masterMixer, "Music_a_vol", 1.0f, 0.0f));
-            //StartCoroutine(StartFade(m_masterMixer, "Music_b_vol", 3.0f, 1.0f));
+    }
+    Queue<int> GeneratePlaylist()
+    {
+        int[] indexArray = new int[m_musicMixerGroup.Length];
+        // Fill with sequeential indexes then randomize
+        for (int i = 0; i < indexArray.Length; ++i)
+        {
+            indexArray[i] = i;
+        }
+        RandomizeArray<int>(indexArray);
+        return new Queue<int>(indexArray);
+    }
+
+    void SwitchTrack()
+    {
+        var current_track = current_playlist.Dequeue();
+        if (current_playlist.Count == 0)
+        {
+            current_playlist = GeneratePlaylist();
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        for (int i = 0; i < m_musicMixerGroup.Length; ++i)
         {
-            //PlayMusic("Music_b");
-            //StopMusic("Music_a");
-
-            //StartCoroutine(StartFade(m_masterMixer, "Music_a_vol", 3.0f, 0.0f));
-            //StartCoroutine(StartFade(m_masterMixer, "Music_b_vol", 1.0f, 1.0f));
+            var mixerGroup_name = m_musicMixerGroup[i].mixerGroup.name;
+            if (i == current_track)
+            {
+                StartCoroutine(StartFade(m_masterMixer, mixerGroup_name + "_vol", crossfade_duration, 1.0f));
+            }
+            else
+            {
+                StartCoroutine(StartFade(m_masterMixer, mixerGroup_name + "_vol", crossfade_duration, 0.0f));
+            }
         }
-
-        // REPLACE WITH LOGIC FROM GAME (WHEN GRASS COVERS ARBITRARY % OF THE LEVEL)
-        //if (musLayerVolumeMultiplier == 0.0f)
-        //{
-        //    if (Input.GetKey(KeyCode.UpArrow))
-        //    {
-        //        musLayerVolumeMultiplier = 1.0f;
-        //        Debug.Log("'Healed' Ambience/Music triggered");
-        //        StartCoroutine("FadeSoundIn");
-        //    }
-
-        //}
-        //if (musLayerVolumeMultiplier == 1.0f)
-        //{
-        //    if (Input.GetKey(KeyCode.DownArrow))
-        //    {
-        //        musLayerVolumeMultiplier = 0.0f;
-        //        Debug.Log("'Desolate' Ambience/Music triggered");
-        //        StartCoroutine("FadeSoundOut");
-        //    }
-        //}
     }
 
     IEnumerator SwitchTrackInterval()
@@ -210,25 +193,11 @@ public class AudioManager : MonoSingleton<AudioManager>
         
         while(true)
         {
-            var next_track = (current_track + 1) % m_musicMixerGroup.Length;
 
             //yield on a new YieldInstruction that waits for 5 seconds.
             yield return new WaitForSeconds(music_interval);
 
-            for (int i = 0; i < m_musicMixerGroup.Length; ++i)
-            {
-                var mixerGroup_name = m_musicMixerGroup[i].mixerGroup.name;
-                if (i == next_track)
-                {
-                    StartCoroutine(StartFade(m_masterMixer, mixerGroup_name + "_vol", 3.0f, 1.0f));
-                }
-                else
-                {
-                    StartCoroutine(StartFade(m_masterMixer, mixerGroup_name + "_vol", 3.0f, 0.0f));
-                }
-            }
-
-            current_track = next_track;
+            SwitchTrack();
         }
     }
 
@@ -251,6 +220,18 @@ public class AudioManager : MonoSingleton<AudioManager>
             yield return null;
         }
         yield break;
+    }
+
+    public static void RandomizeArray<T>(T[] array)
+    {
+        int size = array.Length;
+        for (int i = 0; i < size; i++)
+        {
+            int indexToSwap = UnityEngine.Random.Range(i, size);
+            T swapValue = array[i];
+            array[i] = array[indexToSwap];
+            array[indexToSwap] = swapValue;
+        }
     }
 
     //IEnumerator FadeSoundIn()
