@@ -93,7 +93,20 @@ public class WorldGrid : MonoBehaviour
 
     private void WorldGrid_OnCoordinateTypeChanged(Coordinate coord, GridTileBuilder.TileType previous_type, GridTileBuilder.ToxicLevel toxicity)
 	{
-		m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]?.Configure(coord, m_GridTileBuilder);
+		if (coord.Type == GridTileBuilder.TileType.toxic)
+		{
+			m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]?.Configure(coord, m_GridTileBuilder);
+		}
+		else if (coord.Type == GridTileBuilder.TileType.floor)
+		{
+			IEnumerator ConfigureCoord()
+			{
+				yield return new WaitForSeconds(2.2f);
+				m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(coord, m_GridTileBuilder);
+			}
+
+			StartCoroutine(ConfigureCoord());
+		}
 	}
 
     private void Awake()
@@ -127,18 +140,45 @@ public class WorldGrid : MonoBehaviour
 	//	});
 	//}
 
-	public List<CoordinateRepresentation> UpdateTileRepresentation(GridPiece piece)
+	public List<CoordinateRepresentation> UpdateTileRepresentationNow(GridPiece piece)
 	{
 		List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
 		if (!m_LevelReady)
 			return reps;
 
 		foreach (var coord in piece.Coordinates)
-        {
+		{
 			m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(coord, m_GridTileBuilder);
+			reps.Add(m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]);
+		}
+
+		return reps;
+	}
+
+	public List<CoordinateRepresentation> UpdateTileRepresentation(GridPiece piece)
+	{
+		IEnumerator ConfigureCoords(List<Coordinate> coords)
+        {
+			yield return new WaitForSeconds(1.8f);
+			foreach (var coord in coords)
+			{
+				m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(coord, m_GridTileBuilder);
+				//reps.Add(m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]);
+				yield return new WaitForSeconds(0.18f);
+			}
+		}
+
+		List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
+		if (!m_LevelReady)
+			return reps;
+
+		foreach (var coord in piece.Coordinates)
+        {
+		//	m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(coord, m_GridTileBuilder);
 			reps.Add(m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]);
         }
 
+		StartCoroutine(ConfigureCoords(piece.Coordinates.ToList()));
 		return reps;
 	}
 

@@ -108,7 +108,7 @@ public class GridPiece
 
 		m_Coordinates = GetCoordinatesForShape(m_origin_coords, direction, m_Shape.Coordinates());
 
-		var preview = new PreviewPlacement(m_Grid.UpdateTileRepresentation(this));
+		var preview = new PreviewPlacement(m_Grid.UpdateTileRepresentationNow(this));
 		OnCoordinatesChanged?.Invoke(this);
 		return preview;
 	}
@@ -371,7 +371,7 @@ public class ToxicPiece : PollutionPiece
 		//});
 
 		SignalCoordsChanged();
-		//m_Grid.UpdateTileRepresentation(this);
+		m_Grid.UpdateTileRepresentationNow(this);
 	}
 
 	//protected override Coordinate BuildCoordinate(Vector2 position)
