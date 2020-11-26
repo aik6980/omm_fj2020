@@ -4,7 +4,7 @@
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
 	"EnvironmentOffsetZ": 2.67,
-	"MaxSpreadDistance": 3,
-	"ToxicSpreadTime": 30,
-	"ToxicSpreadTimeVariation": 2
+	"MaxSpreadDistance": 0,
+	"ToxicSpreadTime": 15,
+	"ToxicSpreadTimeVariation": 10
 }
