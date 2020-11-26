@@ -1,9 +1,9 @@
 {
 	"Name": "0-1: Square One",
-	"EnvironmentName": "Env_Rocky",
+	"EnvironmentName": "Environment_12x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
-	"EnvironmentOffsetZ": -0.25,
+	"EnvironmentOffsetZ": 0,
 	"ToxicSpreadTime": 10,
 	"ToxicSpreadTimeVariation": 2
 }
