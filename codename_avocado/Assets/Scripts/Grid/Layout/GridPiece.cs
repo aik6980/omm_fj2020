@@ -86,14 +86,15 @@ public class GridPiece
 		return newPiece;
 	}
 
-    public void Place(Vector2 position, Direction direction)
+    public virtual void Place(Vector2 position, Direction direction)
     {
 		m_Coordinates = GetCoordinatesForShape(Vector2Int.RoundToInt(position), direction, m_Shape.Coordinates());
-		var toxicity = m_Shape.Toxicity();
+		//var toxicity = m_Shape.Toxicity();
 
 		for (int i = 0; i < m_Coordinates.Count; ++i)
 		{
-			m_Coordinates[i].SetCoordType(m_TileType, toxicity.Count > i ? toxicity[i] : GridTileBuilder.ToxicLevel.none);
+			//m_Coordinates[i].SetCoordType(m_TileType, toxicity.Count > i ? toxicity[i] : GridTileBuilder.ToxicLevel.none);
+			m_Coordinates[i].SetCoordType(m_TileType, m_ToxicLevel);
 		}
 
 		OnCoordinatesChanged?.Invoke(this);
@@ -258,6 +259,14 @@ public class ToxicPiece : PollutionPiece
 			m_Grid.m_Polluter.m_Pollution.Remove(this);
         }
 	}
+
+    public override void Place(Vector2 position, Direction direction)
+    {
+        base.Place(position, direction);
+		GenerateExpansion();
+		for (int i = 0; i < Random.Range(8, 11); ++i)
+			Expand();
+    }
 
     public override void TickPollution()
 	{
