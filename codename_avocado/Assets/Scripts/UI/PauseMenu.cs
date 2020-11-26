@@ -40,6 +40,7 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitToMenu()
     {
+        Time.timeScale = 1;
         Application.LoadLevel(0);
     }
 }
