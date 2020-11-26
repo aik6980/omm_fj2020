@@ -62,6 +62,7 @@ public class WorldBuilder : MonoSingleton<WorldBuilder>
 
 		grid.m_Polluter.m_PollutionExpansionTime = level.Config.ToxicSpreadTime;
 		grid.m_Polluter.m_PollutionExpansionTimeVariation = level.Config.ToxicSpreadTimeVariation;
+		grid.m_Levelname.text = level.Config.Name;
 
 		grid.InitialiseGrid(level.levelNumber, level.Dimension, level.Config.EnvironmentName, new Vector3(level.Config.EnvironmentOffsetX, level.Config.EnvironmentOffsetY, level.Config.EnvironmentOffsetZ));
 

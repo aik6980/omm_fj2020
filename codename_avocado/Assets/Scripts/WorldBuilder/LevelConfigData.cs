@@ -3,6 +3,8 @@
 [Serializable]
 public class LevelConfigData
 {
+    public string Name;
+
     // Environment
     public string EnvironmentName;
     public float EnvironmentOffsetX;

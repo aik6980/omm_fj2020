@@ -34,6 +34,8 @@ public class WorldGrid : MonoBehaviour
 	public Coordinate[,]				m_coord_grid;
 	public CoordinateRepresentation[,]	m_coord_grid_representation;
 	private GameObject					m_Environment;
+
+	public TMPro.TMP_Text				m_Levelname;
 	
 	public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset)
     {
