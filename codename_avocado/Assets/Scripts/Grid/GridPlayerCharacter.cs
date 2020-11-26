@@ -38,6 +38,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
     public bool waitingToRespawn;
     public bool canUnfold;
+    public bool hasMoved;
 
     private void Awake()
     {
@@ -72,9 +73,10 @@ public class GridPlayerCharacter : MonoBehaviour
                 return; //wait
             waitingToRespawn = false;
             Respawn();
+            PreparePlacement();
         }
 
-		Movement();
+        Movement();
 		Interactions();
 	}
 

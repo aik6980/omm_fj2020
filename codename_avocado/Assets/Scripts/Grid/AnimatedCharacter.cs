@@ -172,6 +172,9 @@ public class AnimatedCharacter : MonoBehaviour
         }
 
         PickDecor();
+
+        unfold.HidePrevis();
+        havePrevis = false;
     }
 
     void PickDecor()
