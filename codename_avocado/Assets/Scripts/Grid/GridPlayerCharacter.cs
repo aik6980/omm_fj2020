@@ -103,10 +103,10 @@ public class GridPlayerCharacter : MonoBehaviour
 		if (!m_AnimatedCharacter.ReachedDestination())
 			return;
 
-		bool north = Input.GetKey(KeyCode.W);
-		bool south = Input.GetKey(KeyCode.S);
-		bool east = Input.GetKey(KeyCode.D);
-		bool west = Input.GetKey(KeyCode.A);
+		bool north = Input.GetKey(KeyCode.W) || Input.GetAxisRaw("Vertical") > 0.1f;
+		bool south = Input.GetKey(KeyCode.S) || Input.GetAxisRaw("Vertical") < -0.1f;
+		bool east = Input.GetKey(KeyCode.D) || Input.GetAxisRaw("Horizontal") > 0.1f;
+		bool west = Input.GetKey(KeyCode.A) || Input.GetAxisRaw("Horizontal") < -0.1f;
 
 		if (!north && !south && !east && !west)
 			return;
@@ -192,7 +192,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	private void Interactions()
 	{
-		if (/*m_PreviewPlacement != null &&*/ Input.GetKeyDown(KeyCode.Space))
+		if (/*m_PreviewPlacement != null &&*/ Input.GetKeyDown(KeyCode.Space) || Input.GetAxisRaw("Jump") > 0.1f)
 		{
 			TryPlacePiece();
 		}
