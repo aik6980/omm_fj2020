@@ -28,6 +28,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6ffcdf08b3c5c4b4fb92c0647fac2f1d, type: 3}
   deathSounds: []
   bodyfallSounds: []
+  burnSounds: []
 --- !u!1 &2463925055642042063
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,6 +110,8 @@ MonoBehaviour:
   armL: {fileID: 0}
   armR: {fileID: 0}
   offset: {x: 0, y: 0, z: 0}
+  unfoldedWait: 0.5
+  unfoldedTimer: 0
 --- !u!1 &2463925055735392227
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,6 +214,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7d76d9c31ccf65646bf453fdea154551, type: 3}
   - {fileID: 8300000, guid: b373041e1492c2d4cabf8f43cf7831d6, type: 3}
   - {fileID: 8300000, guid: e02431e975136d34b85635c07eca195e, type: 3}
+  burnSounds:
+  - {fileID: 8300000, guid: 2f9f8802078f2164e96ded1a3dc76a49, type: 3}
+  - {fileID: 8300000, guid: 245a65b04696d644185be485d81d6a08, type: 3}
+  - {fileID: 8300000, guid: 884ccad86b3149048827cda3607837cd, type: 3}
 --- !u!1 &4700312655288644219
 GameObject:
   m_ObjectHideFlags: 0

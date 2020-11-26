@@ -14,6 +14,8 @@ public class GridPiece
 	public GridTileBuilder.TileType		m_TileType;
 	public GridTileBuilder.ToxicLevel m_ToxicLevel = GridTileBuilder.ToxicLevel.none;
 
+	public bool m_SuperPiece;
+
 
 	public event System.Action<GridPiece> OnCoordinatesChanged;
 	protected void SignalCoordsChanged()
@@ -28,8 +30,9 @@ public class GridPiece
 		get => m_Coordinates;
 	}
 
-	public GridPiece(WorldGrid grid, Shape shape, Vector2Int coords, GridTileBuilder.TileType tileType)
+	public GridPiece(WorldGrid grid, Shape shape, Vector2Int coords, GridTileBuilder.TileType tileType, bool superPiece)
 	{
+		m_SuperPiece = superPiece;
 		m_Grid = grid;
 		m_Shape = shape;
 		m_origin_coords = coords;
@@ -79,7 +82,7 @@ public class GridPiece
 		if (shape == null)
 			shape = Shape.RandomShape();
 
-		GridPiece newPiece = new GridPiece(grid, shape, position, tileType);
+		GridPiece newPiece = new GridPiece(grid, shape, position, tileType, shape.Coordinates().Count > 6);
 		return newPiece;
 	}
 
@@ -159,7 +162,7 @@ public class GridPiece
 public class PollutionPiece : GridPiece
 {
 	public PollutionPiece(WorldGrid grid, Shape shape, Vector2Int position, GridTileBuilder.TileType tileType)
-		: base(grid, shape, position, tileType)
+		: base(grid, shape, position, tileType, false)
 	{
 		m_PlacedDirection = Direction.North;
 		//m_Grid.m_Polluter.m_PollutionCoordinates.AddRange(m_Coordinates);

@@ -33,7 +33,7 @@ public class GridPolluter : MonoBehaviour
 		for (int p = 0; p < m_PollutionCoordinates.Count; ++p)
 		{
 			var pollution = m_PollutionCoordinates[p];
-			if (pollution.GridPosition() == coPosition && !pollution.CanBeHealed())
+			if (pollution.GridPosition() == coPosition && !pollution.CanBeHealed(false))
 				return true;
 		}
 		return false;
@@ -44,7 +44,7 @@ public class GridPolluter : MonoBehaviour
 		for (int p = 0; p < m_PollutionCoordinates.Count; ++p)
 		{
 			var pollutionCoord = m_PollutionCoordinates[p];
-			if (pollutionCoord.GridPosition() == coPosition && pollutionCoord.CanBeHealed())
+			if (pollutionCoord.GridPosition() == coPosition && pollutionCoord.CanBeHealed(false))
 			{
 				coordsToHeal.Add(pollutionCoord);
 			}

@@ -199,7 +199,7 @@ public class WorldGrid : MonoBehaviour
 
 	public bool SupportsPlacement(Vector2 placement, GridPiece piece, Direction direction)
 	{
-		return piece.Coordinates.All(coord => coord.CanBeHealed());
+		return piece.Coordinates.All(coord => coord.CanBeHealed(piece.m_SuperPiece));
 
 		//foreach (var coord in piece.Coordinates)
 		//{
