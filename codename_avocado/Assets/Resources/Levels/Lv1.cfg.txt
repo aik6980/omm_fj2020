@@ -1,4 +1,5 @@
 {
+	"Name": "0-1: Square One",
 	"EnvironmentName": "Env_Rocky",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,

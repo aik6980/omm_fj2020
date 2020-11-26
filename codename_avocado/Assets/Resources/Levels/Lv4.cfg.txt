@@ -1,9 +1,10 @@
 {
+	"Name": "0-4: Hazards",
 	"EnvironmentName": "Env_Rocky",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
 	"EnvironmentOffsetZ": 2.67,
-	"MaxSpreadDistance": 3,
+	"MaxSpreadDistance": 4,
 	"ToxicSpreadTime": 30,
 	"ToxicSpreadTimeVariation": 2
 }

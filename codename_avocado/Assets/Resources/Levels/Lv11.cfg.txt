@@ -1,9 +1,10 @@
 {
-	"Name": "0-2: Winding Roads",
+	"Name": "2-3 ToxiCity",
 	"EnvironmentName": "Env_Rocky",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
 	"EnvironmentOffsetZ": 2.67,
-	"ToxicSpreadTime": 10,
+	"MaxSpreadDistance": 3,
+	"ToxicSpreadTime": 30,
 	"ToxicSpreadTimeVariation": 2
 }
