@@ -9,7 +9,10 @@ public class GridTileBuilder : MonoBehaviour
 
     public GameObject[] grass_tile;
 
-    public GameObject[] toxic_tile;
+    public GameObject[] toxic_src_empty_tile;
+    public GameObject[] toxic_src_full_tile;
+    public GameObject[] toxic_big_spill_tile;
+    public GameObject[] toxic_small_spill_tile;
 
     public GameObject[] start_tile;
     public GameObject[] exit_tile;
@@ -53,13 +56,24 @@ public class GridTileBuilder : MonoBehaviour
 
         switch(coord.Type)
         {
-            case TileType.grass: return GetRandomTile(grass_tile);
-            case TileType.toxic: return Instantiate(toxic_tile[(int)coord.ToxicLevel]);
-            case TileType.start: return GetRandomTile(start_tile);
-            case TileType.exit: return GetRandomTile(exit_tile);
+            case TileType.toxic:
+                switch (coord.ToxicLevel)
+                {
+                    case ToxicLevel.healable_pool:  return GetRandomTile(toxic_src_empty_tile);
+                    case ToxicLevel.pool:           return GetRandomTile(toxic_src_full_tile);
+                    case ToxicLevel.big_spill:      return GetRandomTile(toxic_big_spill_tile);
+                    case ToxicLevel.small_spill:    return GetRandomTile(toxic_small_spill_tile);
+
+                    case ToxicLevel.none:
+                    default:                        return null;
+                }
+
+            case TileType.grass:    return GetRandomTile(grass_tile);
+            case TileType.start:    return GetRandomTile(start_tile);
+            case TileType.exit:     return GetRandomTile(exit_tile);
             case TileType.obstacle: return GetRandomTile(obstacle_tile);
             case TileType.floor: 
-            default: return GetRandomTile(floor_tile);
+            default:                return GetRandomTile(floor_tile);
         }
     }
 
