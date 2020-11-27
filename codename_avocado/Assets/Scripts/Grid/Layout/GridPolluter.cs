@@ -30,7 +30,8 @@ public class GridPolluter : MonoBehaviour
 			yield return new WaitForSeconds(random_interval);
 
 
-			if(m_Pollution.Count > 0)
+			// if no toxic don't play sfx
+			if(m_Pollution.Count <= 0)
             {
 				AudioManager.GetOrCreateInstance().PlayToxicSFX();
 			}
