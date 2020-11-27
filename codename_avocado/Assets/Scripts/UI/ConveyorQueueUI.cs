@@ -11,6 +11,7 @@ public class ConveyorQueueUI : MonoBehaviour
     public RawImage[] queuedImages;
     public Unfold unfoldScript;
     public GridPlayerCharacter gridPlayerCharacter;
+    public WorldGrid worldGrid;
     public Animator uiAnimator;
 
     public void UpdateTextures()
@@ -20,10 +21,13 @@ public class ConveyorQueueUI : MonoBehaviour
 
     IEnumerator PlayCycleAnimation()
     {
-        uiAnimator.SetTrigger("Respawned");
+        if (worldGrid.m_LevelReady)
+        {
+            uiAnimator.SetTrigger("Respawned");
 
-        yield return null;
-        yield return new WaitUntil(() => uiAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+            yield return null;
+            yield return new WaitUntil(() => uiAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+        }
 
         int[] shapeDefIndices = NextShapeQueue.Instance.PeekAll();
 
