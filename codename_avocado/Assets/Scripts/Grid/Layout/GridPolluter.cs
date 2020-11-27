@@ -14,6 +14,26 @@ public class GridPolluter : MonoBehaviour
 	public float m_PollutionExpansionTime = 9999.0f;
 	public float m_PollutionExpansionTimeVariation = 0.0f;
 
+    public void Start()
+    {
+		StartCoroutine(PlayToxicSFXInterval());
+    }
+
+	IEnumerator PlayToxicSFXInterval()
+	{
+		while (true)
+		{
+
+			//yield on a new YieldInstruction that waits for 5 seconds.
+			yield return new WaitForSeconds(10.0f);
+
+			if(m_Pollution.Count > 0)
+            {
+				AudioManager.GetOrCreateInstance().PlayToxicSFX();
+			}
+		}
+	}
+
 	private void Update()
 	{
 		CheckExpandPollution();

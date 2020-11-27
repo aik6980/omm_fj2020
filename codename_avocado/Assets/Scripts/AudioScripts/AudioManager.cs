@@ -13,6 +13,7 @@ public class AudioManager : MonoSingleton<AudioManager>
 
     public MusicData[] music_data;
     public SFXData[] sfx_data;
+    public SFXData[] toxic_sfx;
 
     public float music_interval;
     public float music_interval_variation;
@@ -52,11 +53,21 @@ public class AudioManager : MonoSingleton<AudioManager>
         {
             s.audio_source = gameObject.AddComponent<AudioSource>();
             s.audio_source.clip = s.clip;
+            s.audio_source.volume = s.volume;
             s.audio_source.loop = false;
 
             s.audio_source.outputAudioMixerGroup = m_sfxMixerGroup;
         }
 
+        foreach (SFXData s in toxic_sfx)
+        {
+            s.audio_source = gameObject.AddComponent<AudioSource>();
+            s.audio_source.clip = s.clip;
+            s.audio_source.volume = s.volume;
+            s.audio_source.loop = false;
+
+            s.audio_source.outputAudioMixerGroup = m_sfxMixerGroup;
+        }
 
         foreach (MusicGroup soundGroup in m_musicMixerGroup)
         {
@@ -82,7 +93,7 @@ public class AudioManager : MonoSingleton<AudioManager>
             
         }
 
-        //PlaySFX("UI_Level_Complete");
+
     }
 
     void Start()
@@ -92,6 +103,13 @@ public class AudioManager : MonoSingleton<AudioManager>
         SwitchTrack();
         // then switch track every interval
         StartCoroutine(SwitchTrackInterval());
+    }
+
+    public void PlayToxicSFX()
+    {
+        var i = UnityEngine.Random.Range(0, toxic_sfx.Length);
+
+        toxic_sfx[i].audio_source.Play();
     }
 
     public void PlayMusic(string name)
