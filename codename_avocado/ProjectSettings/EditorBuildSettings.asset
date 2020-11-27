@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BandaidGameScene.unity
     guid: 5a3728aecbb6c9f43aa91de65122827a
+  - enabled: 1
+    path: Assets/Scenes/IntroMovie.unity
+    guid: 2077b4e1a15843e4ba414445445e3929
   m_configObjects: {}

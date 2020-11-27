@@ -29,6 +29,14 @@ public class LaunchGameScript : MonoBehaviour
         SceneManager.LoadScene("BandaidGameScene");
         //StartCoroutine(LaunchLevel(num));
     }
+
+    public void LaunchGameSceneWithIntro(int num)
+    {
+        singleton.levelToLoad = num;
+
+        SceneManager.LoadScene("IntroMovie");
+    }
+
     /*
     IEnumerator LaunchLevel(int num)
     {
