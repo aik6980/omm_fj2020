@@ -15,10 +15,10 @@ public class WinMenu : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    void OnActivate()
+    void OnEnable()
     {
         Time.timeScale = 0;
-        Debug.Log("Win_on");
+        //Debug.Log("Win_on");
         UI_root.SetActive(true);
 
         AudioManager.GetOrCreateInstance().PlaySFX("UI_Level_Complete");
@@ -27,10 +27,10 @@ public class WinMenu : MonoBehaviour
 
     }
 
-    void OnDeActivate()
+    void OnDisable()
     {
         Time.timeScale = 1;
-        Debug.Log("Win_off");
+        //Debug.Log("Win_off");
         UI_root.SetActive(false);
     }
 
