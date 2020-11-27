@@ -105,7 +105,7 @@ MonoBehaviour:
   sfx_data:
   - name: UI_Level_Complete
     clip: {fileID: 8300000, guid: f90e03a3fc37bbf4bad2fc0cd5bdb661, type: 3}
-    volume: 0
+    volume: 1
     audio_source: {fileID: 0}
   toxic_sfx:
   - name: 
