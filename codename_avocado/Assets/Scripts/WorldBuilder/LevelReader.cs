@@ -56,6 +56,10 @@ public class LevelReader : MonoSingleton<LevelReader>
 		}
 
 		var level_file			= Resources.Load<TextAsset>(string.Format("Levels/Lv{0}", level_num));
+		if (level_file == null)
+        {
+			return null;
+        }
 
 		var line = level_file.text.Split('\n');
 
