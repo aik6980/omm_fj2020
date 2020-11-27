@@ -64,7 +64,7 @@ public class PauseMenu : MonoBehaviour
         root.SetActive(false);
 
         Time.timeScale = 1;
-        Application.LoadLevel(0);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("BandaidStartMenu");
     }
 
     public void QuitGame()
