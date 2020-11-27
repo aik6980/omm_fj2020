@@ -152,6 +152,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 2a0999ddd3ebd9c40871e164a735acb5, type: 3}
     volume: 0.5
     audio_source: {fileID: 0}
+  toxic_sfx_interval: 10
+  toxic_sfx_interval_variation: 2
   music_interval: 42
   music_interval_variation: 10
   crossfade_duration: 3

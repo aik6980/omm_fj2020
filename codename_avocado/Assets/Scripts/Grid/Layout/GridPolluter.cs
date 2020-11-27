@@ -24,8 +24,11 @@ public class GridPolluter : MonoBehaviour
 		while (true)
 		{
 
-			//yield on a new YieldInstruction that waits for 5 seconds.
-			yield return new WaitForSeconds(10.0f);
+			var time_variation = UnityEngine.Random.Range(-1.0f, 1.0f) * AudioManager.GetOrCreateInstance().toxic_sfx_interval_variation;
+			var random_interval = AudioManager.GetOrCreateInstance().toxic_sfx_interval + time_variation;
+
+			yield return new WaitForSeconds(random_interval);
+
 
 			if(m_Pollution.Count > 0)
             {

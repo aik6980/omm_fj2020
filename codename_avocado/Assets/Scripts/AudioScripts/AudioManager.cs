@@ -15,6 +15,9 @@ public class AudioManager : MonoSingleton<AudioManager>
     public SFXData[] sfx_data;
     public SFXData[] toxic_sfx;
 
+    public float toxic_sfx_interval;
+    public float toxic_sfx_interval_variation;
+
     public float music_interval;
     public float music_interval_variation;
     public float crossfade_duration;
@@ -212,8 +215,10 @@ public class AudioManager : MonoSingleton<AudioManager>
         while(true)
         {
 
-            //yield on a new YieldInstruction that waits for 5 seconds.
-            yield return new WaitForSeconds(music_interval);
+            var time_variation = UnityEngine.Random.Range(-1.0f, 1.0f) * music_interval_variation;
+            var random_interval = music_interval + time_variation;
+
+            yield return new WaitForSeconds(random_interval);
 
             SwitchTrack();
         }
