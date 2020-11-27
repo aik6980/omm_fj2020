@@ -23,7 +23,7 @@ public class LaunchGameScript : MonoBehaviour
 
     public void LaunchGameScene(int num)
     {
-        Debug.Log("launch level " + num);
+        //Debug.Log("launch level " + num);
         singleton.levelToLoad = num;
 
         SceneManager.LoadScene("BandaidGameScene");

@@ -61,7 +61,7 @@ public class WinMenu : MonoBehaviour
 
     public void QuitToMenu()
     {
-        Application.LoadLevel(0);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("BandaidStartMenu");
     }
 
 }
