@@ -67,7 +67,7 @@ public class WorldBuilder : MonoSingleton<WorldBuilder>
 		grid.m_Polluter.m_PollutionExpansionTimeVariation = level.Config.ToxicSpreadTimeVariation;
 		grid.m_Levelname.text = level.Config.Name;
 
-		grid.InitialiseGrid(level.levelNumber, level.Dimension, level.Config.EnvironmentName, new Vector3(level.Config.EnvironmentOffsetX, level.Config.EnvironmentOffsetY, level.Config.EnvironmentOffsetZ));
+		grid.InitialiseGrid(level.levelNumber, level.Dimension, level.Config.EnvironmentName, new Vector3(level.Config.EnvironmentOffsetX, level.Config.EnvironmentOffsetY, level.Config.EnvironmentOffsetZ), level.Config.SkyName);
 
 		world.floor_pieces = new List<GridPiece>();
 		for (int y = 0; y < level.Dimension.y; ++y)

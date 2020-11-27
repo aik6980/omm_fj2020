@@ -6,6 +6,7 @@ public class LevelConfigData
     public string Name;
 
     // Environment
+    public string SkyName;
     public string EnvironmentName;
     public float EnvironmentOffsetX;
     public float EnvironmentOffsetY;
