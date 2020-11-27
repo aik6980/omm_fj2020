@@ -1,5 +1,6 @@
 {
 	"Name": "1-2: NON PLUS ULTRA",
+	"SkyName": "Skybox02_sunset",
 	"EnvironmentName": "Environment_24x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,

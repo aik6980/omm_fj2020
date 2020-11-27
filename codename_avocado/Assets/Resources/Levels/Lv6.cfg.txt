@@ -1,5 +1,6 @@
 {
 	"Name": "1-1: STONE FOREST RUN",
+	"SkyName": "Skybox01_day",
 	"EnvironmentName": "Environment_24x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,

@@ -1,5 +1,6 @@
 {
 	"Name": "0-1: Square One",
+	"SkyName": "Skybox01_day",
 	"EnvironmentName": "Environment_12x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,

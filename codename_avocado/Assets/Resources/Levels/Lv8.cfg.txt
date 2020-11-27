@@ -1,5 +1,6 @@
 {
 	"Name": "1-3: TOXIC REEF",
+	"SkyName": "Skybox03_night",
 	"EnvironmentName": "Environment_24x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,

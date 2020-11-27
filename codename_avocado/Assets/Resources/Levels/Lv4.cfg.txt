@@ -1,5 +1,6 @@
 {
 	"Name": "0-4: Hazards",
+	"SkyName": "Skybox02_sunset",
 	"EnvironmentName": "Environment_12x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,

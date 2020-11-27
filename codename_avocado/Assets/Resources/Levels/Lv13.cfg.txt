@@ -1,5 +1,6 @@
 {
 	"Name": "2-5: SHOWDOWN - BOSSBOX",
+	"SkyName": "Skybox03_night",
 	"EnvironmentName": "Environment_24x36",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,

@@ -1,5 +1,6 @@
 {
 	"Name": "0-5: TOXIC BAND",
+	"SkyName": "Skybox03_night",
 	"EnvironmentName": "Environment_24x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
