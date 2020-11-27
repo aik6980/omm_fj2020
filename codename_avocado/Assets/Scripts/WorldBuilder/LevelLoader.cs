@@ -19,6 +19,8 @@ public class LevelLoader : MonoBehaviour, ILevelLoader
             this.Level = ls.levelToLoad++;
         }
 
+        var level = PlayerPrefs.GetInt("LevelAt", 1);
+        PlayerPrefs.SetInt("LevelAt", System.Math.Max(level, this.Level));
         return WorldBuilder.GetOrCreateInstance().BuildLevel(grid, this.Level++);
     }
 }
