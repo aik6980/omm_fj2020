@@ -265,9 +265,13 @@ public class GridPlayerCharacter : MonoBehaviour
             unfoldScript.UseUnfoldShapeDefinition(shapeDefinitionIndex);
         }
 
-		m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, m_Grid.m_Coordinates[0].m_Position, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
+        m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, m_Grid.m_Coordinates[0].m_Position, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
         canUnfold = false;
+
+        m_Facing = Direction.North;
+        AttemptMove(Direction.East);
+        PreparePlacement();
 
         //Debug.Log("gpc_spawn");
         OnSpawnDelegate?.Invoke();
