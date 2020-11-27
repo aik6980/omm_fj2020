@@ -53,11 +53,11 @@ public class WorldGrid : MonoBehaviour
 		m_Environment.transform.position += env_offset;
 
 
-		string sky_name = string.IsNullOrEmpty(sky_box_name) ? "Skybox01" : sky_box_name;
+		string sky_name = string.IsNullOrEmpty(sky_box_name) ? "Skybox01_day" : sky_box_name;
 		//var sky = Resources.Load<Material>(string.Format("Environments/{0}", sky_name));
 		//RenderSettings.skybox = sky;
 		
-		var post_process = Resources.Load<GameObject>(string.Format("Environments/{0}_post_process", sky_name));
+		var post_process = Resources.Load<GameObject>(string.Format("Environments/{0}", sky_name));
 		if (post_process != null)
 			m_EnvironmentPostProcess = Instantiate(post_process);
 
