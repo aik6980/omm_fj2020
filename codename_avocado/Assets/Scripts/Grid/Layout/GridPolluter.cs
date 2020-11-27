@@ -19,6 +19,20 @@ public class GridPolluter : MonoBehaviour
 		StartCoroutine(PlayToxicSFXInterval());
     }
 
+	int GetNumToxicPollution()
+    {
+		var toxic_count = 0;
+		foreach(PollutionPiece p in m_Pollution)
+        {
+			if(p.m_TileType == GridTileBuilder.TileType.toxic)
+            {
+				toxic_count++;
+            }
+        }
+
+		return toxic_count;
+    }
+
 	IEnumerator PlayToxicSFXInterval()
 	{
 		while (true)
@@ -31,7 +45,7 @@ public class GridPolluter : MonoBehaviour
 
 
 			// if no toxic don't play sfx
-			if(m_Pollution.Count <= 0)
+			if(GetNumToxicPollution() > 0)
             {
 				AudioManager.GetOrCreateInstance().PlayToxicSFX();
 			}

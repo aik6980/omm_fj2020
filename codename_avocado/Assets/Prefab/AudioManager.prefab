@@ -110,43 +110,43 @@ MonoBehaviour:
   toxic_sfx:
   - name: 
     clip: {fileID: 8300000, guid: b04cebcf57907f14b971c51365a2fd0d, type: 3}
-    volume: 0.5
+    volume: 0.7
     audio_source: {fileID: 0}
   - name: 
     clip: {fileID: 8300000, guid: 60c27d0fef344cb4ba1c5b165d9d9ec2, type: 3}
-    volume: 0.5
+    volume: 0.7
     audio_source: {fileID: 0}
   - name: 
     clip: {fileID: 8300000, guid: 56ef7a22340fa494babc446d63ced385, type: 3}
-    volume: 0.5
+    volume: 0.7
     audio_source: {fileID: 0}
   - name: 
     clip: {fileID: 8300000, guid: 1f2d2f7eddd867f408f8e718e2c34c94, type: 3}
-    volume: 0.5
+    volume: 0.7
     audio_source: {fileID: 0}
   - name: 
     clip: {fileID: 8300000, guid: 65e37c9212d853a4eb56ad2c22d20dbd, type: 3}
-    volume: 0.5
+    volume: 0.7
     audio_source: {fileID: 0}
   - name: 
     clip: {fileID: 8300000, guid: 65e37c9212d853a4eb56ad2c22d20dbd, type: 3}
-    volume: 0.5
+    volume: 0.7
     audio_source: {fileID: 0}
   - name: 
     clip: {fileID: 8300000, guid: 4b6822a0d26f7214dbb1c5eb694607d2, type: 3}
-    volume: 0.5
+    volume: 0.7
     audio_source: {fileID: 0}
   - name: 
     clip: {fileID: 8300000, guid: a35b7ec59871cf449a75ea72ab1f2569, type: 3}
-    volume: 0.5
+    volume: 0.7
     audio_source: {fileID: 0}
   - name: 
     clip: {fileID: 8300000, guid: 47d0ffdc5f75e1a47817a528dd062161, type: 3}
-    volume: 0.5
+    volume: 0.7
     audio_source: {fileID: 0}
   - name: 
     clip: {fileID: 8300000, guid: c4317a3de6c5be240b1acb7f61870abf, type: 3}
-    volume: 0.5
+    volume: 0.7
     audio_source: {fileID: 0}
   - name: 
     clip: {fileID: 8300000, guid: 2a0999ddd3ebd9c40871e164a735acb5, type: 3}
