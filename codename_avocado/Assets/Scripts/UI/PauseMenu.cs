@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class PauseMenu : MonoBehaviour
     //TEMP HACK
     public GridPlayerCharacter player;
 
+    public AudioSource MenuOpen;
+    public AudioSource MenuClose;
 
     void Start()
     {
@@ -24,6 +27,7 @@ public class PauseMenu : MonoBehaviour
             {
                 Time.timeScale = 0;
                 root.SetActive(true);
+                MenuOpen.Play();
             }
         } else
         {//active
@@ -31,6 +35,7 @@ public class PauseMenu : MonoBehaviour
             {
                 Time.timeScale = 1;
                 root.SetActive(false);
+                MenuClose.Play();
             }
         }
     }
