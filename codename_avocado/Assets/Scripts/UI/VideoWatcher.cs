@@ -13,6 +13,7 @@ public class VideoWatcher : MonoBehaviour
 
     private void Awake()
     {
+        videoPlayer.time = 0;
         videoPlayer.loopPointReached += source => Done();
     }
 
