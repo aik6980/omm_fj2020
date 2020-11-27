@@ -62,6 +62,14 @@ public class CoordinateRepresentation : MonoBehaviour
 				m_vfx_object.transform.localPosition = Vector3.zero;
 			}
 
+			if (coordinate.Type == GridTileBuilder.TileType.grass)
+			{
+				var vfx = builder.InstantiateGrassVFX();
+				vfx.transform.parent = this.transform;
+				vfx.transform.localPosition = Vector3.zero;
+			}
+
+
 			m_previous_type = coordinate.Type;
 			m_previous_toxicity = coordinate.ToxicLevel;
 

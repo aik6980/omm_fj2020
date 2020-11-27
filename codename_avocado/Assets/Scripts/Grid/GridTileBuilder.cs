@@ -21,6 +21,7 @@ public class GridTileBuilder : MonoBehaviour
 
     // toxic
     public GameObject[] toxic_vfx;
+    public GameObject[] grass_vfx;
 
     public enum TileType
     {
@@ -88,5 +89,10 @@ public class GridTileBuilder : MonoBehaviour
     {
         return Instantiate(toxic_vfx[0]);
         
+    }
+    public GameObject InstantiateGrassVFX()
+    {
+        return Instantiate(grass_vfx[0]);
+
     }
 }
