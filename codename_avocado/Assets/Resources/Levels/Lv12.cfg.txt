@@ -1,5 +1,5 @@
 {
-	"Name": "2-4: KEY PARTY!",
+	"Name": "2-4: KEY PARTY",
 	"EnvironmentName": "Environment_24x24",
 	"EnvironmentOffsetX": 0,
 	"EnvironmentOffsetY": 0,
