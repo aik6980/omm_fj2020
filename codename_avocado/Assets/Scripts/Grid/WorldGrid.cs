@@ -36,20 +36,35 @@ public class WorldGrid : MonoBehaviour
 	public Coordinate[,]				m_coord_grid;
 	public CoordinateRepresentation[,]	m_coord_grid_representation;
 	private GameObject					m_Environment;
+	private GameObject					m_EnvironmentPostProcess;
 
 	public TMPro.TMP_Text				m_Levelname;
     public bool m_LevelReady;
 
-    public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset)
+    public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset, string sky_box_name)
     {
 		if (m_Environment != null)
         {
 			Destroy(m_Environment);
         }
 
+		if (m_EnvironmentPostProcess != null)
+        {
+			Destroy(m_EnvironmentPostProcess);
+        }
+
 		GameObject env_prefab = Resources.Load<GameObject>(string.Format("Environments/{0}", environment_name));
 		m_Environment = Instantiate(env_prefab);
 		m_Environment.transform.position += env_offset;
+
+
+		string sky_name = string.IsNullOrEmpty(sky_box_name) ? "Skybox01_day" : sky_box_name;
+		//var sky = Resources.Load<Material>(string.Format("Environments/{0}", sky_name));
+		//RenderSettings.skybox = sky;
+		
+		var post_process = Resources.Load<GameObject>(string.Format("Environments/{0}", sky_name));
+		if (post_process != null)
+			m_EnvironmentPostProcess = Instantiate(post_process);
 
 		if (m_coord_grid_representation != null)
         {

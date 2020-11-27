@@ -313,7 +313,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -943,6 +943,10 @@ PrefabInstance:
       propertyPath: uiAnimator
       value: 
       objectReference: {fileID: 2011951058}
+    - target: {fileID: 847968182, guid: a5ad2c2cc8359e64fb268ed08862ed42, type: 3}
+      propertyPath: worldGrid
+      value: 
+      objectReference: {fileID: 1703700765319623408}
     - target: {fileID: 5529396204681362261, guid: a5ad2c2cc8359e64fb268ed08862ed42,
         type: 3}
       propertyPath: m_LocalPosition.x
