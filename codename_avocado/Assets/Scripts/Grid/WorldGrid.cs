@@ -58,7 +58,8 @@ public class WorldGrid : MonoBehaviour
 		//RenderSettings.skybox = sky;
 		
 		var post_process = Resources.Load<GameObject>(string.Format("Environments/{0}_post_process", sky_name));
-		m_EnvironmentPostProcess = Instantiate(post_process);
+		if (post_process != null)
+			m_EnvironmentPostProcess = Instantiate(post_process);
 
 		if (m_coord_grid_representation != null)
         {
