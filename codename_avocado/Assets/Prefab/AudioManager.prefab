@@ -81,6 +81,11 @@ MonoBehaviour:
     - Music_B
     - BG_B
     audio_sources: []
+  - mixerGroup: {fileID: 1630775755219230431, guid: da113067a0064ce4d92cf8814c16df37,
+      type: 2}
+    soundName:
+    - Music_C
+    audio_sources: []
   music_data:
   - name: Music_A
     clip: {fileID: 8300000, guid: 8a8c193ee0d5637428fa6ba29152de0d, type: 3}
@@ -94,10 +99,13 @@ MonoBehaviour:
   - name: BG_B
     clip: {fileID: 8300000, guid: 21bd37749f0b38941bb0f437eb680bd5, type: 3}
     volume: 0.03
+  - name: Music_C
+    clip: {fileID: 8300000, guid: 9c9dc08250556114cbbc82470aec6a60, type: 3}
+    volume: 0.3
   sfx_data:
   - name: UI_Level_Complete
     clip: {fileID: 8300000, guid: f90e03a3fc37bbf4bad2fc0cd5bdb661, type: 3}
     audio_source: {fileID: 0}
-  music_interval: 40
+  music_interval: 42
   music_interval_variation: 10
   crossfade_duration: 3
