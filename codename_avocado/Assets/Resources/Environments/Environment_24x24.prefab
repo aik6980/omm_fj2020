@@ -183,7 +183,7 @@ Animator:
   m_GameObject: {fileID: 2570373421041255729}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c3aca65011fd5014c957545aaca8327d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -230,8 +230,8 @@ Transform:
   - {fileID: 1746380859344500681}
   - {fileID: 2945386792011259787}
   - {fileID: 5131831189774959268}
-  - {fileID: 7836261446997323007}
   - {fileID: 6211016570719891272}
+  - {fileID: 523691709686298984}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -314,7 +314,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &6328196419616707859
+--- !u!1 &4389525655015302183
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -322,8 +322,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7836261446997323007}
-  - component: {fileID: 5684222384607424870}
+  - component: {fileID: 523691709686298984}
+  - component: {fileID: 4501974465908778392}
   m_Layer: 0
   m_Name: PostProcess
   m_TagString: Untagged
@@ -331,27 +331,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7836261446997323007
+--- !u!4 &523691709686298984
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6328196419616707859}
+  m_GameObject: {fileID: 4389525655015302183}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.685555, y: -2.7672043, z: -2.8119621}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1910398426451774903}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5684222384607424870
+--- !u!114 &4501974465908778392
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6328196419616707859}
+  m_GameObject: {fileID: 4389525655015302183}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
@@ -451,7 +451,7 @@ Animator:
   m_GameObject: {fileID: 6714037401204332401}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eb3ad801554f74b4abc3655e6fd678c2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -570,7 +570,7 @@ Transform:
   m_LocalScale: {x: 16.43288, y: 8.992, z: 24.177689}
   m_Children: []
   m_Father: {fileID: 1910398426451774903}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!33 &3561868743933402687
 MeshFilter:
@@ -598,7 +598,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 59987d23d9ad497438c240d0a4323e5b, type: 2}
+  - {fileID: 2100000, guid: 23ec9671b6f28f6459e4215f09504fd1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1129,6 +1129,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: cloud_giant01
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 56b2940f2b5757d4fbac89780aeb11e1,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56b2940f2b5757d4fbac89780aeb11e1, type: 3}
