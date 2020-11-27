@@ -17,6 +17,7 @@ public class WinMenu : MonoBehaviour
 
     void OnActivate()
     {
+        Time.timeScale = 0;
         Debug.Log("Win_on");
         UI_root.SetActive(true);
 
@@ -28,6 +29,7 @@ public class WinMenu : MonoBehaviour
 
     void OnDeActivate()
     {
+        Time.timeScale = 1;
         Debug.Log("Win_off");
         UI_root.SetActive(false);
     }

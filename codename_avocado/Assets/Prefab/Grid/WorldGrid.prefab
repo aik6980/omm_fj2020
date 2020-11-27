@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f052648b5b8944692467678bb4186a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_GameState: {fileID: 4683538448211693356}
   m_CoordinatePrefab: {fileID: 979360823693339932, guid: 570da0b217c9ea14d8d5e74fbd7b5889,
     type: 3}
   m_Distance: 20
@@ -67,6 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winMenu: {fileID: 0}
+  gameCompleteMenu: {fileID: 0}
 --- !u!114 &4683538448211693357
 MonoBehaviour:
   m_ObjectHideFlags: 0

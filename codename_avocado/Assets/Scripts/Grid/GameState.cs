@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameState : MonoBehaviour
 {
     public GameObject winMenu;
+    public GameObject gameCompleteMenu;
 
 	public void GameOver()
 	{
@@ -17,7 +18,11 @@ public class GameState : MonoBehaviour
     {
         //ToDo: i this was the LAST level, do something different!
 
-
         winMenu?.SetActive(true);
+    }
+
+    public void Win()
+    {
+        gameCompleteMenu?.SetActive(true);
     }
 }

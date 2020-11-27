@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class WorldGrid : MonoBehaviour
 {
-	public struct WorldData
+	public class WorldData
     {
 		public List<GridPiece>		floor_pieces;
 		public GridPiece			start_piece;
@@ -16,6 +16,7 @@ public class WorldGrid : MonoBehaviour
 		public List<PollutionPiece>	block_pieces;
 	}
 
+	public GameState m_GameState;
 	public GameObject m_CoordinatePrefab;
 	public List<GridPiece> m_Pieces = new List<GridPiece>();
 	public List<Coordinate> m_Coordinates = new List<Coordinate>();
@@ -188,6 +189,12 @@ public class WorldGrid : MonoBehaviour
 		m_LevelReady = false;
 
 		m_world_data = GetComponent<ILevelLoader>().LoadLevel(this);
+		if (m_world_data == null)
+        {
+			m_GameState.Win();
+			return;
+		}
+
 		m_FinalPiece = m_world_data.end_piece;
 
 		m_Polluter.Reset();

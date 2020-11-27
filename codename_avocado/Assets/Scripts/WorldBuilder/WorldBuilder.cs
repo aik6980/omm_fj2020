@@ -58,6 +58,9 @@ public class WorldBuilder : MonoSingleton<WorldBuilder>
 	public WorldGrid.WorldData BuildLevel(WorldGrid grid, int level_num)
     {
         var level = LevelReader.GetOrCreateInstance().GetLevelData(level_num);
+		if (level == null)
+			return null;
+
 		WorldGrid.WorldData world = new WorldGrid.WorldData();
 
 		grid.m_Polluter.m_PollutionExpansionTime = level.Config.ToxicSpreadTime;
