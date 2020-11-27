@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/SplashLanding.unity
+    guid: 7c3fc7691722b4c4ebf2d65f5c68c049
+  - enabled: 1
     path: Assets/Scenes/BandaidStartMenu.unity
     guid: 46a89b3050603e04eb64a67649984bc8
   - enabled: 1
