@@ -18,3 +18,4 @@ EditorBuildSettings:
     path: Assets/Scenes/IntroMovie.unity
     guid: 2077b4e1a15843e4ba414445445e3929
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

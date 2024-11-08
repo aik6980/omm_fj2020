@@ -15,6 +15,8 @@ public class VideoWatcher : MonoBehaviour
     {
         videoPlayer.time = 0;
         videoPlayer.loopPointReached += source => Done();
+
+        // videoPlayer.url = System.IO.Path.Combine(Application.streamingAssetsPath, "Unfold_title_seq_01.m4v");
     }
 
     private void Update()
@@ -36,7 +38,7 @@ public class VideoWatcher : MonoBehaviour
                 graphic.color = Color.Lerp(Color.white, Color.black, a);
                 yield return null;
             }
-            SceneManager.LoadScene(nextScene/*"BandaidStartMenu"*/);
+            SceneManager.LoadScene(nextScene /*"BandaidStartMenu"*/);
         }
 
         StartCoroutine(FadeOut(graphic));
