@@ -129,26 +129,73 @@ public class Coordinate
 			m_Type == GridTileBuilder.TileType.floor;
 	}
 
-	public bool TryMove(Direction direction, ref Coordinate nextCoordinate)
+	public bool TryMove(Vector2 directionVec, out Coordinate nextCoordinate)
 	{
-		//nextCoordinate = null;
-		//// 
-		//if (m_Coordinates.TryGetValue(direction, out Coordinate coord))
-		//{
-		//	if (coord != null && coord.IsPassable())
-		//	{
-		//		nextCoordinate = coord;
-		//		return true;
-		//	}
-		//}
+		List<Direction> directions = new List<Direction>();
+		if (directionVec.y > 0.1f)
+			directions.Add(Direction.North);
+		else if (directionVec.y < -0.1f)
+			directions.Add(Direction.South);
 
-		// should store World grid here as a parent
-		nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, direction);
-		if(nextCoordinate != null && nextCoordinate.IsPassable())
+		if (directionVec.x > 0.1f)
+			directions.Add(Direction.East);
+		else if (directionVec.x < -0.1f)
+			directions.Add(Direction.West);
+
+		// Sort the directions vector based on which has the larger magnitude.
+		// i.e. the player is pushing more in that direction than any other.
+		if (Mathf.Abs(directionVec.x) > Mathf.Abs(directionVec.y))
         {
-			return true;
+			directions.Reverse();
         }
 
+		if (directions.Count == 1)
+        {
+			nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, directions[0]);
+			if (nextCoordinate != null && nextCoordinate.IsPassable())
+			{
+				return true;
+			}
+		}
+		else if (directions.Count == 2)
+        {
+			var firstCoord = m_Worldgrid.GetNextCoordinate(m_Position, directions[0]);
+			if (firstCoord != null && firstCoord.IsPassable())
+            {
+				var nsewCoord = m_Worldgrid.GetNextCoordinate(firstCoord.m_Position, directions[1]);
+				if (nsewCoord != null && nsewCoord.IsPassable())
+                {
+					nextCoordinate = nsewCoord;
+					return true;
+                }
+			}
+
+			var secondCoord = m_Worldgrid.GetNextCoordinate(m_Position, directions[1]);
+			if (secondCoord != null && secondCoord.IsPassable())
+			{
+				var ewnsCoord = m_Worldgrid.GetNextCoordinate(secondCoord.m_Position, directions[0]);
+				if (ewnsCoord != null && ewnsCoord.IsPassable())
+				{
+					nextCoordinate = ewnsCoord;
+					return true;
+				}
+			}
+
+			// If neither of the above worked use first over second.
+			if (firstCoord != null && firstCoord.IsPassable())
+            {
+				nextCoordinate = firstCoord;
+				return true;
+            }
+
+			if (secondCoord != null && secondCoord.IsPassable())
+			{
+				nextCoordinate = secondCoord;
+				return true;
+			}
+		}
+
+		nextCoordinate = null;
 		return false;
 	}
 
@@ -288,28 +335,6 @@ public class PollutionCoordinate : Coordinate
 	public virtual bool IsCenterPollutant()
 	{
 		return m_Position == Vector2.zero;
-	}
-
-	public bool CanBeHealed_obsoleted()
-	{
-		//if (m_Position == Vector2.zero)
-		//	Debug.Log("HERE");
-
-		// Need to figure this bit out
-		//bool blocked = m_Coordinates.TryGetValue(Direction.North, out var n);
-		//blocked &= m_Coordinates.TryGetValue(Direction.South, out var s);
-		//blocked &= m_Coordinates.TryGetValue(Direction.East, out var e);
-		//blocked &= m_Coordinates.TryGetValue(Direction.West, out var w);
-		//blocked &= n != null && s != null && e != null & w != null;
-		//return !blocked;
-
-		Coordinate next_c = null;
-		bool blocked = TryMove(Direction.North, ref next_c);
-		blocked &= TryMove(Direction.South, ref next_c);
-		blocked &= TryMove(Direction.East, ref next_c);
-		blocked &= TryMove(Direction.West, ref next_c);
-
-		return !blocked;
 	}
 
 	public override void Heal(bool fromPiece = false)

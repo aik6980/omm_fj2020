@@ -103,38 +103,36 @@ public class GridPlayerCharacter : MonoBehaviour
 		if (!m_AnimatedCharacter.ReachedDestination())
 			return;
 
-		bool north = Input.GetKey(KeyCode.W) || Input.GetAxisRaw("Vertical") > 0.1f;
-		bool south = Input.GetKey(KeyCode.S) || Input.GetAxisRaw("Vertical") < -0.1f;
-		bool east = Input.GetKey(KeyCode.D) || Input.GetAxisRaw("Horizontal") > 0.1f;
-		bool west = Input.GetKey(KeyCode.A) || Input.GetAxisRaw("Horizontal") < -0.1f;
 
-		if (!north && !south && !east && !west)
+		var directionVec = Vector2.zero;
+		directionVec += Input.GetAxisRaw("Vertical") * Vector2.up;
+		directionVec += Input.GetAxisRaw("Vertical") * Vector2.up;
+		directionVec += Input.GetAxisRaw("Horizontal") * Vector2.right;
+		directionVec += Input.GetAxisRaw("Horizontal") * Vector2.right;
+
+		if (directionVec.sqrMagnitude < 0.16f)
 			return;
 
-		Direction direction = Direction.North;
-		if (south)
-			direction = Direction.South;
-		if (east)
-			direction = Direction.East;
-		if (west)
-			direction = Direction.West;
-
-		//m_Facing = direction;
-        //transform.rotation = Quaternion.Euler(0, heading[(int)direction], 0);
-
-        //if (!AttemptMove(direction))
-        AttemptMove(direction);
+        AttemptMove(directionVec);
         PreparePlacement();
 	}
 
-	private bool AttemptMove(Direction direction)
+	private bool AttemptMove(Vector2 directionVec)
 	{
-		Coordinate nextCoordinate = null;
+		var newFacing = Direction.North;
+		if (Mathf.Abs(directionVec.y) >= Mathf.Abs(directionVec.x))
+        {
+			newFacing = directionVec.y > 0.0f ? Direction.North : Direction.South;
+		}
+		else
+        {
+			newFacing = directionVec.x > 0.0f ? Direction.East : Direction.West;
+		}
 
-        if (m_Facing != direction)
-        {//just turn
-            m_Facing = direction;
-            transform.rotation = Quaternion.Euler(0, heading[(int)direction], 0);
+		if (newFacing != m_Facing)
+		{//just turn
+            m_Facing = newFacing;
+            transform.rotation = Quaternion.Euler(0, heading[(int)newFacing], 0);
 
             ClearPreview();
             MoveToCoordinate(m_CurrentCoordinte);
@@ -142,7 +140,7 @@ public class GridPlayerCharacter : MonoBehaviour
             return true;
         }
 
-        if (m_CurrentCoordinte.TryMove(direction, ref nextCoordinate))
+		if (m_CurrentCoordinte.TryMove(directionVec, out var nextCoordinate))
 		{
 			//Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
 			ClearPreview();
@@ -270,7 +268,7 @@ public class GridPlayerCharacter : MonoBehaviour
         canUnfold = false;
 
         m_Facing = Direction.North;
-        AttemptMove(Direction.East);
+        AttemptMove(Vector2.right);
         PreparePlacement();
 
         //Debug.Log("gpc_spawn");
