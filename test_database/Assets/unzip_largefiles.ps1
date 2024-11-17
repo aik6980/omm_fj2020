@@ -1,1 +1,0 @@
-powershell Expand-Archive .\Firebase\Plugins\x86_64\FirebaseCppApp-6_16_1.zip -DestinationPath .\Firebase\Plugins\x86_64\
