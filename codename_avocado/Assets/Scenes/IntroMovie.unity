@@ -679,11 +679,11 @@ VideoPlayer:
   - {fileID: 0}
   m_DirectAudioVolumes:
   - 1
-  m_Url: StreamingAssets/Unfold_intro_movie_01.m4v
+  m_Url: 
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_SkipOnDrop: 1
   m_Looping: 0
   m_WaitForFirstFrame: 1
@@ -716,6 +716,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3852736830cb3a24c93e2ae24b0a5120, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  videoFile: Unfold_intro_movie_01.m4v
   videoPlayer: {fileID: 2138438685}
   graphic: {fileID: 544418759}
   nextScene: BandaidGameScene

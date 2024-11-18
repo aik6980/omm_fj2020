@@ -7,6 +7,7 @@ using UnityEngine.Video;
 
 public class VideoWatcher : MonoBehaviour
 {
+    public string videoFile;
     public VideoPlayer videoPlayer;
     public Graphic graphic;
     public string nextScene;
@@ -16,7 +17,8 @@ public class VideoWatcher : MonoBehaviour
         videoPlayer.time = 0;
         videoPlayer.loopPointReached += source => Done();
 
-        // videoPlayer.url = System.IO.Path.Combine(Application.streamingAssetsPath, "Unfold_title_seq_01.m4v");
+        videoPlayer.url = System.IO.Path.Combine(Application.streamingAssetsPath, videoFile);
+        videoPlayer.Play();
     }
 
     private void Update()
