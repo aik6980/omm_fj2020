@@ -66,23 +66,12 @@ public class GridPolluter : MonoBehaviour
 		});
 	}
 
-	public bool Polluted(Vector2 coPosition)
-	{
-		for (int p = 0; p < m_PollutionCoordinates.Count; ++p)
-		{
-			var pollution = m_PollutionCoordinates[p];
-			if (pollution.GridPosition() == coPosition && !pollution.CanBeHealed(false))
-				return true;
-		}
-		return false;
-	}
-
 	private void HealPosition(Vector2 coPosition, ref List<Coordinate> coordsToHeal)
 	{
 		for (int p = 0; p < m_PollutionCoordinates.Count; ++p)
 		{
 			var pollutionCoord = m_PollutionCoordinates[p];
-			if (pollutionCoord.GridPosition() == coPosition && pollutionCoord.CanBeHealed(false))
+			if (pollutionCoord.GridPosition() == coPosition && m_Grid.CanBeHealed(pollutionCoord, false))
 			{
 				coordsToHeal.Add(pollutionCoord);
 			}
@@ -98,7 +87,6 @@ public class GridPolluter : MonoBehaviour
 			HealPosition(coPosition, ref coordsToHeal);
 		}
 
-		coordsToHeal.ForEach((Coordinate c) => c.Heal(false));
 		return true;
 	}
 

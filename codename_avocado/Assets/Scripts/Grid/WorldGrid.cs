@@ -76,10 +76,10 @@ public class WorldGrid : MonoBehaviour
 		m_coord_grid.ForEach((x, y, coord) =>
 		{
 			m_coord_grid[x, y] = new Coordinate(this, new Vector2Int(x, y), GridTileBuilder.TileType.floor);
-            m_coord_grid[x, y].OnCoordinateTypeChanged += WorldGrid_OnCoordinateTypeChanged;
 		});
+		OnCoordinateTypeChanged += WorldGrid_OnCoordinateTypeChanged;
 
-        var conveyorQueue = Resources.Load<ManualConveyorQueue>(string.Format("Levels/Lv{0}_Queue", level_num));
+		var conveyorQueue = Resources.Load<ManualConveyorQueue>(string.Format("Levels/Lv{0}_Queue", level_num));
         if (conveyorQueue != null)
         {
             NextShapeQueue.Instance.conveyorQueue = conveyorQueue;
@@ -145,6 +145,12 @@ public class WorldGrid : MonoBehaviour
 		}
 
 		return m_coord_grid[x, y];
+	}
+
+	public Coordinate GetAdjacentCoordinate(Vector2Int src, Direction dir)
+	{
+		var dest = OffsetDirection(src, dir);
+		return GetCoordinate(dest);
 	}
 
 	//public void BuildTileRepresentation()
@@ -308,7 +314,7 @@ public class WorldGrid : MonoBehaviour
 
 	public bool SupportsPlacement(Vector2 placement, GridPiece piece, Direction direction)
 	{
-		return piece.Coordinates.All(coord => coord.CanBeHealed(piece.m_SuperPiece));
+		return piece.Coordinates.All(coord => CanBeHealed(coord, piece.m_SuperPiece));
 
 		//foreach (var coord in piece.Coordinates)
 		//{
@@ -329,10 +335,157 @@ public class WorldGrid : MonoBehaviour
 		//});
 	}
 
+	public bool TryMove(Coordinate from, Vector2 directionVec, out Coordinate nextCoordinate)
+	{
+		List<Direction> directions = new List<Direction>();
+		if (directionVec.y > 0.1f)
+			directions.Add(Direction.North);
+		else if (directionVec.y < -0.1f)
+			directions.Add(Direction.South);
 
-	public Coordinate GetNextCoordinate(Vector2Int src, Direction dir)
-    {
-		var dest = OffsetDirection(src, dir);
-		return GetCoordinate(dest);
-    }
+		if (directionVec.x > 0.1f)
+			directions.Add(Direction.East);
+		else if (directionVec.x < -0.1f)
+			directions.Add(Direction.West);
+
+		// Sort the directions vector based on which has the larger magnitude.
+		// i.e. the player is pushing more in that direction than any other.
+		if (Mathf.Abs(directionVec.x) > Mathf.Abs(directionVec.y))
+		{
+			directions.Reverse();
+		}
+
+		if (directions.Count == 1)
+		{
+			nextCoordinate = GetAdjacentCoordinate(from.m_Position, directions[0]);
+			if (nextCoordinate != null && nextCoordinate.IsPassable())
+			{
+				return true;
+			}
+		}
+		else if (directions.Count == 2)
+		{
+			var firstCoord = GetAdjacentCoordinate(from.m_Position, directions[0]);
+			if (firstCoord != null && firstCoord.IsPassable())
+			{
+				var nsewCoord = GetAdjacentCoordinate(firstCoord.m_Position, directions[1]);
+				if (nsewCoord != null && nsewCoord.IsPassable())
+				{
+					nextCoordinate = nsewCoord;
+					return true;
+				}
+			}
+
+			var secondCoord = GetAdjacentCoordinate(from.m_Position, directions[1]);
+			if (secondCoord != null && secondCoord.IsPassable())
+			{
+				var ewnsCoord = GetAdjacentCoordinate(secondCoord.m_Position, directions[0]);
+				if (ewnsCoord != null && ewnsCoord.IsPassable())
+				{
+					nextCoordinate = ewnsCoord;
+					return true;
+				}
+			}
+
+			// If neither of the above worked use first over second.
+			if (firstCoord != null && firstCoord.IsPassable())
+			{
+				nextCoordinate = firstCoord;
+				return true;
+			}
+
+			if (secondCoord != null && secondCoord.IsPassable())
+			{
+				nextCoordinate = secondCoord;
+				return true;
+			}
+		}
+
+		nextCoordinate = null;
+		return false;
+	}
+
+	public bool CanBeHealed(Coordinate coord, bool isSuperPowered)
+	{
+		switch (coord.Type)
+		{
+			case GridTileBuilder.TileType.start: // start and exit can be healed but cannot change the representation
+			case GridTileBuilder.TileType.exit:
+			case GridTileBuilder.TileType.floor:
+			case GridTileBuilder.TileType.grass:
+				return true;
+			case GridTileBuilder.TileType.obstacle:
+				return false;
+			case GridTileBuilder.TileType.toxic:
+				return isSuperPowered ? true : CanBeHealed_Toxic(coord);
+
+		}
+
+		Debug.Assert(false);
+		return false;
+	}
+
+	bool CanBeHealed_Toxic(Coordinate coord)
+	{
+		//if (m_Position == Vector2.zero)
+		//	Debug.Log("HERE");
+
+		// Need to figure this bit out
+		//bool blocked = m_Coordinates.TryGetValue(Direction.North, out var n);
+		//blocked &= m_Coordinates.TryGetValue(Direction.South, out var s);
+		//blocked &= m_Coordinates.TryGetValue(Direction.East, out var e);
+		//blocked &= m_Coordinates.TryGetValue(Direction.West, out var w);
+		//blocked &= n != null && s != null && e != null & w != null;
+		//return !blocked;
+
+		for (int i = 0; i < System.Enum.GetValues(typeof(Direction)).Length; ++i)
+		{
+			var nextCoordinate = GetAdjacentCoordinate(coord.m_Position, (Direction)i);
+			if (nextCoordinate == null || nextCoordinate.Type != GridTileBuilder.TileType.toxic)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public event System.Action<Coordinate, GridTileBuilder.TileType, GridTileBuilder.ToxicLevel> OnCoordinateTypeChanged;
+
+	public void SetCoordType(Coordinate coord, GridTileBuilder.TileType type, GridTileBuilder.ToxicLevel toxic_level)
+	{
+		if (coord.Type == GridTileBuilder.TileType.start ||
+			coord.Type == GridTileBuilder.TileType.exit)
+		{
+			return;
+		}
+
+		if (coord.Type != type || coord.ToxicLevel != toxic_level)
+		{
+			GridTileBuilder.TileType previous_type = coord.Type;
+			GridTileBuilder.ToxicLevel previous_toxicity = coord.ToxicLevel;
+			coord.Type = type;
+			coord.ToxicLevel = toxic_level;
+			OnCoordinateTypeChanged?.Invoke(coord, previous_type, previous_toxicity);
+
+			for (int i = 0; i < System.Enum.GetValues(typeof(Direction)).Length; ++i)
+			{
+				Direction d = (Direction)i;
+				var nextCoordinate = GetAdjacentCoordinate(coord.m_Position, d);
+				if (nextCoordinate != null && nextCoordinate.Type == GridTileBuilder.TileType.toxic)
+				{
+					if (nextCoordinate.ToxicLevel == GridTileBuilder.ToxicLevel.pool ||
+						nextCoordinate.ToxicLevel == GridTileBuilder.ToxicLevel.healable_pool)
+					{
+						var new_toxicity = CanBeHealed(nextCoordinate, false) ? GridTileBuilder.ToxicLevel.healable_pool : GridTileBuilder.ToxicLevel.pool;
+						SetCoordType(nextCoordinate, nextCoordinate.Type, new_toxicity);
+					}
+					else
+					{
+						SetCoordType(nextCoordinate, nextCoordinate.Type, CanBeHealed(nextCoordinate, false) ? GridTileBuilder.ToxicLevel.small_spill : GridTileBuilder.ToxicLevel.big_spill);
+					}
+				}
+			}
+		}
+	}
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -9,102 +10,29 @@ public class Coordinate
 	public Vector2Int m_Position;
 
 	//public Dictionary<Direction, Coordinate> m_Coordinates = new Dictionary<Direction, Coordinate>();
-	public GridPiece m_Piece;
     private GridTileBuilder.TileType m_Type;
 
     public CoordinateRepresentation m_Representation;
 	public GridPlayerCharacter m_PopulatedPlayer;
     public GridTileBuilder.ToxicLevel  m_ToxicLevel = GridTileBuilder.ToxicLevel.none;
 
-	public event System.Action<Coordinate, GridTileBuilder.TileType, GridTileBuilder.ToxicLevel> OnCoordinateTypeChanged;
+    public GridTileBuilder.TileType Type { get => m_Type; set => m_Type = value; }
+	public GridTileBuilder.ToxicLevel ToxicLevel { get => m_ToxicLevel; set => m_ToxicLevel = value; }
 
-	public void SetCoordType(GridTileBuilder.TileType type, GridTileBuilder.ToxicLevel toxic_level)
-    {
-		if (Type == GridTileBuilder.TileType.start ||
-			Type == GridTileBuilder.TileType.exit)
-        {
-			return;
-        }
-
-		if (m_Type != type || m_ToxicLevel != toxic_level)
-		{
-			GridTileBuilder.TileType previous_type = m_Type;
-			GridTileBuilder.ToxicLevel previous_toxicity = m_ToxicLevel;
-			m_Type = type;
-			m_ToxicLevel = toxic_level;
-			OnCoordinateTypeChanged?.Invoke(this, previous_type, previous_toxicity);
-
-			for (int i = 0; i < System.Enum.GetValues(typeof(Direction)).Length; ++i)
-			{
-				Direction d = (Direction)i;
-				var nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, d);
-				if (nextCoordinate != null && nextCoordinate.Type == GridTileBuilder.TileType.toxic)
-				{
-					if (nextCoordinate.ToxicLevel == GridTileBuilder.ToxicLevel.pool ||
-						nextCoordinate.ToxicLevel == GridTileBuilder.ToxicLevel.healable_pool)
-					{
-						var new_toxicity = nextCoordinate.CanBeHealed(false) ? GridTileBuilder.ToxicLevel.healable_pool : GridTileBuilder.ToxicLevel.pool;
-						nextCoordinate.SetCoordType(nextCoordinate.Type, new_toxicity);
-					}
-					else
-					{
-						nextCoordinate.SetCoordType(nextCoordinate.Type, nextCoordinate.CanBeHealed(false) ? GridTileBuilder.ToxicLevel.small_spill : GridTileBuilder.ToxicLevel.big_spill);
-					}
-				}
-			}
-		}
-	}
-
-    public GridTileBuilder.TileType Type { get => m_Type; }
-	public GridTileBuilder.ToxicLevel ToxicLevel { get => m_ToxicLevel; }
-
-	public Coordinate(WorldGrid world_grid, GridPiece piece, Vector2Int position, bool bustin_makes_me_feel_good)
+	public Coordinate(WorldGrid world_grid, Vector2Int position, GridTileBuilder.TileType type)
 	{
 		m_Worldgrid = world_grid;
 		m_Position = position;
-		m_Piece = piece;
-		m_Type = m_Piece.m_TileType;
-	}
-
-	public Coordinate(WorldGrid world_griid, Vector2Int position, GridTileBuilder.TileType type)
-	{
-		m_Worldgrid = world_griid;
-		m_Position = position;
-		m_Piece = null;
 		m_Type = type;
 	}
 
-    //public void Populate(List<Coordinate> coordinates)
-    //{
-    //    FindCoord(coordinates, Direction.North);
-    //    FindCoord(coordinates, Direction.South);
-    //    FindCoord(coordinates, Direction.East);
-    //    FindCoord(coordinates, Direction.West);
-    //}
-
-    //private void FindCoord(List<Coordinate> coordinates, Direction direction)
-    //{
-    //    var position = WorldGrid.OffsetDirection(GridPosition(), direction);
-    //    for (int i = 0; i < coordinates.Count; ++i)
-    //    {
-    //        var cord = coordinates[i];
-    //        if (cord.GridPosition() == position)
-    //        {
-    //            m_Coordinates[direction] = cord;
-    //            return;
-    //        }
-    //    }
-    //    m_Coordinates[direction] = null;
-    //}
-
     public void AppendEmptyNeighbors(ref List<Vector2Int> neighbors)
 	{
-		Coordinate coord = null;
 		for (int i = 0; i < System.Enum.GetValues(typeof(Direction)).Length; ++i)
 		{
 			Direction d = (Direction)i;
 			//if (!TryMove(d, ref coord))
-			var nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, d);
+			var nextCoordinate = m_Worldgrid.GetAdjacentCoordinate(m_Position, d);
 			if (nextCoordinate != null && nextCoordinate.IsPollutable())
 			{
 				var emptyNeighbor = /*Vector2Int.RoundToInt(WorldGrid.OffsetDirection(m_Position, d))*/nextCoordinate.m_Position;
@@ -129,82 +57,9 @@ public class Coordinate
 			m_Type == GridTileBuilder.TileType.floor;
 	}
 
-	public bool TryMove(Vector2 directionVec, out Coordinate nextCoordinate)
-	{
-		List<Direction> directions = new List<Direction>();
-		if (directionVec.y > 0.1f)
-			directions.Add(Direction.North);
-		else if (directionVec.y < -0.1f)
-			directions.Add(Direction.South);
-
-		if (directionVec.x > 0.1f)
-			directions.Add(Direction.East);
-		else if (directionVec.x < -0.1f)
-			directions.Add(Direction.West);
-
-		// Sort the directions vector based on which has the larger magnitude.
-		// i.e. the player is pushing more in that direction than any other.
-		if (Mathf.Abs(directionVec.x) > Mathf.Abs(directionVec.y))
-        {
-			directions.Reverse();
-        }
-
-		if (directions.Count == 1)
-        {
-			nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, directions[0]);
-			if (nextCoordinate != null && nextCoordinate.IsPassable())
-			{
-				return true;
-			}
-		}
-		else if (directions.Count == 2)
-        {
-			var firstCoord = m_Worldgrid.GetNextCoordinate(m_Position, directions[0]);
-			if (firstCoord != null && firstCoord.IsPassable())
-            {
-				var nsewCoord = m_Worldgrid.GetNextCoordinate(firstCoord.m_Position, directions[1]);
-				if (nsewCoord != null && nsewCoord.IsPassable())
-                {
-					nextCoordinate = nsewCoord;
-					return true;
-                }
-			}
-
-			var secondCoord = m_Worldgrid.GetNextCoordinate(m_Position, directions[1]);
-			if (secondCoord != null && secondCoord.IsPassable())
-			{
-				var ewnsCoord = m_Worldgrid.GetNextCoordinate(secondCoord.m_Position, directions[0]);
-				if (ewnsCoord != null && ewnsCoord.IsPassable())
-				{
-					nextCoordinate = ewnsCoord;
-					return true;
-				}
-			}
-
-			// If neither of the above worked use first over second.
-			if (firstCoord != null && firstCoord.IsPassable())
-            {
-				nextCoordinate = firstCoord;
-				return true;
-            }
-
-			if (secondCoord != null && secondCoord.IsPassable())
-			{
-				nextCoordinate = secondCoord;
-				return true;
-			}
-		}
-
-		nextCoordinate = null;
-		return false;
-	}
-
 	public Vector2 GridPosition()
 	{
-		if (m_Piece != null)
-			return TranslatedPosition(m_Piece.m_PlacedPosition, m_Piece.m_PlacedDirection);
-		else
-			return TranslatedPosition(Vector2.zero, Direction.North);
+		return TranslatedPosition(Vector2.zero, Direction.North);
 	}
 
 	public Vector2 TranslatedPosition(Vector2 rootPosition, Direction direction)
@@ -238,143 +93,5 @@ public class Coordinate
 	public virtual void Decorate(CoordinateRepresentation rep)
 	{
 		m_Representation = rep;
-		// set to color of shape
-		rep.SetColor(GetColor());
-	}
-
-	public virtual Color GetColor()
-	{
-		if (m_Piece == null)
-			return Color.clear;
-
-		return m_Piece.GetColor();
-	}
-
-	public bool CanBeHealed(bool isSuperPowered)
-	{
-		switch(m_Type)
-        {
-			case GridTileBuilder.TileType.start: // start and exit can be healed but cannot change the representation
-			case GridTileBuilder.TileType.exit:
-			case GridTileBuilder.TileType.floor:
-			case GridTileBuilder.TileType.grass:
-				return true;
-			case GridTileBuilder.TileType.obstacle:
-				return false;
-			case GridTileBuilder.TileType.toxic:
-				return isSuperPowered ? true : CanBeHealed_Toxic();
-
-        }
-
-		Debug.Assert(false);
-		return false;
-	}
-
-	bool CanBeHealed_Toxic()
-	{
-		//if (m_Position == Vector2.zero)
-		//	Debug.Log("HERE");
-
-		// Need to figure this bit out
-		//bool blocked = m_Coordinates.TryGetValue(Direction.North, out var n);
-		//blocked &= m_Coordinates.TryGetValue(Direction.South, out var s);
-		//blocked &= m_Coordinates.TryGetValue(Direction.East, out var e);
-		//blocked &= m_Coordinates.TryGetValue(Direction.West, out var w);
-		//blocked &= n != null && s != null && e != null & w != null;
-		//return !blocked;
-		
-		for(int i=0; i< System.Enum.GetValues(typeof(Direction)).Length; ++i)
-        {
-			var nextCoordinate = m_Worldgrid.GetNextCoordinate(m_Position, (Direction)i);
-			if(nextCoordinate == null || nextCoordinate.m_Type != GridTileBuilder.TileType.toxic)
-            {
-				return true;
-            }
-        }
-
-		return false;
-	}
-
-
-	public virtual void Heal(bool fromPiece = false)
-	{
-		if (m_Piece != null)
-		{
-			m_Piece.m_Grid.m_Coordinates.Remove(this);
-			m_Type = GridTileBuilder.TileType.floor;
-
-			if (!fromPiece)
-				m_Piece.CoordinateHealed(this);
-
-			if (m_Representation != null && m_Representation.gameObject != null)
-				GameObject.Destroy(m_Representation.gameObject);
-		}
 	}
 }
-
-public class PollutionCoordinate : Coordinate
-{
-	public PollutionCoordinate(WorldGrid world_grid, PollutionPiece piece, Vector2Int position) 
-		: base(world_grid, piece, position, true)
-	{
-	}
-
-	public override Color GetColor()
-	{
-		Color color = CanBeHealed(false) ? Color.yellow : Color.red;
-		// we are the source
-		if (IsCenterPollutant())
-		{
-			// need a spout at the center?
-			color = CanBeHealed(false) ? Color.black : Color.red;
-		}
-
-		return color;
-	}
-
-	public virtual bool IsCenterPollutant()
-	{
-		return m_Position == Vector2.zero;
-	}
-
-	public override void Heal(bool fromPiece = false)
-	{
-		m_Piece.m_Grid.m_Polluter.m_PollutionCoordinates.Remove(this);
-		base.Heal(fromPiece);
-	}
-
-	public override void Decorate(CoordinateRepresentation rep)
-	{
-		base.Decorate(rep);
-		if (IsCenterPollutant())
-		{
-			rep.Offset(0.1f);
-		}
-	}
-}
-
-
-//obsoleted
-//public class BlockingCoordinate : PollutionCoordinate
-//{
-//	public BlockingCoordinate(WorldGrid world_grid, PollutionPiece piece, Vector2Int position)
-//	: base(world_grid, piece, position)
-//	{
-//	}
-
-//	public override Color GetColor()
-//	{
-//		return Color.black;
-//	}
-
-//	public override bool CanBeHealed()
-//	{
-//		return false;
-//	}
-
-//	public override bool IsCenterPollutant()
-//	{
-//		// raise all blocks...
-//		return true;
-//	}
-//}

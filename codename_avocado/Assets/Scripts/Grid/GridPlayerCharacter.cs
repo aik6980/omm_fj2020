@@ -140,7 +140,7 @@ public class GridPlayerCharacter : MonoBehaviour
             return true;
         }
 
-		if (m_CurrentCoordinte.TryMove(directionVec, out var nextCoordinate))
+		if (m_Grid.TryMove(m_CurrentCoordinte, directionVec, out var nextCoordinate))
 		{
 			//Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
 			ClearPreview();
