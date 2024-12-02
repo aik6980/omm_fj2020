@@ -165,7 +165,7 @@ public class AnimatedCharacter : MonoBehaviour
         for (int i = 0; i < models.Length; i++)
         {
             models[i].SetActive(i == n);
-            if (models[i].active)
+            if (models[i].activeSelf)
             {
                 models[i].GetComponent<Renderer>().materials[0].color = gridPC.m_currentUnfoldShapeDef.color;
             }
