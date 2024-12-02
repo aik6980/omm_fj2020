@@ -4,14 +4,14 @@ using UnityEngine;
 
 public interface ILevelLoader
 {
-    WorldGrid.WorldData LoadLevel(WorldGrid grid);
+    LevelReader.LevelData LoadLevel(WorldGrid grid);
 }
 
 public class LevelLoader : MonoBehaviour, ILevelLoader
 {
     public int Level = 1;
 
-    public WorldGrid.WorldData LoadLevel(WorldGrid grid)
+    public LevelReader.LevelData LoadLevel(WorldGrid grid)
     {
         LaunchGameScript ls = LaunchGameScript.singleton;
         if (ls)

@@ -11,19 +11,19 @@ public class CoordinateRepresentation : MonoBehaviour
 	public Vector3 m_DefaultPosition;
 
 	private GridTileBuilder.TileType m_previous_type;
-	private GridTileBuilder.ToxicLevel m_previous_toxicity;
+	private GridTileBuilder.ToxicLevel m_previous_toxicity = GridTileBuilder.ToxicLevel.none;
 	private GameObject m_mesh_object = null;
 
 	// Toxic decoration
 	private GameObject m_vfx_object = null;
 
-	public void Configure(Coordinate coordinate, GridTileBuilder builder)
+	public void Configure(WorldGrid worldGrid, Coordinate coordinate, GridTileBuilder builder)
 	{
 		bool is_changed()
 		{
 			return
 				m_previous_type != coordinate.Type ||
-				m_previous_toxicity != coordinate.ToxicLevel;
+				m_previous_toxicity != worldGrid.GetToxicLevel(coordinate);
 		};
 
 		m_Coordinate = coordinate;
@@ -43,9 +43,9 @@ public class CoordinateRepresentation : MonoBehaviour
 			}
 		}
 
-		if (is_changed())
+		if (m_mesh_object == null || is_changed())
 		{
-			m_mesh_object = builder.GetTile(coordinate);
+			m_mesh_object = builder.GetTile(worldGrid, coordinate);
 			m_mesh_object.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 
 			// position/rotation fix
@@ -55,7 +55,8 @@ public class CoordinateRepresentation : MonoBehaviour
 			m_mesh_object.transform.Rotate(new Vector3(0f, 0f, 90f * Random.Range(0, 3)));
 
 			// add VFX 
-			if(coordinate.Type == GridTileBuilder.TileType.toxic)
+			if (coordinate.Type == GridTileBuilder.TileType.toxic ||
+				coordinate.Type == GridTileBuilder.TileType.toxic_pool)
             {
 				m_vfx_object = builder.InstantiateToxicVFX();
 				m_vfx_object.transform.parent = this.transform;
@@ -71,7 +72,7 @@ public class CoordinateRepresentation : MonoBehaviour
 
 
 			m_previous_type = coordinate.Type;
-			m_previous_toxicity = coordinate.ToxicLevel;
+			m_previous_toxicity = worldGrid.GetToxicLevel(coordinate);
 
 			//Debug.Log(m_mesh_object.transform.position);
 			//Debug.Log("Spawned Coordinate: " + m_Coordinate.GridPosition().x.ToString() + "," +  m_Coordinate.GridPosition().y.ToString());

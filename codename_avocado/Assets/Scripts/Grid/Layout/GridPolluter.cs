@@ -104,7 +104,7 @@ public class GridPolluter : MonoBehaviour
 		m_PollutionCoordinates.Clear();
 	}
 
-    public void AddBlocks(List<PollutionPiece> pieces)
+    public void AddObstacles(List<BlockingPiece> pieces)
 	{
 		var pollutant = RandomPollutant();
 		while (m_PollutionCoordinates.Find((Coordinate c) => c.GridPosition() == pollutant) != null)
@@ -119,12 +119,17 @@ public class GridPolluter : MonoBehaviour
 		});
 	}
 
-	public void AddVolcanoes(List<PollutionPiece> pieces)
+	public void AddToxicPools(List<ToxicPiece> pieces)
 	{
 		pieces.ForEach(piece =>
 		{
 			m_Pollution.Add(piece);
 			m_PollutionCoordinates.AddRange(piece.Coordinates);
+
+			piece.Coordinates.ForEach(coord => m_Grid.SetCoordType(coord, GridTileBuilder.TileType.toxic_pool));
+			piece.GenerateExpansion();
+			for (int i = 0; i < Random.Range(8, 11); ++i)
+				piece.Expand();
 		});
 	}
 }

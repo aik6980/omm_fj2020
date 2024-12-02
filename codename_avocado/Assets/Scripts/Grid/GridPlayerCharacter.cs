@@ -225,7 +225,7 @@ public class GridPlayerCharacter : MonoBehaviour
                 OnPlaceDelegate?.Invoke(placePostition);
 
 				// TODO: overlapping piece handling...
-				m_PlayerPiece.Place(placePostition, m_Facing);
+				m_Grid.Place(Vector2Int.RoundToInt(placePostition), m_Facing, m_PlayerPiece.m_Shape, GridTileBuilder.TileType.grass);
 				m_Grid.UpdateTileRepresentation(m_PlayerPiece);
 				//m_Grid.m_Pieces.Add(m_PlayerPiece);
 				m_Grid.m_Polluter.HandleHealing();

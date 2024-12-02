@@ -17,7 +17,6 @@ public class Coordinate
     public GridTileBuilder.ToxicLevel  m_ToxicLevel = GridTileBuilder.ToxicLevel.none;
 
     public GridTileBuilder.TileType Type { get => m_Type; set => m_Type = value; }
-	public GridTileBuilder.ToxicLevel ToxicLevel { get => m_ToxicLevel; set => m_ToxicLevel = value; }
 
 	public Coordinate(WorldGrid world_grid, Vector2Int position, GridTileBuilder.TileType type)
 	{
@@ -26,14 +25,14 @@ public class Coordinate
 		m_Type = type;
 	}
 
-    public void AppendEmptyNeighbors(ref List<Vector2Int> neighbors)
+	public void AppendEmptyNeighbors(ref List<Vector2Int> neighbors)
 	{
 		for (int i = 0; i < System.Enum.GetValues(typeof(Direction)).Length; ++i)
 		{
 			Direction d = (Direction)i;
 			//if (!TryMove(d, ref coord))
 			var nextCoordinate = m_Worldgrid.GetAdjacentCoordinate(m_Position, d);
-			if (nextCoordinate != null && nextCoordinate.IsPollutable())
+			if (nextCoordinate != null && nextCoordinate.IsPollutable)
 			{
 				var emptyNeighbor = /*Vector2Int.RoundToInt(WorldGrid.OffsetDirection(m_Position, d))*/nextCoordinate.m_Position;
 				if (!neighbors.Contains(emptyNeighbor))
@@ -42,19 +41,23 @@ public class Coordinate
 		}
 	}
 
-	public bool IsPassable()
-    {
-		return
+	public bool IsPassable {
+		get =>
 			m_Type == GridTileBuilder.TileType.grass ||
 			m_Type == GridTileBuilder.TileType.exit ||
 			m_Type == GridTileBuilder.TileType.start;
 	}
 
-	public bool IsPollutable()
-	{
-		return
+	public bool IsPollutable {
+		get =>
 			m_Type == GridTileBuilder.TileType.grass ||
 			m_Type == GridTileBuilder.TileType.floor;
+	}
+
+	public bool IsPolluted {
+		get =>
+			m_Type == GridTileBuilder.TileType.toxic ||
+			m_Type == GridTileBuilder.TileType.toxic_pool;
 	}
 
 	public Vector2 GridPosition()

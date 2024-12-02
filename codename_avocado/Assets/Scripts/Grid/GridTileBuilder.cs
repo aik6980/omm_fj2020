@@ -30,7 +30,8 @@ public class GridTileBuilder : MonoBehaviour
         start,
         exit,
         obstacle,
-        floor
+        floor,
+        toxic_pool
     }
 
     public enum ToxicLevel
@@ -42,7 +43,7 @@ public class GridTileBuilder : MonoBehaviour
         small_spill
     }
 
-    public GameObject GetTile(Coordinate coord)
+    public GameObject GetTile(WorldGrid worldGrid, Coordinate coord)
     {
         GameObject GetRandomTile(GameObject[] gameObjects)
         {
@@ -58,15 +59,19 @@ public class GridTileBuilder : MonoBehaviour
         switch(coord.Type)
         {
             case TileType.toxic:
-                switch (coord.ToxicLevel)
+                switch (worldGrid.GetToxicLevel(coord))
                 {
-                    case ToxicLevel.healable_pool:  return GetRandomTile(toxic_src_empty_tile);
-                    case ToxicLevel.pool:           return GetRandomTile(toxic_src_full_tile);
-                    case ToxicLevel.big_spill:      return GetRandomTile(toxic_big_spill_tile);
-                    case ToxicLevel.small_spill:    return GetRandomTile(toxic_small_spill_tile);
+                    case ToxicLevel.big_spill: return GetRandomTile(toxic_big_spill_tile);
+                    case ToxicLevel.small_spill: return GetRandomTile(toxic_small_spill_tile);
+                    default: Debug.Assert(false); return null;
+                }
 
-                    case ToxicLevel.none:
-                    default:                        return null;
+            case TileType.toxic_pool:
+                switch (worldGrid.GetToxicLevel(coord))
+                {
+                    case ToxicLevel.pool: return GetRandomTile(toxic_src_full_tile);
+                    case ToxicLevel.healable_pool: return GetRandomTile(toxic_src_empty_tile);
+                    default: Debug.Assert(false); return null;
                 }
 
             case TileType.grass:    return GetRandomTile(grass_tile);
@@ -78,11 +83,11 @@ public class GridTileBuilder : MonoBehaviour
         }
     }
 
-    public CoordinateRepresentation InstantiateTile(Coordinate coord)
+    public CoordinateRepresentation InstantiateTile(WorldGrid worldGrid, Coordinate coord)
     {
         var instance = GameObject.Instantiate(m_coordRepresentativePrefab);
         var representation = instance.GetComponent<CoordinateRepresentation>();
-        representation.Configure(coord, this);
+        representation.Configure(worldGrid, coord, this);
         return representation;
     }
     public GameObject InstantiateToxicVFX()
