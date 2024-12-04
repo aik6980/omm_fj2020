@@ -5,54 +5,62 @@ using UnityEngine.AI;
 
 public class CoordinateRepresentation : MonoBehaviour
 {
-	public MeshRenderer m_Mesh;
 	public Coordinate m_Coordinate;
-
-	public Vector3 m_DefaultPosition;
 
 	private GridTileBuilder.TileType m_previous_type;
 	private GridTileBuilder.ToxicLevel m_previous_toxicity = GridTileBuilder.ToxicLevel.none;
-	private GameObject m_mesh_object = null;
+
+	private GameObject m_base_tile_object = null;
+	private GameObject[] m_adorning_objects = null;
 
 	// Toxic decoration
 	private GameObject m_vfx_object = null;
 
 	public void Configure(WorldGrid worldGrid, Coordinate coordinate, GridTileBuilder builder)
 	{
-		bool is_changed()
-		{
-			return
-				m_previous_type != coordinate.Type ||
-				m_previous_toxicity != worldGrid.GetToxicLevel(coordinate);
-		};
+		bool type_changed() => m_previous_type != coordinate.Type;
+		bool toxicity_changed() => m_previous_toxicity != worldGrid.GetToxicLevel(coordinate);
 
 		m_Coordinate = coordinate;
 		transform.position = new Vector3(m_Coordinate.GridPosition().x, -.5f, m_Coordinate.GridPosition().y);
-		m_DefaultPosition = transform.position;
 		m_Coordinate.Decorate(this);
 
-		if (m_mesh_object != null && is_changed())
+		// Destroy the old...
+		if (type_changed() || toxicity_changed())
         {
-			Destroy(m_mesh_object);
-			m_mesh_object = null;
+			if (m_base_tile_object != null)
+			{
+				Destroy(m_base_tile_object);
+				m_base_tile_object = null;
+			}
 
-			if(m_vfx_object != null)
-            {
+			if (m_vfx_object != null)
+			{
 				Destroy(m_vfx_object);
 				m_vfx_object = null;
 			}
 		}
 
-		if (m_mesh_object == null || is_changed())
+		if (m_adorning_objects != null && type_changed())
 		{
-			m_mesh_object = builder.GetTile(worldGrid, coordinate);
-			m_mesh_object.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+			for (int i = 0; i < m_adorning_objects.Length; ++i)
+			{
+				Destroy(m_adorning_objects[i]);
+			}
+			m_adorning_objects = null;
+		}
+
+		// Create the new...
+		if (m_base_tile_object == null || type_changed() || toxicity_changed())
+		{
+			m_base_tile_object = builder.GetTile(worldGrid, coordinate);
+			m_base_tile_object.GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 
 			// position/rotation fix
-			m_mesh_object.transform.parent = this.transform;
-			m_mesh_object.transform.localPosition = Vector3.zero;
+			m_base_tile_object.transform.parent = this.transform;
+			m_base_tile_object.transform.localPosition = Vector3.zero;
 
-			m_mesh_object.transform.Rotate(new Vector3(0f, 0f, 90f * Random.Range(0, 3)));
+			m_base_tile_object.transform.Rotate(new Vector3(0f, 0f, 90f * Random.Range(0, 3)));
 
 			// add VFX 
 			if (coordinate.Type == GridTileBuilder.TileType.toxic ||
@@ -69,25 +77,19 @@ public class CoordinateRepresentation : MonoBehaviour
 				vfx.transform.parent = this.transform;
 				vfx.transform.localPosition = Vector3.zero;
 			}
-
-
-			m_previous_type = coordinate.Type;
-			m_previous_toxicity = worldGrid.GetToxicLevel(coordinate);
-
-			//Debug.Log(m_mesh_object.transform.position);
-			//Debug.Log("Spawned Coordinate: " + m_Coordinate.GridPosition().x.ToString() + "," +  m_Coordinate.GridPosition().y.ToString());
 		}
-	}
 
-	public void SetColor(Color color)
-	{
-		m_Mesh.material.color = color;
-		// change alpha or something....
-	}
+		if (m_adorning_objects == null || type_changed())
+		{
+			m_adorning_objects = builder.GetTileAdornments(coordinate);
+			m_adorning_objects.ForEach(adornment =>
+			{
+				adornment.transform.parent = this.transform;
+				adornment.transform.localPosition = Vector3.zero;
+			});
+		}
 
-	public void Offset(float amount)
-	{
-		Vector3 offsetPosition = new Vector3(m_DefaultPosition.x, m_DefaultPosition.y + amount, m_DefaultPosition.z);
-		transform.position = offsetPosition;
+		m_previous_type = coordinate.Type;
+		m_previous_toxicity = worldGrid.GetToxicLevel(coordinate);
 	}
 }

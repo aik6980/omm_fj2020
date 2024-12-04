@@ -8,11 +8,14 @@ public static class IEnumerableExtensions
 {
 	public static void ForEach<T>(this IEnumerable<T> enumerable, System.Action<T> fn)
     {
-		var enumerator = enumerable.GetEnumerator();
-		while (enumerator.MoveNext())
-        {
-			fn(enumerator.Current);
-        }
+		if (enumerable != null)
+		{
+			var enumerator = enumerable.GetEnumerator();
+			while (enumerator.MoveNext())
+			{
+				fn(enumerator.Current);
+			}
+		}
 	}
 }
 
@@ -64,10 +67,7 @@ public class WorldGrid : MonoBehaviour
 			m_EnvironmentPostProcess = Instantiate(post_process);
 
 		OnCoordinateTypeChanged -= WorldGrid_OnCoordinateTypeChanged;
-		if (m_coord_grid_representation != null)
-        {
-			m_coord_grid_representation.ForEach((x, y, coord_rep) => Destroy(coord_rep.gameObject));
-		}
+		m_coord_grid_representation?.ForEach((x, y, coord_rep) => Destroy(coord_rep?.gameObject));
 
 		var conveyorQueue = Resources.Load<ManualConveyorQueue>(string.Format("Levels/Lv{0}_Queue", level_num));
         if (conveyorQueue != null)
