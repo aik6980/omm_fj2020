@@ -151,9 +151,9 @@ MonoBehaviour:
   toxic_big_spill_tile:
   - {fileID: 919132149155446097, guid: 13cf1f217cb60214395d5c809d01ea6f, type: 3}
   toxic_small_spill_tile:
-  - {fileID: 919132149155446097, guid: c8a10fb122188364581131521851f2dc, type: 3}
-  - {fileID: 919132149155446097, guid: 8a8b4050b954be141894c6bfc27d1447, type: 3}
-  - {fileID: 919132149155446097, guid: ef61d732bde65a64c934d9ae9218819c, type: 3}
+  - {fileID: 919132149155446097, guid: 2fa0fdbc5dfeab74fa10948a7bbaf0aa, type: 3}
+  - {fileID: 919132149155446097, guid: e914e437fbaf9aa4391588901622c67d, type: 3}
+  - {fileID: 919132149155446097, guid: d5221d6e71271bf41980a38b8388b611, type: 3}
   start_tile:
   - {fileID: 919132149155446097, guid: b4af11d481aa52f49971507a8cbe4a70, type: 3}
   exit_tile:

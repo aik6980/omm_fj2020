@@ -60,7 +60,7 @@ public class CoordinateRepresentation : MonoBehaviour
 			m_base_tile_object.transform.parent = this.transform;
 			m_base_tile_object.transform.localPosition = Vector3.zero;
 
-			m_base_tile_object.transform.Rotate(new Vector3(0f, 0f, 90f * Random.Range(0, 3)));
+			//m_base_tile_object.transform.Rotate(new Vector3(0f, 0f, 90f /** Random.Range(0, 3)*/));
 
 			// add VFX 
 			if (coordinate.Type == GridTileBuilder.TileType.toxic ||
