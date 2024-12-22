@@ -6,9 +6,19 @@ using UnityEngine.Events;
 public enum Direction
 {
 	North,
-	South,
 	East,
+	South,
 	West
+}
+
+public static class DirectionExtensions
+{
+	private static float[] heading = { 0.0f, 90.0f, 180.0f, -90.0f };
+	public static float Heading(this Direction d) => heading[(int)d];
+
+	public static int NextCWIndex(this Direction d) => ((d.Index() + 1) % 4);
+
+	public static Direction NextCW(this Direction d) => (Direction)NextCWIndex(d);
 }
 
 public class GridPlayerCharacter : MonoBehaviour
@@ -27,8 +37,6 @@ public class GridPlayerCharacter : MonoBehaviour
 	public float m_Speed;
 
     //config
-    public float[] heading = { 0, 180, 90, -90 };
-
     public delegate void Vector2Function(Vector2 pos);
     public event Vector2Function OnPlaceDelegate = null;
     public UnityEvent OnSpawnDelegate;
@@ -132,7 +140,7 @@ public class GridPlayerCharacter : MonoBehaviour
 		if (newFacing != m_Facing)
 		{//just turn
             m_Facing = newFacing;
-            transform.rotation = Quaternion.Euler(0, heading[(int)newFacing], 0);
+            transform.rotation = Quaternion.Euler(0, newFacing.Heading(), 0);
 
             ClearPreview();
             MoveToCoordinate(m_CurrentCoordinte);
@@ -214,7 +222,6 @@ public class GridPlayerCharacter : MonoBehaviour
 	private void TryPlacePiece()
 	{
 		// check if can place piece in front of player...
-		Coordinate nextCoordinate = null;
 		//if (!m_CurrentCoordinte.TryMove(m_Facing, ref nextCoordinate))
 		{
 			ClearPreview();

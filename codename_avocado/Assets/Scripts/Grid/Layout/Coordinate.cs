@@ -30,11 +30,10 @@ public class Coordinate
 		for (int i = 0; i < System.Enum.GetValues(typeof(Direction)).Length; ++i)
 		{
 			Direction d = (Direction)i;
-			//if (!TryMove(d, ref coord))
 			var nextCoordinate = m_Worldgrid.GetAdjacentCoordinate(m_Position, d);
 			if (nextCoordinate != null && nextCoordinate.IsPollutable)
 			{
-				var emptyNeighbor = /*Vector2Int.RoundToInt(WorldGrid.OffsetDirection(m_Position, d))*/nextCoordinate.m_Position;
+				var emptyNeighbor = nextCoordinate.m_Position;
 				if (!neighbors.Contains(emptyNeighbor))
 					neighbors.Add(emptyNeighbor);
 			}

@@ -7,7 +7,7 @@ public class AnimatedCharacter : MonoBehaviour
     public GameObject player;       // follow this
     public GridPlayerCharacter gridPC;
     //to be removed
-    public Animation animation;     // set the animations in this
+    public new Animation animation;     // set the animations in this
     //new
     public Animator animtr;
 
@@ -78,7 +78,7 @@ public class AnimatedCharacter : MonoBehaviour
     }
     void OnDie()
     {
-        Debug.Log("ondie");
+        //Debug.Log("ondie");
         dying = true;
         if (animtr)
             animtr.SetBool("dead", true);
@@ -89,7 +89,7 @@ public class AnimatedCharacter : MonoBehaviour
 
     void OnPlace(Vector2 pos)
     {
-        Debug.Log("jump", this);
+        //Debug.Log("jump", this);
         moving = false;
         jumping = true;
         if (animation)
@@ -102,11 +102,11 @@ public class AnimatedCharacter : MonoBehaviour
 
     void Spawn()
     {
-        Debug.Log("spawn?", this);
+        //Debug.Log("spawn?", this);
         if (player == null) return;
         if (gridPC == null) return;
 
-        Debug.Log("spawn", this);
+        //Debug.Log("spawn", this);
 
         this.transform.rotation = player.transform.rotation;
         this.transform.position = player.transform.position;
@@ -133,7 +133,7 @@ public class AnimatedCharacter : MonoBehaviour
             animtr.SetBool("dead", false);
             animtr.SetTrigger("Reset");
             animtr.Play("Spawn");
-            Debug.Log("reset");
+            //Debug.Log("reset");
         }
 
         //pick shape
@@ -219,7 +219,7 @@ public class AnimatedCharacter : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("jump done.");
+                    //Debug.Log("jump done.");
                     jumping = false;
 
                     unfolding = true;
@@ -243,7 +243,7 @@ public class AnimatedCharacter : MonoBehaviour
                     //Debug.Log("jumping..." + timeLeft);
                 } else
                 {//finished
-                    Debug.Log("jump done.");
+                    //Debug.Log("jump done.");
                     jumping = false;
 
                     unfolding = true;
@@ -275,7 +275,7 @@ public class AnimatedCharacter : MonoBehaviour
             int numFlats = unfold.NumFlats();
             if (numFlats > preFlats)
             {
-                Debug.Log(preFlats + " -> " + numFlats);
+                //Debug.Log(preFlats + " -> " + numFlats);
                 unfold.gameObject.SendMessage("Anim_Unfold", SendMessageOptions.DontRequireReceiver);
             }
             return;
@@ -293,7 +293,7 @@ public class AnimatedCharacter : MonoBehaviour
             }
             else
             {//finished
-                Debug.Log("death done.");
+                //Debug.Log("death done.");
                 dying = false;
             }
             return;

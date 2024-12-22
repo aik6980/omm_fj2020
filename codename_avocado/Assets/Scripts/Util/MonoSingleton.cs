@@ -12,7 +12,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
             if (s_instance == null)
             {
                 //first try to find it in the existing scene
-                s_instance = FindObjectOfType<T>();
+                s_instance = FindFirstObjectByType<T>();
                 if (s_instance == null)
                 {
                     s_instance = GetOrCreateInstance();
@@ -38,7 +38,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            return s_instance != null || FindObjectOfType<T>() != null;
+            return s_instance != null || FindFirstObjectByType<T>() != null;
         }
     }
 

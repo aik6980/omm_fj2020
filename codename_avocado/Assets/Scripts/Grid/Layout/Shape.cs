@@ -75,16 +75,16 @@ public class Volcano : Shape
     public override List<GridTileBuilder.ToxicLevel> Toxicity()
     {
         var toxic = base.Toxicity();
-		toxic[0] = GridTileBuilder.ToxicLevel.pool;
-		toxic.Add(GridTileBuilder.ToxicLevel.small_spill);
-		toxic.Add(GridTileBuilder.ToxicLevel.small_spill);
-		toxic.Add(GridTileBuilder.ToxicLevel.small_spill);
-		toxic.Add(GridTileBuilder.ToxicLevel.small_spill);
-		toxic.Add(GridTileBuilder.ToxicLevel.small_spill);
-		toxic.Add(GridTileBuilder.ToxicLevel.small_spill);
-		toxic.Add(GridTileBuilder.ToxicLevel.small_spill);
-		toxic.Add(GridTileBuilder.ToxicLevel.small_spill);
-		toxic.Add(GridTileBuilder.ToxicLevel.small_spill);
+		toxic[0] = GridTileBuilder.ToxicLevel.deep;
+		toxic.Add(GridTileBuilder.ToxicLevel.shallow);
+		toxic.Add(GridTileBuilder.ToxicLevel.shallow);
+		toxic.Add(GridTileBuilder.ToxicLevel.shallow);
+		toxic.Add(GridTileBuilder.ToxicLevel.shallow);
+		toxic.Add(GridTileBuilder.ToxicLevel.shallow);
+		toxic.Add(GridTileBuilder.ToxicLevel.shallow);
+		toxic.Add(GridTileBuilder.ToxicLevel.shallow);
+		toxic.Add(GridTileBuilder.ToxicLevel.shallow);
+		toxic.Add(GridTileBuilder.ToxicLevel.shallow);
 		return toxic;
     }
 }

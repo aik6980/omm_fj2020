@@ -209,7 +209,7 @@ public class AudioManager : MonoSingleton<AudioManager>
     IEnumerator SwitchTrackInterval()
     {
         //Print the time of when the function is first called.
-        Debug.Log("Started Coroutine at timestamp : " + Time.time);
+        //Debug.Log("Started Coroutine at timestamp : " + Time.time);
 
         
         while(true)

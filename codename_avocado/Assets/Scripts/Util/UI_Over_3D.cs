@@ -32,9 +32,6 @@ public class UI_Over_3D : MonoBehaviour
             canvas = GetComponentInParent<Canvas>();
         }
 
-        //this is the ui element
-        RectTransform UI_Element;
-
         //first you need the RectTransform component of your canvas
         RectTransform CanvasRect = canvas.GetComponent<RectTransform>();
 

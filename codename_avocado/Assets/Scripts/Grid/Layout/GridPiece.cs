@@ -133,7 +133,7 @@ public class ToxicPiece : PollutionPiece
 		: base(grid, shape, position, GridTileBuilder.TileType.toxic_pool)
 	{
 		m_MaxSpread = max_spread;
-		m_ToxicLevel = GridTileBuilder.ToxicLevel.pool;
+		m_ToxicLevel = GridTileBuilder.ToxicLevel.deep;
 		m_ExpansionTime = grid.m_Polluter.m_PollutionExpansionTime;
 		// want random offset for each pollution
 		//m_LastExpansion = Random.Range(Time.time, Time.time + (m_ExpansionTime / 2));
@@ -202,7 +202,7 @@ public class ToxicPiece : PollutionPiece
 		if (m_MaxSpread > 0)
 		{
 			var source_tiles = m_Coordinates
-				.Where(coord => coord.Type == GridTileBuilder.TileType.toxic_pool/*m_Grid.GetToxicLevel(coord) == GridTileBuilder.ToxicLevel.healable_pool || m_Grid.GetToxicLevel(coord) == GridTileBuilder.ToxicLevel.pool*/)
+				.Where(coord => coord.Type == GridTileBuilder.TileType.toxic_pool/*m_Grid.GetToxicLevel(coord) == GridTileBuilder.ToxicLevel.shallow || m_Grid.GetToxicLevel(coord) == GridTileBuilder.ToxicLevel.deep*/)
 				.Select(coord => coord.m_Position)
 				.ToList();
 			m_CurrentExpansion.RemoveAll(vec =>

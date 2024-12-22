@@ -92,7 +92,9 @@ public class WorldGrid : MonoBehaviour
     private void WorldGrid_OnCoordinateTypeChanged(Coordinate coord, GridTileBuilder.TileType previous_type, GridTileBuilder.ToxicLevel toxicity)
 	{
 		m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]?.Configure(this, coord, m_GridTileBuilder);
-		GetOrthogonalNeighbours(coord).ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
+		GetOrthogonalNeighbours(coord)
+			.Where(neighbour => neighbour != null)
+			.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
 	}
 
 	public List<Coordinate> GetCoordinatesForShape(Vector2Int origin, Direction dir, List<Vector2Int> positions)
@@ -121,7 +123,9 @@ public class WorldGrid : MonoBehaviour
 				yield return new WaitForSeconds(0.2f);
 				SetCoordType(enumerator.Current, tileType);
 				m_coord_grid_representation[enumerator.Current.m_Position.x, enumerator.Current.m_Position.y].Configure(this, enumerator.Current, m_GridTileBuilder);
-				GetOrthogonalNeighbours(enumerator.Current).ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
+				GetOrthogonalNeighbours(enumerator.Current)
+					.Where(neighbour => neighbour != null)
+					.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
 			}
         }
 
@@ -448,27 +452,29 @@ public class WorldGrid : MonoBehaviour
 
 	public GridTileBuilder.ToxicLevel GetToxicLevel(Coordinate coord)
 	{
-		if (coord.Type == GridTileBuilder.TileType.toxic)
+		if (coord.Type == GridTileBuilder.TileType.toxic
+			|| coord.Type == GridTileBuilder.TileType.toxic_pool)
 		{
-			return GetOrthogonalNeighbours(coord).All(n => n.IsPolluted) ? GridTileBuilder.ToxicLevel.big_spill : GridTileBuilder.ToxicLevel.small_spill;
-		}
-		else if (coord.Type == GridTileBuilder.TileType.toxic_pool)
-		{
-			return GetOrthogonalNeighbours(coord).All(n => n.IsPolluted) ? GridTileBuilder.ToxicLevel.pool : GridTileBuilder.ToxicLevel.healable_pool;
+			return GetOrthogonalNeighbours(coord)
+				.All(n => n?.IsPolluted ?? false) ? GridTileBuilder.ToxicLevel.deep : GridTileBuilder.ToxicLevel.shallow;
 		}
 
 		return GridTileBuilder.ToxicLevel.none;
 	}
 
-	private IEnumerable<Coordinate> GetOrthogonalNeighbours(Coordinate coord)
+	public IEnumerable<Coordinate> GetOrthogonalNeighbours(Coordinate coord)
 	{
-		for (int i = 0; i < System.Enum.GetValues(typeof(Direction)).Length; ++i)
-		{
-			var adjacentCoordinate = GetAdjacentCoordinate(coord.m_Position, (Direction)i);
-			if (adjacentCoordinate != null)
-			{
-				yield return adjacentCoordinate;
-			}
-		}
+		yield return GetCoordinate(coord.m_Position.x, coord.m_Position.y + 1); // North
+		yield return GetCoordinate(coord.m_Position.x + 1, coord.m_Position.y); // East
+		yield return GetCoordinate(coord.m_Position.x, coord.m_Position.y - 1); // South
+		yield return GetCoordinate(coord.m_Position.x - 1, coord.m_Position.y); // West
+	}
+
+	public IEnumerable<Coordinate> GetDiagonalNeighbours(Coordinate coord)
+	{
+		yield return GetCoordinate(coord.m_Position.x + 1, coord.m_Position.y + 1); // North-East
+		yield return GetCoordinate(coord.m_Position.x + 1, coord.m_Position.y - 1);	// South-East
+		yield return GetCoordinate(coord.m_Position.x - 1, coord.m_Position.y - 1);	// South-West
+		yield return GetCoordinate(coord.m_Position.x - 1, coord.m_Position.y + 1);	// North-West
 	}
 }
