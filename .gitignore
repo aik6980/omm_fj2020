@@ -1,2 +1,4 @@
 *.bak
 *.bak.meta
+Build
+/codename_avocado/.vsconfig
