@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class CoordinateRepresentation : MonoBehaviour
 {
 	public Coordinate m_Coordinate;
 
 	private GridTileBuilder.TileType m_previous_type;
-	private GridTileBuilder.ToxicLevel m_previous_toxicity = GridTileBuilder.ToxicLevel.none;
+	private int m_num_toxic_neighbours = 0;
 
 	private GameObject m_base_tile_object = null;
 	private GameObject[] m_adorning_objects = null;
@@ -18,8 +18,12 @@ public class CoordinateRepresentation : MonoBehaviour
 
 	public void Configure(WorldGrid worldGrid, Coordinate coordinate, GridTileBuilder builder)
 	{
+		//worldGrid.OnCoordinateTypeChanged
+
+
+
 		bool type_changed() => m_previous_type != coordinate.Type;
-		bool toxicity_changed() => m_previous_toxicity != worldGrid.GetToxicLevel(coordinate);
+		bool toxicity_changed() => m_num_toxic_neighbours != worldGrid.GetOrthogonalNeighbours(coordinate).Count(c => c?.IsPolluted ?? false) /*+ worldGrid.GetDiagonalNeighbours(coordinate).Count(c => c.IsPolluted)*/;
 
 		m_Coordinate = coordinate;
 		transform.position = new Vector3(m_Coordinate.GridPosition().x, -.5f, m_Coordinate.GridPosition().y);
@@ -90,6 +94,7 @@ public class CoordinateRepresentation : MonoBehaviour
 		}
 
 		m_previous_type = coordinate.Type;
-		m_previous_toxicity = worldGrid.GetToxicLevel(coordinate);
+		//m_previous_toxicity = worldGrid.GetToxicLevel(coordinate);
+		m_num_toxic_neighbours = worldGrid.GetOrthogonalNeighbours(coordinate).Count(c => c?.IsPolluted ?? false);
 	}
 }

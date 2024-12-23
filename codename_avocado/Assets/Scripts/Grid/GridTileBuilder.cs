@@ -168,6 +168,8 @@ public class GridTileBuilder : MonoBehaviour
 
     public GameObject[] toxic_adornments;
 
+    private TileFactory factory = null;
+
     public enum TileType
     {
         grass,
@@ -188,7 +190,7 @@ public class GridTileBuilder : MonoBehaviour
 
     public GameObject GetTile(WorldGrid worldGrid, Coordinate coord)
     {
-        TileFactory factory = new TileFactory(factoryConfiguration, m_coordRepresentativePrefab);
+        factory = factory ?? new TileFactory(factoryConfiguration, m_coordRepresentativePrefab);
         return factory.CreateTileRepresentation(worldGrid, coord);
     }
 

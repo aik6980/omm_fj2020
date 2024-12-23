@@ -138,6 +138,7 @@ public class TileFactory
     {
         // Create a prefab holder for the tile bits...
         var instance = GameObject.Instantiate(tilePrefab);
+        instance.name = $"Tile({coord.m_Position.x}, {coord.m_Position.y})";
 
         // Create an appropriate base tile model (aligned appropriately)...
         var tile = coord.Type switch
@@ -176,6 +177,6 @@ public class TileFactory
             adornments[i].transform.parent = instance.transform;
         }
 
-        return tile;
+        return instance;
     }
 }

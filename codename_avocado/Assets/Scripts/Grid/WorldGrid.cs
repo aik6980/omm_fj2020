@@ -95,6 +95,9 @@ public class WorldGrid : MonoBehaviour
 		GetOrthogonalNeighbours(coord)
 			.Where(neighbour => neighbour != null)
 			.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
+		GetDiagonalNeighbours(coord)
+			.Where(neighbour => neighbour != null)
+			.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
 	}
 
 	public List<Coordinate> GetCoordinatesForShape(Vector2Int origin, Direction dir, List<Vector2Int> positions)
@@ -168,7 +171,6 @@ public class WorldGrid : MonoBehaviour
 
 		foreach (var coord in piece.Coordinates)
 		{
-			m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(this, coord, m_GridTileBuilder);
 			reps.Add(m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]);
 		}
 
@@ -255,7 +257,7 @@ public class WorldGrid : MonoBehaviour
     {
 		IEnumerator AnimateOne(int x, int y, bool fwds)
 		{
-			m_coord_grid_representation[x, y] = m_GridTileBuilder.InstantiateTile(this, m_coord_grid[x, y]);
+			m_coord_grid_representation[x, y] = /*m_GridTileBuilder.GetTile(this, m_coord_grid[x, y]).GetComponent<CoordinateRepresentation>();*/m_GridTileBuilder.InstantiateTile(this, m_coord_grid[x, y]);
 			Vector3 final_pos = m_coord_grid_representation[x, y].transform.position;
 			Vector3 start_pos = final_pos - new Vector3(0f, 10f, 10f);
 			float a = 0.0f;

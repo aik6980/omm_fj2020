@@ -67,6 +67,7 @@ public class ToxicTileBuilder : ITileBuilder
                 grid.GetToxicLevel(orthogonalNeighbours[GetAlignmentDirection(orthogonalNeighbours).NextCWIndex()]) == GridTileBuilder.ToxicLevel.deep &&
                 grid.GetToxicLevel(orthogonalNeighbours[GetAlignmentDirection(orthogonalNeighbours).NextCWIndex()]) != GridTileBuilder.ToxicLevel.deep => configuration.type5f.GetRandomTile(),
             (1, 2) => configuration.type5c.GetRandomTile().FlippedY(),    // One shallow two deep adjacent
+            (0, 3) => configuration.type5g.GetRandomTile(),
             _ => null
         };
 
