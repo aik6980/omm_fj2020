@@ -7,7 +7,7 @@ using UnityEngine;
 public static class IEnumerableExtensions
 {
 	public static void ForEach<T>(this IEnumerable<T> enumerable, System.Action<T> fn)
-    {
+	{
 		if (enumerable != null)
 		{
 			var enumerator = enumerable.GetEnumerator();
@@ -41,19 +41,21 @@ public class WorldGrid : MonoBehaviour
 	private GameObject					m_EnvironmentPostProcess;
 
 	public TMPro.TMP_Text				m_Levelname;
-    public bool m_LevelReady;
+	public bool m_LevelReady;
 
-    public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset, string sky_box_name)
-    {
+	public event System.Action<Coordinate, GridTileBuilder.TileType, GridTileBuilder.ToxicLevel> OnCoordinateTypeChanged;
+
+	public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset, string sky_box_name)
+	{
 		if (m_Environment != null)
-        {
+		{
 			Destroy(m_Environment);
-        }
+		}
 
 		if (m_EnvironmentPostProcess != null)
-        {
+		{
 			Destroy(m_EnvironmentPostProcess);
-        }
+		}
 
 		GameObject env_prefab = Resources.Load<GameObject>(string.Format("Environments/{0}", environment_name));
 		m_Environment = Instantiate(env_prefab);
@@ -66,39 +68,39 @@ public class WorldGrid : MonoBehaviour
 		if (post_process != null)
 			m_EnvironmentPostProcess = Instantiate(post_process);
 
-		OnCoordinateTypeChanged -= WorldGrid_OnCoordinateTypeChanged;
+		//OnCoordinateTypeChanged -= WorldGrid_OnCoordinateTypeChanged;
 		m_coord_grid_representation?.ForEach((x, y, coord_rep) => Destroy(coord_rep?.gameObject));
 
 		var conveyorQueue = Resources.Load<ManualConveyorQueue>(string.Format("Levels/Lv{0}_Queue", level_num));
-        if (conveyorQueue != null)
-        {
-            NextShapeQueue.Instance.conveyorQueue = conveyorQueue;
-            NextShapeQueue.Instance.randomized = false;
-            NextShapeQueue.Instance.loopQueue = conveyorQueue.loopQueue;
-
-            NextShapeQueue.Instance.Awake();
-        }
-        else
-        {
-			//TODO: Reset
-            NextShapeQueue.Instance.conveyorQueue = null;
-            NextShapeQueue.Instance.loopQueue = false;
-            NextShapeQueue.Instance.randomized = true;
+		if (conveyorQueue != null)
+		{
+			NextShapeQueue.Instance.conveyorQueue = conveyorQueue;
+			NextShapeQueue.Instance.randomized = false;
+			NextShapeQueue.Instance.loopQueue = conveyorQueue.loopQueue;
 
 			NextShapeQueue.Instance.Awake();
-        }
+		}
+		else
+		{
+			//TODO: Reset
+			NextShapeQueue.Instance.conveyorQueue = null;
+			NextShapeQueue.Instance.loopQueue = false;
+			NextShapeQueue.Instance.randomized = true;
+
+			NextShapeQueue.Instance.Awake();
+		}
 	}
 
-    private void WorldGrid_OnCoordinateTypeChanged(Coordinate coord, GridTileBuilder.TileType previous_type, GridTileBuilder.ToxicLevel toxicity)
-	{
-		m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]?.Configure(this, coord, m_GridTileBuilder);
-		GetOrthogonalNeighbours(coord)
-			.Where(neighbour => neighbour != null)
-			.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
-		GetDiagonalNeighbours(coord)
-			.Where(neighbour => neighbour != null)
-			.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
-	}
+	//private void WorldGrid_OnCoordinateTypeChanged(Coordinate coord, GridTileBuilder.TileType previous_type, GridTileBuilder.ToxicLevel toxicity)
+	//{
+	//	m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]?.Configure(this, coord, m_GridTileBuilder);
+	//	GetOrthogonalNeighbours(coord)
+	//		.Where(neighbour => neighbour != null)
+	//		.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
+	//	GetDiagonalNeighbours(coord)
+	//		.Where(neighbour => neighbour != null)
+	//		.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
+	//}
 
 	public List<Coordinate> GetCoordinatesForShape(Vector2Int origin, Direction dir, List<Vector2Int> positions)
 	{
@@ -116,8 +118,8 @@ public class WorldGrid : MonoBehaviour
 
 	public virtual void Place(Vector2Int position, Direction direction, Shape shape, GridTileBuilder.TileType tileType)
 	{
-        IEnumerator ConfigureCoord()
-        {
+		IEnumerator ConfigureCoord()
+		{
 			var coordinates = GetCoordinatesForShape(position, direction, shape.Coordinates());
 			var enumerator = coordinates.GetEnumerator();
 			yield return new WaitForSeconds(1.0f);
@@ -125,15 +127,15 @@ public class WorldGrid : MonoBehaviour
 			{
 				yield return new WaitForSeconds(0.2f);
 				SetCoordType(enumerator.Current, tileType);
-				m_coord_grid_representation[enumerator.Current.m_Position.x, enumerator.Current.m_Position.y].Configure(this, enumerator.Current, m_GridTileBuilder);
-				GetOrthogonalNeighbours(enumerator.Current)
-					.Where(neighbour => neighbour != null)
-					.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
+				//m_coord_grid_representation[enumerator.Current.m_Position.x, enumerator.Current.m_Position.y].Configure(this, enumerator.Current, m_GridTileBuilder);
+				//GetOrthogonalNeighbours(enumerator.Current)
+				//	.Where(neighbour => neighbour != null)
+				//	.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
 			}
-        }
+		}
 
-        StartCoroutine(ConfigureCoord());
-    }
+		StartCoroutine(ConfigureCoord());
+	}
 
 	private void Awake()
 	{
@@ -142,12 +144,12 @@ public class WorldGrid : MonoBehaviour
 	}
 
 	public Coordinate GetCoordinate(Vector2 pos)
-    {
+	{
 		return GetCoordinate(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
-    }
+	}
 
 	public Coordinate GetCoordinate(int x, int y)
-    {
+	{
 		if (x < 0 || x >= m_coord_grid.GetLength(0) ||
 			y < 0 || y >= m_coord_grid.GetLength(1))
 		{
@@ -180,11 +182,11 @@ public class WorldGrid : MonoBehaviour
 	public List<CoordinateRepresentation> UpdateTileRepresentation(GridPiece piece)
 	{
 		IEnumerator ConfigureCoords(List<Coordinate> coords)
-        {
+		{
 			yield return new WaitForSeconds(1.8f);
 			foreach (var coord in coords)
 			{
-				m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(this, coord, m_GridTileBuilder);
+				//m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(this, coord, m_GridTileBuilder);
 				//reps.Add(m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]);
 				yield return new WaitForSeconds(0.18f);
 			}
@@ -195,32 +197,32 @@ public class WorldGrid : MonoBehaviour
 			return reps;
 
 		foreach (var coord in piece.Coordinates)
-        {
+		{
 		//	m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(coord, m_GridTileBuilder);
 			reps.Add(m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]);
-        }
+		}
 
 		StartCoroutine(ConfigureCoords(piece.Coordinates.ToList()));
 		return reps;
 	}
 
-    public void LoadNextLevel()
-    {
+	public void LoadNextLevel()
+	{
 		//Debug.Log("LoadNextLevel");
 		m_LevelReady = false;
 
 		m_level_data = GetComponent<ILevelLoader>().LoadLevel(this);
 		if (m_level_data == null)
-        {
+		{
 			m_GameState.Win();
 			return;
 		}
 
-        m_Polluter.m_PollutionExpansionTime = m_level_data.Config.ToxicSpreadTime;
-        m_Polluter.m_PollutionExpansionTimeVariation = m_level_data.Config.ToxicSpreadTimeVariation;
-        m_Levelname.text = m_level_data.Config.Name;
+		m_Polluter.m_PollutionExpansionTime = m_level_data.Config.ToxicSpreadTime;
+		m_Polluter.m_PollutionExpansionTimeVariation = m_level_data.Config.ToxicSpreadTimeVariation;
+		m_Levelname.text = m_level_data.Config.Name;
 
-        InitialiseGrid(m_level_data.levelNumber, m_level_data.Dimension, m_level_data.Config.EnvironmentName, new Vector3(m_level_data.Config.EnvironmentOffsetX, m_level_data.Config.EnvironmentOffsetY, m_level_data.Config.EnvironmentOffsetZ), m_level_data.Config.SkyName);
+		InitialiseGrid(m_level_data.levelNumber, m_level_data.Dimension, m_level_data.Config.EnvironmentName, new Vector3(m_level_data.Config.EnvironmentOffsetX, m_level_data.Config.EnvironmentOffsetY, m_level_data.Config.EnvironmentOffsetZ), m_level_data.Config.SkyName);
 
 		m_Polluter.Reset();
 		m_Coordinates.Clear();
@@ -246,7 +248,7 @@ public class WorldGrid : MonoBehaviour
 		m_Polluter.AddObstacles(m_level_data.Block.Select(c => new BlockingPiece(this, new Shape(), c.ToVector2Int())).ToList()/*m_world_data.obstacle_pieces*/);
 		m_Polluter.AddToxicPools(m_level_data.Magma.Select(c => new ToxicPiece(this, new Shape(), c.ToVector2Int(), m_level_data.Config.MaxSpreadDistance)).ToList()/*m_world_data.toxic_pool_pieces*/);
 
-		OnCoordinateTypeChanged += WorldGrid_OnCoordinateTypeChanged;
+		//OnCoordinateTypeChanged += WorldGrid_OnCoordinateTypeChanged;
 
 		//BuildTileRepresentation();
 		OnLevelLoaded?.Invoke(/*m_world_data.start_piece.Coordinates*/null);
@@ -254,30 +256,31 @@ public class WorldGrid : MonoBehaviour
 	}
 
 	private IEnumerator TileAnimation(bool forwards)
-    {
+	{
 		IEnumerator AnimateOne(int x, int y, bool fwds)
 		{
-			m_coord_grid_representation[x, y] = /*m_GridTileBuilder.GetTile(this, m_coord_grid[x, y]).GetComponent<CoordinateRepresentation>();*/m_GridTileBuilder.InstantiateTile(this, m_coord_grid[x, y]);
+			m_coord_grid_representation[x, y] = m_GridTileBuilder.InstantiateTile(this, m_coord_grid[x, y]);
+
 			Vector3 final_pos = m_coord_grid_representation[x, y].transform.position;
 			Vector3 start_pos = final_pos - new Vector3(0f, 10f, 10f);
 			float a = 0.0f;
 			while (a < 1.0f)
-            {
+			{
 				a = Mathf.Clamp(a + (Time.deltaTime * 1.8f), 0.0f, 1.0f);
 				m_coord_grid_representation[x, y].transform.position =
 					fwds ? Vector3.Slerp(start_pos, final_pos, a) : Vector3.Slerp(final_pos, start_pos, a);
 				yield return null;
-            }
+			}
 		}
 
 		IEnumerator AnimateRow(int y, bool fwds)
-        {
+		{
 			for (int x = 0; x < m_coord_grid.GetLength(0); ++x)
 			{
 				StartCoroutine(AnimateOne(x, y, forwards));
 				yield return new WaitForSeconds(0.02f);
 			}
-        }
+		}
 
 		for (int y = 0; y < m_coord_grid.GetLength(1); ++y)
 		{
@@ -432,8 +435,6 @@ public class WorldGrid : MonoBehaviour
 
 		return GetOrthogonalNeighbours(coord).Any(c => c == null || !c.IsPolluted);
 	}
-
-	public event System.Action<Coordinate, GridTileBuilder.TileType, GridTileBuilder.ToxicLevel> OnCoordinateTypeChanged;
 
 	public void SetCoordType(Coordinate coord, GridTileBuilder.TileType type)
 	{

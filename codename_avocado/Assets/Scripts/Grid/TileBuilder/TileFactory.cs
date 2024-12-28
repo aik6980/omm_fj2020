@@ -136,9 +136,9 @@ public class TileFactory
 
     public GameObject CreateTileRepresentation(WorldGrid grid, Coordinate coord)
     {
-        // Create a prefab holder for the tile bits...
-        var instance = GameObject.Instantiate(tilePrefab);
-        instance.name = $"Tile({coord.m_Position.x}, {coord.m_Position.y})";
+        //// Create a prefab holder for the tile bits...
+        //var instance = GameObject.Instantiate(tilePrefab);
+        //instance.name = $"Tile({coord.m_Position.x}, {coord.m_Position.y})";
 
         // Create an appropriate base tile model (aligned appropriately)...
         var tile = coord.Type switch
@@ -156,27 +156,27 @@ public class TileFactory
         if (tile is null)
             return null;
 
+        return tile;
+        //tile.transform.parent = instance.transform;
 
-        tile.transform.parent = instance.transform;
-
-        // Create adornments to the tile as appropriate...
-        var adornments = coord.Type switch
-        {
-            GridTileBuilder.TileType.start => startBuilder.CreateTileAdornments(grid, coord),
-            GridTileBuilder.TileType.exit => exitBuilder.CreateTileAdornments(grid, coord),
-            GridTileBuilder.TileType.floor => floorBuilder.CreateTileAdornments(grid, coord),
-            GridTileBuilder.TileType.obstacle => obstacleBuilder.CreateTileAdornments(grid, coord),
-            GridTileBuilder.TileType.grass => grassBuilder.CreateTileAdornments(grid, coord),
-            GridTileBuilder.TileType.toxic => toxicBuilder.CreateTileAdornments(grid, coord),
-            GridTileBuilder.TileType.toxic_pool => toxicBuilder.CreateTileAdornments(grid, coord),
-            _ => null
-        };
-        
-        for (int i = 0; i < adornments.Length; ++i)
-        {
-            adornments[i].transform.parent = instance.transform;
-        }
-
-        return instance;
+        //// Create adornments to the tile as appropriate...
+        //var adornments = coord.Type switch
+        //{
+        //    GridTileBuilder.TileType.start => startBuilder.CreateTileAdornments(grid, coord),
+        //    GridTileBuilder.TileType.exit => exitBuilder.CreateTileAdornments(grid, coord),
+        //    GridTileBuilder.TileType.floor => floorBuilder.CreateTileAdornments(grid, coord),
+        //    GridTileBuilder.TileType.obstacle => obstacleBuilder.CreateTileAdornments(grid, coord),
+        //    GridTileBuilder.TileType.grass => grassBuilder.CreateTileAdornments(grid, coord),
+        //    GridTileBuilder.TileType.toxic => toxicBuilder.CreateTileAdornments(grid, coord),
+        //    GridTileBuilder.TileType.toxic_pool => toxicBuilder.CreateTileAdornments(grid, coord),
+        //    _ => null
+        //};
+        //
+        //for (int i = 0; i < adornments.Length; ++i)
+        //{
+        //    adornments[i].transform.parent = instance.transform;
+        //}
+        //
+        //return instance;
     }
 }

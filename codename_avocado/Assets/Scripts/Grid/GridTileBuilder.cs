@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public static class TileTypeExtensions
+{
+    public static bool IsPolluted(this GridTileBuilder.TileType t) => t == GridTileBuilder.TileType.toxic || t == GridTileBuilder.TileType.toxic_pool;
+
+    public static bool IsPollutable(this GridTileBuilder.TileType t) => t == GridTileBuilder.TileType.floor || t == GridTileBuilder.TileType.grass;
+
+    public static bool IsPassable(this GridTileBuilder.TileType t) => t == GridTileBuilder.TileType.grass || t == GridTileBuilder.TileType.start || t == GridTileBuilder.TileType.exit;
+}
+
 [System.Serializable]
 public class TileConfiguration
 {

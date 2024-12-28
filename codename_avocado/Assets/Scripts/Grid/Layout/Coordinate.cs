@@ -41,22 +41,15 @@ public class Coordinate
 	}
 
 	public bool IsPassable {
-		get =>
-			m_Type == GridTileBuilder.TileType.grass ||
-			m_Type == GridTileBuilder.TileType.exit ||
-			m_Type == GridTileBuilder.TileType.start;
+		get => m_Type.IsPassable();
 	}
 
 	public bool IsPollutable {
-		get =>
-			m_Type == GridTileBuilder.TileType.grass ||
-			m_Type == GridTileBuilder.TileType.floor;
+		get => m_Type.IsPollutable();
 	}
 
 	public bool IsPolluted {
-		get =>
-			m_Type == GridTileBuilder.TileType.toxic ||
-			m_Type == GridTileBuilder.TileType.toxic_pool;
+		get => m_Type.IsPolluted();
 	}
 
 	public Vector2 GridPosition()
