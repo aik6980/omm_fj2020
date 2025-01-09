@@ -45,7 +45,7 @@ public class WorldGrid : MonoBehaviour
 
 	public event System.Action<Coordinate, GridTileBuilder.TileType, GridTileBuilder.ToxicLevel> OnCoordinateTypeChanged;
 
-	public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset, string sky_box_name)
+    public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset, string sky_box_name)
 	{
 		if (m_Environment != null)
 		{
@@ -352,7 +352,7 @@ public class WorldGrid : MonoBehaviour
 		if (directions.Count == 1)
 		{
 			nextCoordinate = GetAdjacentCoordinate(from.m_Position, directions[0]);
-			if (nextCoordinate != null && nextCoordinate.IsPassable)
+			if (nextCoordinate != null && nextCoordinate.IsPassable())
 			{
 				return true;
 			}
@@ -360,10 +360,10 @@ public class WorldGrid : MonoBehaviour
 		else if (directions.Count == 2)
 		{
 			var firstCoord = GetAdjacentCoordinate(from.m_Position, directions[0]);
-			if (firstCoord != null && firstCoord.IsPassable)
+			if (firstCoord != null && firstCoord.IsPassable())
 			{
 				var nsewCoord = GetAdjacentCoordinate(firstCoord.m_Position, directions[1]);
-				if (nsewCoord != null && nsewCoord.IsPassable)
+				if (nsewCoord != null && nsewCoord.IsPassable())
 				{
 					nextCoordinate = nsewCoord;
 					return true;
@@ -371,10 +371,10 @@ public class WorldGrid : MonoBehaviour
 			}
 
 			var secondCoord = GetAdjacentCoordinate(from.m_Position, directions[1]);
-			if (secondCoord != null && secondCoord.IsPassable)
+			if (secondCoord != null && secondCoord.IsPassable())
 			{
 				var ewnsCoord = GetAdjacentCoordinate(secondCoord.m_Position, directions[0]);
-				if (ewnsCoord != null && ewnsCoord.IsPassable)
+				if (ewnsCoord != null && ewnsCoord.IsPassable())
 				{
 					nextCoordinate = ewnsCoord;
 					return true;
@@ -382,13 +382,13 @@ public class WorldGrid : MonoBehaviour
 			}
 
 			// If neither of the above worked use first over second.
-			if (firstCoord != null && firstCoord.IsPassable)
+			if (firstCoord != null && firstCoord.IsPassable())
 			{
 				nextCoordinate = firstCoord;
 				return true;
 			}
 
-			if (secondCoord != null && secondCoord.IsPassable)
+			if (secondCoord != null && secondCoord.IsPassable())
 			{
 				nextCoordinate = secondCoord;
 				return true;
@@ -433,7 +433,7 @@ public class WorldGrid : MonoBehaviour
 		//blocked &= n != null && s != null && e != null & w != null;
 		//return !blocked;
 
-		return GetOrthogonalNeighbours(coord).Any(c => c == null || !c.IsPolluted);
+		return GetOrthogonalNeighbours(coord).Any(c => c == null || c.IsPolluted());
 	}
 
 	public void SetCoordType(Coordinate coord, GridTileBuilder.TileType type)
@@ -455,11 +455,10 @@ public class WorldGrid : MonoBehaviour
 
 	public GridTileBuilder.ToxicLevel GetToxicLevel(Coordinate coord)
 	{
-		if (coord.Type == GridTileBuilder.TileType.toxic
-			|| coord.Type == GridTileBuilder.TileType.toxic_pool)
+		if (coord.IsPolluted())
 		{
 			return GetOrthogonalNeighbours(coord)
-				.All(n => n?.IsPolluted ?? false) ? GridTileBuilder.ToxicLevel.deep : GridTileBuilder.ToxicLevel.shallow;
+				.All(n => n.IsPolluted()) ? GridTileBuilder.ToxicLevel.deep : GridTileBuilder.ToxicLevel.shallow;
 		}
 
 		return GridTileBuilder.ToxicLevel.none;

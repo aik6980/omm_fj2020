@@ -191,7 +191,7 @@ public class CoordinateRepresentation : MonoBehaviour
         });
     }
 
-    private int num_toxic_neighbours(WorldGrid worldGrid, Coordinate coordinate) => worldGrid.GetOrthogonalNeighbours(coordinate).Count(c => c?.IsPolluted ?? false);
+    private int num_toxic_neighbours(WorldGrid worldGrid, Coordinate coordinate) => worldGrid.GetOrthogonalNeighbours(coordinate).Count(c => c.IsPolluted());
 
     private void WorldGrid_OnCoordinateTypeChanged(Coordinate coord, GridTileBuilder.TileType previous_type, GridTileBuilder.ToxicLevel previous_toxicity)
     {
@@ -212,7 +212,7 @@ public class CoordinateRepresentation : MonoBehaviour
         {
             // Type has changed or the depth has...
             if (ToxicStateChanged(coord) ||
-                coord.IsPolluted && worldGrid.GetToxicLevel(coord) != previousStates[coord.m_Position].toxic_level)
+                coord.IsPolluted() && worldGrid.GetToxicLevel(coord) != previousStates[coord.m_Position].toxic_level)
             {
                 DestroyPart(ref m_base_tile_object);
                 DestroyPart(ref m_vfx_object);
@@ -226,8 +226,8 @@ public class CoordinateRepresentation : MonoBehaviour
     }
 
     private bool ToxicStateChanged(Coordinate coord) =>
-        coord.IsPolluted && !previousStates[coord.m_Position].type.IsPolluted() ||
-        !coord.IsPolluted && previousStates[coord.m_Position].type.IsPolluted();
+        coord.IsPolluted() && !previousStates[coord.m_Position].type.IsPolluted() ||
+        !coord.IsPolluted() && previousStates[coord.m_Position].type.IsPolluted();
 
     private void DestroyParts(ref GameObject[] objs)
     {

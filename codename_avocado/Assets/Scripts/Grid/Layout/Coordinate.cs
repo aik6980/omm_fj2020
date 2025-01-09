@@ -4,6 +4,19 @@ using System.Linq;
 using UnityEngine;
 
 
+/// <summary>
+/// Somewhat hacky extension methods to make checks on coordinate types null safe. (Because an extension
+/// method doesn't need an object it can introspect the passed 'this' object for null.)
+/// </summary>
+public static class CoordinateExtensions
+{
+    public static bool IsPassable(this Coordinate coord) => coord?.Type.IsPassable() ?? false;
+
+    public static bool IsPollutable(this Coordinate coord) => coord?.Type.IsPollutable() ?? false;
+
+    public static bool IsPolluted(this Coordinate coord) => coord?.Type.IsPolluted() ?? false;
+}
+
 public class Coordinate
 {
 	public WorldGrid m_Worldgrid;
@@ -13,7 +26,7 @@ public class Coordinate
     private GridTileBuilder.TileType m_Type;
 
     public CoordinateRepresentation m_Representation;
-	public GridPlayerCharacter m_PopulatedPlayer;
+    public GridPlayerCharacter m_PopulatedPlayer;
     public GridTileBuilder.ToxicLevel  m_ToxicLevel = GridTileBuilder.ToxicLevel.none;
 
     public GridTileBuilder.TileType Type { get => m_Type; set => m_Type = value; }
@@ -31,25 +44,13 @@ public class Coordinate
 		{
 			Direction d = (Direction)i;
 			var nextCoordinate = m_Worldgrid.GetAdjacentCoordinate(m_Position, d);
-			if (nextCoordinate != null && nextCoordinate.IsPollutable)
+			if (nextCoordinate != null && nextCoordinate.IsPollutable())
 			{
 				var emptyNeighbor = nextCoordinate.m_Position;
 				if (!neighbors.Contains(emptyNeighbor))
 					neighbors.Add(emptyNeighbor);
 			}
 		}
-	}
-
-	public bool IsPassable {
-		get => m_Type.IsPassable();
-	}
-
-	public bool IsPollutable {
-		get => m_Type.IsPollutable();
-	}
-
-	public bool IsPolluted {
-		get => m_Type.IsPolluted();
 	}
 
 	public Vector2 GridPosition()
