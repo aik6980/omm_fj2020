@@ -13,8 +13,8 @@ public class ToxicTileBuilder : ITileBuilder
     public GameObject CreateTileRepresentation(WorldGrid grid, Coordinate coord)
     {
         var orthogonalNeighbours = grid.GetOrthogonalNeighbours(coord).ToArray();
-        int numShallowNeighbours = orthogonalNeighbours.Count(c => c?.IsPolluted ?? false && grid.GetToxicLevel(c) == GridTileBuilder.ToxicLevel.shallow);
-        int numDeepNeighbours = orthogonalNeighbours.Count(c => c?.IsPolluted ?? false && grid.GetToxicLevel(c) == GridTileBuilder.ToxicLevel.deep);
+        int numShallowNeighbours = orthogonalNeighbours.Count(c => c.IsPolluted && grid.GetToxicLevel(c) == GridTileBuilder.ToxicLevel.shallow);
+        int numDeepNeighbours = orthogonalNeighbours.Count(c => c.IsPolluted && grid.GetToxicLevel(c) == GridTileBuilder.ToxicLevel.deep);
 
         var tile = (numShallowNeighbours, numDeepNeighbours) switch
         {
