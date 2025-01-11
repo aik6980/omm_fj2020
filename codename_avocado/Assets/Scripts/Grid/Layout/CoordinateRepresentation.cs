@@ -42,11 +42,6 @@ public class CoordinateRepresentation : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (worldGrid != null)
-        {
-            worldGrid.OnCoordinateTypeChanged -= WorldGrid_OnCoordinateTypeChanged;
-        }
-
         DestroyPart(ref m_base_tile_object);
         DestroyPart(ref m_vfx_object);
         DestroyParts(ref m_adorning_objects);
@@ -59,17 +54,10 @@ public class CoordinateRepresentation : MonoBehaviour
         this.coordinate = coordinate;
 
         previousStates.Add(coordinate.m_Position, new CoordinatePreviousState(coordinate.Type, num_toxic_neighbours(worldGrid, coordinate)));
-        foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate))
+        foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate).Where(c => c != null))
         {
-            if (neighbour == null)
-            {
-                continue;
-            }
-
             previousStates.Add(neighbour.m_Position, new CoordinatePreviousState(neighbour.Type, num_toxic_neighbours(worldGrid, neighbour)));
         }
-
-        worldGrid.OnCoordinateTypeChanged += WorldGrid_OnCoordinateTypeChanged;
 
         // Create the tile and such...
         name = $"Tile({coordinate.m_Position.x}, {coordinate.m_Position.y})";
@@ -155,6 +143,56 @@ public class CoordinateRepresentation : MonoBehaviour
         #endregion
     }
 
+    [Button("Force Update Representation")]
+    private void ForceUpdateRepresentation()
+    {
+        DestroyPart(ref m_base_tile_object);
+        DestroyPart(ref m_vfx_object);
+        DestroyParts(ref m_adorning_objects);
+
+        CreateTileRepresentation(coordinate);
+        CreateTileAdornments(coordinate);
+        UpdateNeighbourStateCache();
+    }
+
+    public bool UpdateRepresentation()
+    {
+        if (coordinate.Type != previousStates[coordinate.m_Position].type)
+        {
+            ForceUpdateRepresentation();
+            return true;
+        }
+        else
+        {
+            foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate).Where(c => c != null))
+            {
+                if (HasToxicStateChanged(neighbour) ||
+                    (neighbour.IsPolluted() && worldGrid.GetToxicLevel(neighbour) != previousStates[neighbour.m_Position].toxic_level))
+                {
+                    DestroyPart(ref m_base_tile_object);
+                    DestroyPart(ref m_vfx_object);
+
+                    CreateTileRepresentation(coordinate);
+                    UpdateNeighbourStateCache();
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void UpdateNeighbourStateCache()
+    {
+        previousStates[coordinate.m_Position].type = coordinate.Type;
+        previousStates[coordinate.m_Position].num_toxic_neighbours = num_toxic_neighbours(worldGrid, coordinate);
+        foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate).Where(c => c != null))
+        {
+            previousStates[neighbour.m_Position].type = neighbour.Type;
+            previousStates[neighbour.m_Position].num_toxic_neighbours = num_toxic_neighbours(worldGrid, neighbour);
+        }
+    }
+
     private void CreateTileRepresentation(Coordinate coordinate)
     {
         // Base tile...
@@ -193,39 +231,8 @@ public class CoordinateRepresentation : MonoBehaviour
 
     private int num_toxic_neighbours(WorldGrid worldGrid, Coordinate coordinate) => worldGrid.GetOrthogonalNeighbours(coordinate).Count(c => c.IsPolluted());
 
-    private void WorldGrid_OnCoordinateTypeChanged(Coordinate coord, GridTileBuilder.TileType previous_type, GridTileBuilder.ToxicLevel previous_toxicity)
-    {
-        if (coord == coordinate)
-        {
-            // Type has changed...
-            if (coord.Type != previousStates[coord.m_Position].type)
-            {
-                DestroyPart(ref m_base_tile_object);
-                DestroyPart(ref m_vfx_object);
-                DestroyParts(ref m_adorning_objects);
 
-                CreateTileRepresentation(coord);
-                CreateTileAdornments(coord);
-            }
-        }
-        else if (previousStates.ContainsKey(coord.m_Position))
-        {
-            // Type has changed or the depth has...
-            if (ToxicStateChanged(coord) ||
-                coord.IsPolluted() && worldGrid.GetToxicLevel(coord) != previousStates[coord.m_Position].toxic_level)
-            {
-                DestroyPart(ref m_base_tile_object);
-                DestroyPart(ref m_vfx_object);
-
-                CreateTileRepresentation(coordinate);
-            }
-
-            previousStates[coord.m_Position].type = coord.Type;
-            previousStates[coord.m_Position].num_toxic_neighbours = num_toxic_neighbours(worldGrid, coord);
-        }
-    }
-
-    private bool ToxicStateChanged(Coordinate coord) =>
+    private bool HasToxicStateChanged(Coordinate coord) =>
         coord.IsPolluted() && !previousStates[coord.m_Position].type.IsPolluted() ||
         !coord.IsPolluted() && previousStates[coord.m_Position].type.IsPolluted();
 

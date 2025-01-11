@@ -25,4 +25,15 @@ public static class ArrayExtensionMethods
             }
         }
     }
+
+    public static IEnumerable<T> Where<T>(this T[] array, System.Predicate<T> predicate)
+    {
+        for (int x = 0; x < array.Length; ++x)
+        {
+            if (predicate(array[x]))
+            {
+                yield return array[x];
+            }
+        }
+    }
 }

@@ -62,11 +62,11 @@ public class ToxicTileBuilder : ITileBuilder
             (2, 1) => configuration.type5a.GetRandomTile().FlippedY(),    // Two shallow one deep adjacent
             (1, 2) when                                     // One shallow two deep adjacent
                 grid.GetToxicLevel(orthogonalNeighbours[GetAlignmentDirection(orthogonalNeighbours).Index()]) == GridTileBuilder.ToxicLevel.deep &&
-                grid.GetToxicLevel(orthogonalNeighbours[GetAlignmentDirection(orthogonalNeighbours).NextCWIndex()]) == GridTileBuilder.ToxicLevel.deep => configuration.type5c.GetRandomTile(),
+                grid.GetToxicLevel(orthogonalNeighbours[GetAlignmentDirection(orthogonalNeighbours).NextCWIndex()]) == GridTileBuilder.ToxicLevel.deep => configuration.type5e.GetRandomTile(),
             (1, 2) when                                     // One shallow two deep adjacent
-                grid.GetToxicLevel(orthogonalNeighbours[GetAlignmentDirection(orthogonalNeighbours).NextCWIndex()]) == GridTileBuilder.ToxicLevel.deep &&
+                grid.GetToxicLevel(orthogonalNeighbours[GetAlignmentDirection(orthogonalNeighbours).Index()]) == GridTileBuilder.ToxicLevel.deep &&
                 grid.GetToxicLevel(orthogonalNeighbours[GetAlignmentDirection(orthogonalNeighbours).NextCWIndex()]) != GridTileBuilder.ToxicLevel.deep => configuration.type5f.GetRandomTile(),
-            (1, 2) => configuration.type5c.GetRandomTile().FlippedY(),    // One shallow two deep adjacent
+            (1, 2) => configuration.type5e.GetRandomTile().FlippedY(),    // One shallow two deep adjacent
             (0, 3) => configuration.type5g.GetRandomTile(),
             _ => null
         };
