@@ -20,7 +20,8 @@ MonoBehaviour:
     allowableFlips: 3
   exitTiles:
     tiles:
-    - tile: {fileID: 919132149155446097, guid: 3036f08c4a6864842a22223afbca67c5, type: 3}
+    - tile: {fileID: 5294510488349694578, guid: 2068fee096899fa48b3de5643a1c6a02,
+        type: 3}
       weight: 1
     allowableRotations: 15
     allowableFlips: 3
