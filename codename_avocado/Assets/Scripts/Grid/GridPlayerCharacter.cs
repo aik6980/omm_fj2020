@@ -19,6 +19,10 @@ public static class DirectionExtensions
 	public static int NextCWIndex(this Direction d) => ((d.Index() + 1) % 4);
 
 	public static Direction NextCW(this Direction d) => (Direction)NextCWIndex(d);
+
+	public static int NextACWIndex(this Direction d) => ((4 + d.Index() - 1) % 4);
+
+	public static Direction NextACW(this Direction d) => (Direction)NextACWIndex(d);
 }
 
 public class GridPlayerCharacter : MonoBehaviour

@@ -5,6 +5,7 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
         _BaseMap("Texture", 2D) = "white" {}
         _BaseColor("Color", Color) = (1, 1, 1, 1)
         _Cutoff("AlphaCutout", Range(0.0, 1.0)) = 0.5
+        _ShadowOffsetV("ShadowOffsetV", Range(0.0, 1.0)) = 1.0
 
         // BlendMode
         [HideInInspector] _Surface("__surface", Float) = 0.0
@@ -28,9 +29,9 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
         Tags { "RenderType" = "Opaque" "IgnoreProjector" = "True" "RenderPipeline" = "UniversalPipeline" }
         LOD 100
 
-        Blend [_SrcBlend][_DstBlend]
-        ZWrite [_ZWrite]
-        Cull [_Cull]
+        Blend[_SrcBlend][_DstBlend]
+        ZWrite[_ZWrite]
+        Cull[_Cull]
 
         Pass
         {
@@ -62,6 +63,8 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/UnlitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
+            float _ShadowOffsetV;
+
             struct Attributes
             {
                 float4 positionOS       : POSITION;
@@ -73,6 +76,7 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
 
             struct Varyings
             {
+                float2 baseUv        : TEXCOORD2;
                 float2 uv        : TEXCOORD0;
                 float fogCoord  : TEXCOORD1;
                 float3 normalWS : TEXCOORD5;
@@ -100,6 +104,7 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
                 VertexNormalInputs normalInputs = GetVertexNormalInputs(input.normalOS);
 
                 output.vertex = vertexInput.positionCS;
+                output.baseUv = input.uv;
                 output.uv = TRANSFORM_TEX(input.uv, _BaseMap);
                 output.normalWS = normalInputs.normalWS;
                 output.fogCoord = ComputeFogFactor(vertexInput.positionCS.z);
@@ -155,9 +160,14 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
                 // [Aik] commenting this out, so those facing away from light
                 //bool shadowed = dot(input.normalWS, mainLight.direction) >= 0;
                 //color.rgb = lerp(float3(0, 0, 0), color.rgb, shadowed);
+
+                float facing = ((dot(input.normalWS, float3(0, 1, 0)) * 0.98) + 1) * 0.5;
+                half4 shadowColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, float2(facing, _ShadowOffsetV));//half4(facing, facing, facing, 0);//
+
+                color.rgb = color.rgb * shadowColor.rgb;//shadowColor;//float3(facing, facing, facing);//
 #endif
 
-                color = MixFog(color, input.fogCoord);
+                //color = MixFog(color, input.fogCoord);
 
                 return half4(color, alpha);
             }
@@ -246,5 +256,5 @@ Shader "Universal Render Pipeline/Unlit Shadowed"
         }
     }
     FallBack "Hidden/Universal Render Pipeline/FallbackError"
-    CustomEditor "UnityEditor.Rendering.Universal.ShaderGUI.UnlitShader"
+    //CustomEditor "UnityEditor.Rendering.Universal.ShaderGUI.UnlitShader"
 }

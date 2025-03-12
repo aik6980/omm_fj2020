@@ -54,7 +54,7 @@ public class CoordinateRepresentation : MonoBehaviour
         this.coordinate = coordinate;
 
         previousStates.Add(coordinate.m_Position, new CoordinatePreviousState(coordinate.Type, num_toxic_neighbours(worldGrid, coordinate)));
-        foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate).Where(c => c != null))
+        foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate).Concat(worldGrid.GetDiagonalNeighbours(coordinate)).Where(c => c != null))
         {
             previousStates.Add(neighbour.m_Position, new CoordinatePreviousState(neighbour.Type, num_toxic_neighbours(worldGrid, neighbour)));
         }
@@ -164,7 +164,7 @@ public class CoordinateRepresentation : MonoBehaviour
         }
         else
         {
-            foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate).Where(c => c != null))
+            foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate).Concat(worldGrid.GetDiagonalNeighbours(coordinate)).Where(c => c != null))
             {
                 if (HasToxicStateChanged(neighbour) ||
                     (neighbour.IsPolluted() && worldGrid.GetToxicLevel(neighbour) != previousStates[neighbour.m_Position].toxic_level))
@@ -186,7 +186,7 @@ public class CoordinateRepresentation : MonoBehaviour
     {
         previousStates[coordinate.m_Position].type = coordinate.Type;
         previousStates[coordinate.m_Position].num_toxic_neighbours = num_toxic_neighbours(worldGrid, coordinate);
-        foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate).Where(c => c != null))
+        foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate).Concat(worldGrid.GetDiagonalNeighbours(coordinate)).Where(c => c != null))
         {
             previousStates[neighbour.m_Position].type = neighbour.Type;
             previousStates[neighbour.m_Position].num_toxic_neighbours = num_toxic_neighbours(worldGrid, neighbour);

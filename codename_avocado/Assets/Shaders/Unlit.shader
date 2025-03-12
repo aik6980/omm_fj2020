@@ -1,4 +1,4 @@
-Shader "Universal Render Pipeline/Unlit Shadowed"
+Shader "Universal Render Pipeline/Unlit"
 {
     Properties
     {

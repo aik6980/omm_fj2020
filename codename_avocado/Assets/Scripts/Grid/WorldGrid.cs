@@ -470,7 +470,7 @@ public class WorldGrid : MonoBehaviour
                 var nextCoord = changedCoordinates[i];
                 if (m_coord_grid_representation[nextCoord.m_Position.x, nextCoord.m_Position.y]?.UpdateRepresentation() ?? false)
                 {
-                    foreach (var neighbour in GetOrthogonalNeighbours(nextCoord).Where(c => c != null))
+                    foreach (var neighbour in GetOrthogonalNeighbours(nextCoord).Concat(GetDiagonalNeighbours(nextCoord)).Where(c => c != null))
                     {
                         if (!changedCoordinates.Contains(neighbour))
                         {

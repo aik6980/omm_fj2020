@@ -62,308 +62,127 @@ MonoBehaviour:
     allowableRotations: 15
     allowableFlips: 3
   deepToxicTiles:
-    tiles:
-    - tile: {fileID: 919132149155446097, guid: 95551f01d222d5e49bff64e1be9cf8df, type: 3}
-      weight: 1
-    allowableRotations: 0
-    allowableFlips: 0
-  shallowToxicTiles:
     type1:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 2fa0fdbc5dfeab74fa10948a7bbaf0aa,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: e914e437fbaf9aa4391588901622c67d,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: d5221d6e71271bf41980a38b8388b611,
+      - tile: {fileID: 919132149155446097, guid: 020bb7a7454741b46ae2bd6a66e8de28,
           type: 3}
         weight: 1
       allowableRotations: 15
       allowableFlips: 3
     type2:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 47763a246cb8b0a4c90480bba0763ecf,
+      - tile: {fileID: 919132149155446097, guid: ef25cfd87fb3f064abc904b9a3a4498e,
           type: 3}
         weight: 1
-      - tile: {fileID: 919132149155446097, guid: 74c7696e0da25784ebe4a5d4a623e19c,
+      - tile: {fileID: 919132149155446097, guid: da3cbd39d3352bc42968175cf4227ef1,
           type: 3}
         weight: 1
-      - tile: {fileID: 919132149155446097, guid: 4b3cd0278746fb54aa16dcbc38fc406d,
-          type: 3}
-        weight: 2
-      - tile: {fileID: 919132149155446097, guid: 048ad4699fb4c324c9a0e06e2ba6c9ea,
-          type: 3}
-        weight: 5
-      - tile: {fileID: 919132149155446097, guid: 27136951cb7cccb42b5e8ef0a2eb9e22,
-          type: 3}
-        weight: 5
       allowableRotations: 0
       allowableFlips: 2
     type3:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 83aaa4383ca9a5b49935f3e2e00de7f3,
+      - tile: {fileID: 919132149155446097, guid: 51a0c3d510b1f594da8afb9712e2beab,
           type: 3}
         weight: 1
-      - tile: {fileID: 919132149155446097, guid: b6a125eb4f8261c48bfeb35f1df538b2,
-          type: 3}
-        weight: 2
-      - tile: {fileID: 919132149155446097, guid: cdcacd60db07c30498d4fd19a6aa33d8,
+      - tile: {fileID: 919132149155446097, guid: 104562e81a00b634993ec00f4b6aadc8,
           type: 3}
         weight: 1
-      - tile: {fileID: 919132149155446097, guid: a70adfbbb6881cb48a4cca35e62d5729,
-          type: 3}
-        weight: 5
-      - tile: {fileID: 919132149155446097, guid: 143b89330da663543b25b19c736dde81,
-          type: 3}
-        weight: 5
-      allowableRotations: 5
+      allowableRotations: 0
       allowableFlips: 3
     type4:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: efff026124e944349b2a9819ea4cc398,
+      - tile: {fileID: 919132149155446097, guid: 59659a5254b51974db696d118f33250f,
           type: 3}
         weight: 1
-      - tile: {fileID: 919132149155446097, guid: 7525bce59acb3aa4e90a4c7900178880,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: c1a32db8b0b40074780bfea93f0e3cfb,
-          type: 3}
-        weight: 5
-      - tile: {fileID: 919132149155446097, guid: 6305bbae9da23fb4ebe32f0b5469d6fc,
-          type: 3}
-        weight: 5
-      - tile: {fileID: 919132149155446097, guid: f31e896764824a44783626c9281ef7a7,
-          type: 3}
-        weight: 2
       allowableRotations: 0
       allowableFlips: 0
     type5:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 92e0ef0070cc7ec45a37645422ca12e3,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 13ece26925a3e224ca6ba6db51082211,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 0e2c9fae26939da4eb8e4a29f45bfd6f,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 593e2b7a07566dc43b07e8ca6f31349e,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: c722be8f3fdaa7b40a6c13e9fcab9098,
+      - tile: {fileID: 919132149155446097, guid: 84215af0f7fc70c4bba2c6e5f453e85b,
           type: 3}
         weight: 1
       allowableRotations: 0
-      allowableFlips: 0
-    type2a:
+      allowableFlips: 1
+    type6:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 87ba161034ade1e40993389668173af4,
-          type: 3}
-        weight: 3
-      - tile: {fileID: 919132149155446097, guid: f16a594695f19154a9b039733cadc56f,
+      - tile: {fileID: 919132149155446097, guid: a0b39d522ce2d9342a5daa5f0412119b,
           type: 3}
         weight: 1
-      - tile: {fileID: 919132149155446097, guid: d15ac9125e9f7194e9d2bbab08a4192f,
-          type: 3}
-        weight: 3
-      - tile: {fileID: 919132149155446097, guid: 4306d655e27fdd249b70c46d8f15e6e4,
-          type: 3}
-        weight: 1
-      allowableRotations: 0
-      allowableFlips: 2
-    type3a:
-      tiles:
-      - tile: {fileID: 919132149155446097, guid: ee70f128b660bf747884600233ed8f37,
-          type: 3}
-        weight: 3
-      - tile: {fileID: 919132149155446097, guid: 39ba504b19687b346b4163735a13d4ea,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 3d608c0cf2edfbe46b8dc3efdff01a14,
-          type: 3}
-        weight: 3
-      - tile: {fileID: 919132149155446097, guid: 0332a6a7734398646a9ca3f386cab5c0,
-          type: 3}
-        weight: 1
-      allowableRotations: 0
-      allowableFlips: 2
+      allowableRotations: 15
+      allowableFlips: 3
     type4a:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 857f5b2e8f5be6049babcacc862e1fa9,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 9a3f7d2a3ed89f34a9d7d7edeaf0555a,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: cacd546019cb082469f6b3f244225176,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 0a01c006d641d984a9b3ffd8d6689187,
-          type: 3}
-        weight: 1
-      allowableRotations: 0
-      allowableFlips: 0
-    type4b:
-      tiles:
-      - tile: {fileID: 919132149155446097, guid: b12572e16d124e9459ca857c634c97b9,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 4fb5d906fb65cb44290d52f8783d2f97,
-          type: 3}
-        weight: 1
-      allowableRotations: 0
-      allowableFlips: 0
-    type4c:
-      tiles:
-      - tile: {fileID: 919132149155446097, guid: c08ea4e3bb782f9489fca750b1523452,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: b390038b2a08df44bbbd5784f0107829,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: f5cb887f9719aec45afb988c8a36ddf9,
-          type: 3}
-        weight: 1
-      allowableRotations: 0
-      allowableFlips: 0
-    type4d:
-      tiles:
-      - tile: {fileID: 919132149155446097, guid: 9b1ac1347e8c2f143bfbdc463bf7156c,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 963b3680fe0799d4188082519523c13a,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 19677ca6d131a3744a4f18906af07510,
+      - tile: {fileID: 919132149155446097, guid: bb0bb936f146eaa40956d7938042dc97,
           type: 3}
         weight: 1
       allowableRotations: 0
       allowableFlips: 0
     type5a:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 0cecff8d6e40bb3479cfe06d5c673177,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: bdc4e762a7d0ed8459608617a642bd04,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 3954b758fe77cb642be071fe69cdf1d6,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: fbae54721e4112f4485f12769a53f296,
+      - tile: {fileID: 919132149155446097, guid: 98b2c7e412c7b034292bc90107b85479,
           type: 3}
         weight: 1
       allowableRotations: 0
       allowableFlips: 0
     type5b:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 7ba84cd0492f4764985788bf6cac4436,
+      - tile: {fileID: 919132149155446097, guid: 7ae89fe303445ad4eb652396204526d2,
           type: 3}
         weight: 1
-      - tile: {fileID: 919132149155446097, guid: 48a493dd5f70a9044989202e9b70008e,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: d3bc3ee848404884eaa0d43c42cae8d1,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 3537c6d7fdf03034481105663725b4df,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 8a99ab6b39f2ff54bbfcbbaf7fea2ad3,
+      allowableRotations: 0
+      allowableFlips: 1
+    type6a:
+      tiles:
+      - tile: {fileID: 919132149155446097, guid: fd4cb2febba43f34cb9c2a1d77a9a6de,
           type: 3}
         weight: 1
       allowableRotations: 0
       allowableFlips: 0
-    type5c:
+    type6b:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 2f6bb1a66b39121499dc61ed32facfb9,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: d845c1313440c504ab3bd52c94e1c365,
+      - tile: {fileID: 919132149155446097, guid: 99f46131866b0454d8c2f974454b3019,
           type: 3}
         weight: 1
       allowableRotations: 0
-      allowableFlips: 0
-    type5d:
+      allowableFlips: 1
+    type6bx:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 4660535d02a27fd478c9a5c2e6a475ba,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 04a58b2052ef6a04183564e2de9d361f,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 4b02cf10e645a9a4cabd494619b76a12,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: d49f83ad8991d5a499a22b7c05f491ac,
-          type: 3}
-        weight: 1
-      allowableRotations: 0
-      allowableFlips: 0
-    type3e:
-      tiles:
-      - tile: {fileID: 919132149155446097, guid: abf2b97597c10424b83080c7f1c1c650,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: d1298900ae473544d84bc7c9fbba8ae8,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: c89c65f9367187b43a6ee97a10a5ea7c,
+      - tile: {fileID: 919132149155446097, guid: 67d44b66455263b409981737f0648781,
           type: 3}
         weight: 1
       allowableRotations: 0
       allowableFlips: 2
-    type4e:
+    type6c:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: af961a0a87bfa884fa33ca001e58b459,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: a64cc8de4957b5f4694a11ece06b4a41,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 46b734f56cf9e554f824541575afba7f,
+      - tile: {fileID: 919132149155446097, guid: 99254a18894435d4889d96957669121a,
           type: 3}
         weight: 1
       allowableRotations: 0
       allowableFlips: 0
-    type5e:
+    type6d:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: 91f176e5149e6ea4b91e9412267fa65a,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 87ccae868953ae648a982041bee3e060,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 42a5014356c64a74b8e88cdb398a043b,
+      - tile: {fileID: 919132149155446097, guid: 96a39b845a26b4b40871085a36e5dd5b,
           type: 3}
         weight: 1
       allowableRotations: 0
       allowableFlips: 0
-    type5f:
+    type6e:
       tiles:
-      - tile: {fileID: 919132149155446097, guid: a72a0c86a7b306b4389dfa7bc9c8d9d6,
+      - tile: {fileID: 919132149155446097, guid: 5280d070dd6f7c14f8f0c5fd3b4219f0,
           type: 3}
         weight: 1
-      - tile: {fileID: 919132149155446097, guid: f4ed3198604c0634ba2bdd874b4022c2,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: 6d9b7c3ea6bbcdc4abda0e73b9412026,
-          type: 3}
-        weight: 1
-      allowableRotations: 0
-      allowableFlips: 0
-    type5g:
-      tiles:
-      - tile: {fileID: 919132149155446097, guid: 38453c385d4d7d146a11570af1fdaf06,
-          type: 3}
-        weight: 1
-      - tile: {fileID: 919132149155446097, guid: ce58636fd4072b54580ced5540d564f9,
-          type: 3}
-        weight: 1
-      allowableRotations: 0
-      allowableFlips: 0
+      allowableRotations: 15
+      allowableFlips: 3
+  shallowToxicTiles:
+    tiles:
+    - tile: {fileID: 919132149155446097, guid: 2fa0fdbc5dfeab74fa10948a7bbaf0aa, type: 3}
+      weight: 1
+    - tile: {fileID: 919132149155446097, guid: e914e437fbaf9aa4391588901622c67d, type: 3}
+      weight: 1
+    - tile: {fileID: 919132149155446097, guid: d5221d6e71271bf41980a38b8388b611, type: 3}
+      weight: 1
+    allowableRotations: 15
+    allowableFlips: 3
   toxicSourceAdornments:
     tiles:
     - tile: {fileID: 919132149155446097, guid: 76cd22c2e625e5d4bbab4d6b3ffcd1fa, type: 3}

@@ -8,8 +8,8 @@ public class TileFactoryConfiguration : ScriptableObject
     public TileSet floorTiles;
     public TileSet grassTiles;
     public TileSet obstacleTiles;
-    public TileSet deepToxicTiles;
-    public ShallowToxicTileSet shallowToxicTiles;
+    public DeepToxicTileSet deepToxicTiles;
+    public TileSet shallowToxicTiles;
 
     public TileSet toxicSourceAdornments;
 }

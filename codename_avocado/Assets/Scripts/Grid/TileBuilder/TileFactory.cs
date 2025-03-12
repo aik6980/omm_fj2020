@@ -115,8 +115,8 @@ public class TileFactory
     private readonly SimpleTileBuilder floorBuilder;
     private readonly SimpleTileBuilder grassBuilder;
     private readonly SimpleTileBuilder obstacleBuilder;
-    private readonly ToxicTileBuilder toxicBuilder;
-    private readonly SimpleTileBuilder deepToxicBuilder;
+    private readonly SimpleTileBuilder toxicBuilder;
+    private readonly ToxicTileBuilder deepToxicBuilder;
     private readonly SimpleTileBuilder toxicSourceBuilder;
 
     public TileFactory(TileFactoryConfiguration factoryConfig, GameObject tilePrefab)
@@ -129,8 +129,8 @@ public class TileFactory
         floorBuilder = new SimpleTileBuilder(factoryConfig.floorTiles);
         grassBuilder = new SimpleTileBuilder(factoryConfig.grassTiles);
         obstacleBuilder = new SimpleTileBuilder(factoryConfig.obstacleTiles);
-        toxicBuilder = new ToxicTileBuilder(factoryConfig.shallowToxicTiles);
-        deepToxicBuilder = new SimpleTileBuilder(factoryConfig.deepToxicTiles);
+        toxicBuilder = new SimpleTileBuilder(factoryConfig.shallowToxicTiles);
+        deepToxicBuilder = new ToxicTileBuilder(factoryConfig.deepToxicTiles);
         toxicSourceBuilder = new SimpleTileBuilder(factoryConfig.toxicSourceAdornments);
     }
 

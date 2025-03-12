@@ -15,6 +15,8 @@ public static class CoordinateExtensions
     public static bool IsPollutable(this Coordinate coord) => coord?.Type.IsPollutable() ?? false;
 
     public static bool IsPolluted(this Coordinate coord) => coord?.Type.IsPolluted() ?? false;
+
+	public static bool IsDeepPolluted(this Coordinate coord) => coord?.m_Worldgrid.GetToxicLevel(coord) == GridTileBuilder.ToxicLevel.deep;
 }
 
 public class Coordinate

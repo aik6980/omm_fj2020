@@ -109,6 +109,58 @@ public class ShallowToxicTileSet
 }
 
 [System.Serializable]
+public class DeepToxicTileSet
+{
+    [DisplayWithIcon("1) Zero Neighbours", "Assets\\tile_icon_1.png")]
+    public TileSet type1;
+
+    [Header("Orthogonal Tile Adjacencies...")]
+    [DisplayWithIcon("2) One Neighbour", "Assets\\tile_icon_2.png")]
+    public TileSet type2;
+
+    [DisplayWithIcon("3) Two Neighbours (Opposite)", "Assets\\tile_icon_3.png")]
+    public TileSet type3;
+
+    [DisplayWithIcon("4) Two Neighbours (Adjacent)", "Assets\\tile_icon_4.png")]
+    public TileSet type4;
+
+    [DisplayWithIcon("5) Three Neighbours", "Assets\\tile_icon_5.png")]
+    public TileSet type5;
+
+    [DisplayWithIcon("6) Four Neighbours", "Assets\\tile_icon_6.png")]
+    public TileSet type6;
+
+    [Header("Diagonal Tile Adjacencies...")]
+
+    [DisplayWithIcon("4a) Corner block", "Assets\\tile_icon_4a.png")]
+    public TileSet type4a;
+
+    [DisplayWithIcon("5a) One Corner", "Assets\\tile_icon_5a.png")]
+    public TileSet type5a;
+
+    [DisplayWithIcon("5b) Both Corners", "Assets\\tile_icon_5b.png")]
+    public TileSet type5b;
+
+    [DisplayWithIcon("6a) One Corner", "Assets\\tile_icon_6a.png")]
+    public TileSet type6a;
+
+    [DisplayWithIcon("6b) Two Corners (Adjacent)", "Assets\\tile_icon_6b.png")]
+    public TileSet type6b;
+
+    [DisplayWithIcon("6b) Two Corners (Adjacent, and rotated 90 degrees)", "Assets\\tile_icon_6bx.png")]
+    public TileSet type6bx;
+
+    [DisplayWithIcon("6c) Two Corners (Opposite)", "Assets\\tile_icon_6c.png")]
+    public TileSet type6c;
+
+    [DisplayWithIcon("6d) Three Corners", "Assets\\tile_icon_6d.png")]
+    public TileSet type6d;
+
+    [DisplayWithIcon("6e) Four Corners", "Assets\\tile_icon_6e.png")]
+    public TileSet type6e;
+}
+
+[System.Serializable]
 public class TileSet
 {
     public Tile[] tiles;
