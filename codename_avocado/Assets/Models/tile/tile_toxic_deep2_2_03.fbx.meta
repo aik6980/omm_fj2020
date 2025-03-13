@@ -3,9 +3,19 @@ guid: d763811fac8b3f3478b4db1e8404fb88
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Toxic.001
+    second: {fileID: 2100000, guid: 4aae50cfaae85a44f8e1987f5a595d6e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ground.001
+    second: {fileID: 2100000, guid: 4aae50cfaae85a44f8e1987f5a595d6e, type: 2}
   materials:
-    materialImportMode: 2
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1

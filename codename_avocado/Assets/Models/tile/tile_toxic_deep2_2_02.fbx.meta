@@ -25,7 +25,7 @@ ModelImporter:
       name: ground.001
     second: {fileID: 2100000, guid: 4aae50cfaae85a44f8e1987f5a595d6e, type: 2}
   materials:
-    materialImportMode: 2
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
