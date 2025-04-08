@@ -73,10 +73,13 @@ MonoBehaviour:
       tiles:
       - tile: {fileID: 919132149155446097, guid: ef25cfd87fb3f064abc904b9a3a4498e,
           type: 3}
-        weight: 1
+        weight: 0.8
       - tile: {fileID: 919132149155446097, guid: da3cbd39d3352bc42968175cf4227ef1,
           type: 3}
         weight: 1
+      - tile: {fileID: 919132149155446097, guid: d763811fac8b3f3478b4db1e8404fb88,
+          type: 3}
+        weight: 0.6
       allowableRotations: 0
       allowableFlips: 2
     type3:
@@ -113,6 +116,9 @@ MonoBehaviour:
     type4a:
       tiles:
       - tile: {fileID: 919132149155446097, guid: bb0bb936f146eaa40956d7938042dc97,
+          type: 3}
+        weight: 0.8
+      - tile: {fileID: 919132149155446097, guid: ce932309eb71bd04d8270fb6067d5a9a,
           type: 3}
         weight: 1
       allowableRotations: 0
