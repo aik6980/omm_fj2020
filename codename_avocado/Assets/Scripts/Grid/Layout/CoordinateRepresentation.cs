@@ -162,7 +162,7 @@ public class CoordinateRepresentation : MonoBehaviour
             ForceUpdateRepresentation();
             return true;
         }
-        else
+        else if (coordinate.Type.IsPolluted())
         {
             foreach (var neighbour in worldGrid.GetOrthogonalNeighbours(coordinate).Concat(worldGrid.GetDiagonalNeighbours(coordinate)).Where(c => c != null))
             {
