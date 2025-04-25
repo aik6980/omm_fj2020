@@ -40,6 +40,8 @@ public class CoordinateRepresentation : MonoBehaviour
     // Toxic decoration
     private GameObject m_vfx_object = null;
 
+    public CountdownTimer timerRepresentation;
+
     private void OnDestroy()
     {
         DestroyPart(ref m_base_tile_object);
@@ -64,83 +66,6 @@ public class CoordinateRepresentation : MonoBehaviour
         this.transform.position = new Vector3(coordinate.GridPosition().x, -.5f, coordinate.GridPosition().y);
         CreateTileRepresentation(coordinate);
         CreateTileAdornments(coordinate);
-
-        #region old code
-        //bool type_changed() => m_previous_type != coordinate.Type;
-        //bool toxicity_changed() => m_num_toxic_neighbours != worldGrid.GetOrthogonalNeighbours(coordinate).Count(c => c?.IsPolluted ?? false) /*+ worldGrid.GetDiagonalNeighbours(coordinate).Count(c => c.IsPolluted)*/;
-        //
-        //m_Coordinate = coordinate;
-        //transform.position = new Vector3(m_Coordinate.GridPosition().x, -.5f, m_Coordinate.GridPosition().y);
-        //m_Coordinate.Decorate(this);
-        //
-        //// Destroy the old...
-        //if (type_changed() || toxicity_changed())
-        //{
-        //	if (m_base_tile_object != null)
-        //	{
-        //		Destroy(m_base_tile_object);
-        //		m_base_tile_object = null;
-        //	}
-        //
-        //	if (m_vfx_object != null)
-        //	{
-        //		Destroy(m_vfx_object);
-        //		m_vfx_object = null;
-        //	}
-        //}
-        //
-        //if (m_adorning_objects != null && type_changed())
-        //{
-        //	for (int i = 0; i < m_adorning_objects.Length; ++i)
-        //	{
-        //		Destroy(m_adorning_objects[i]);
-        //	}
-        //	m_adorning_objects = null;
-        //}
-        //
-        //// Create the new...
-        //if (m_base_tile_object == null || type_changed() || toxicity_changed())
-        //{
-        //	m_base_tile_object = builder.GetTile(worldGrid, coordinate);
-        //	m_base_tile_object.GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        //
-        //	// position/rotation fix
-        //	m_base_tile_object.transform.parent = this.transform;
-        //	m_base_tile_object.transform.localPosition = Vector3.zero;
-        //
-        //	//m_base_tile_object.transform.Rotate(new Vector3(0f, 0f, 90f /** Random.Range(0, 3)*/));
-        //
-        //	// add VFX 
-        //	if (coordinate.Type == GridTileBuilder.TileType.toxic ||
-        //		coordinate.Type == GridTileBuilder.TileType.toxic_pool)
-        //    {
-        //		m_vfx_object = builder.InstantiateToxicVFX();
-        //		m_vfx_object.transform.parent = this.transform;
-        //		m_vfx_object.transform.localPosition = Vector3.zero;
-        //	}
-        //
-        //	if (coordinate.Type == GridTileBuilder.TileType.grass)
-        //	{
-        //		var vfx = builder.InstantiateGrassVFX();
-        //		vfx.transform.parent = this.transform;
-        //		vfx.transform.localPosition = Vector3.zero;
-        //	}
-        //}
-        //
-        //if (m_adorning_objects == null || type_changed())
-        //{
-        //	m_adorning_objects = builder.GetTileAdornments(coordinate);
-        //	m_adorning_objects.ForEach(adornment =>
-        //	{
-        //		adornment.transform.parent = this.transform;
-        //		adornment.transform.localPosition = Vector3.zero;
-        //	});
-        //}
-        //
-        //m_previous_type = coordinate.Type;
-        ////m_previous_toxicity = worldGrid.GetToxicLevel(coordinate);
-        //m_num_toxic_neighbours = worldGrid.GetOrthogonalNeighbours(coordinate).Count(c => c?.IsPolluted ?? false);
-        #endregion
     }
 
     [Button("Force Update Representation")]
@@ -180,6 +105,11 @@ public class CoordinateRepresentation : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void UpdateTimer(float timeRemaining)
+    {
+        timerRepresentation?.UpdateTimeRemaining(timeRemaining);
     }
 
     private void UpdateNeighbourStateCache()

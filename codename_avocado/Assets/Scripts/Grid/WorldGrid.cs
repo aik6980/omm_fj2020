@@ -23,7 +23,6 @@ public class WorldGrid : MonoBehaviour
 {
     public GameState m_GameState;
     public GameObject m_CoordinatePrefab;
-    public List<GridPiece> m_Pieces = new List<GridPiece>();
     public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
     public int m_Distance = 20;
@@ -43,7 +42,7 @@ public class WorldGrid : MonoBehaviour
     public TMPro.TMP_Text				m_Levelname;
     public bool m_LevelReady;
 
-    public event System.Action<Coordinate, GridTileBuilder.TileType, GridTileBuilder.ToxicLevel> OnCoordinateTypeChanged;
+    public event System.Action<Coordinate, GridTileBuilder.TileType> OnCoordinateTypeChanged;
 
     public void Update()
     {
@@ -81,7 +80,6 @@ public class WorldGrid : MonoBehaviour
         if (post_process != null)
             m_EnvironmentPostProcess = Instantiate(post_process);
 
-        //OnCoordinateTypeChanged -= WorldGrid_OnCoordinateTypeChanged;
         m_coord_grid_representation?.ForEach((x, y, coord_rep) => Destroy(coord_rep?.gameObject));
 
         var conveyorQueue = Resources.Load<ManualConveyorQueue>(string.Format("Levels/Lv{0}_Queue", level_num));
@@ -103,17 +101,6 @@ public class WorldGrid : MonoBehaviour
             NextShapeQueue.Instance.Awake();
         }
     }
-
-    //private void WorldGrid_OnCoordinateTypeChanged(Coordinate coord, GridTileBuilder.TileType previous_type, GridTileBuilder.ToxicLevel toxicity)
-    //{
-    //	m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]?.Configure(this, coord, m_GridTileBuilder);
-    //	GetOrthogonalNeighbours(coord)
-    //		.Where(neighbour => neighbour != null)
-    //		.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
-    //	GetDiagonalNeighbours(coord)
-    //		.Where(neighbour => neighbour != null)
-    //		.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
-    //}
 
     public List<Coordinate> GetCoordinatesForShape(Vector2Int origin, Direction dir, List<Vector2Int> positions)
     {
@@ -140,10 +127,6 @@ public class WorldGrid : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.2f);
                 SetCoordType(enumerator.Current, tileType);
-                //m_coord_grid_representation[enumerator.Current.m_Position.x, enumerator.Current.m_Position.y].Configure(this, enumerator.Current, m_GridTileBuilder);
-                //GetOrthogonalNeighbours(enumerator.Current)
-                //	.Where(neighbour => neighbour != null)
-                //	.ForEach(neighbour => m_coord_grid_representation[neighbour.m_Position.x, neighbour.m_Position.y].Configure(this, neighbour, m_GridTileBuilder));
             }
         }
 
@@ -154,6 +137,11 @@ public class WorldGrid : MonoBehaviour
     {
         m_LevelReady = false;
         LoadNextLevel();
+    }
+
+    public CoordinateRepresentation GetCoordinateRepresentation(Coordinate coord)
+    {
+        return m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y];
     }
 
     public Coordinate GetCoordinate(Vector2 pos)
@@ -258,12 +246,8 @@ public class WorldGrid : MonoBehaviour
         m_coord_grid_representation = new CoordinateRepresentation[m_level_data.Dimension.x, m_level_data.Dimension.y];
 
         // Update the polluter.
-        m_Polluter.AddObstacles(m_level_data.Block.Select(c => new BlockingPiece(this, new Shape(), c.ToVector2Int())).ToList()/*m_world_data.obstacle_pieces*/);
         m_Polluter.AddToxicPools(m_level_data.Magma.Select(c => new ToxicPiece(this, new Shape(), c.ToVector2Int(), m_level_data.Config.MaxSpreadDistance)).ToList()/*m_world_data.toxic_pool_pieces*/);
 
-        //OnCoordinateTypeChanged += WorldGrid_OnCoordinateTypeChanged;
-
-        //BuildTileRepresentation();
         OnLevelLoaded?.Invoke(/*m_world_data.start_piece.Coordinates*/null);
         StartCoroutine(TileAnimation(true));
     }
@@ -460,10 +444,11 @@ public class WorldGrid : MonoBehaviour
         if (coord.Type != type)
         {
             GridTileBuilder.TileType previous_type = coord.Type;
-            GridTileBuilder.ToxicLevel previous_toxicity = GridTileBuilder.ToxicLevel.none;//GetToxicLevel(coord);
             coord.Type = type;
-            OnCoordinateTypeChanged?.Invoke(coord, previous_type, previous_toxicity);
+            OnCoordinateTypeChanged?.Invoke(coord, previous_type);
 
+            // Check all of the neighbours and their neighbours updating the representations as needed (this fixes the
+            // neighbours which need to connect to new deep toxic tiles etc.)
             List<Coordinate> changedCoordinates = new() { coord };
             for (int i = 0; i < changedCoordinates.Count; ++i)
             {

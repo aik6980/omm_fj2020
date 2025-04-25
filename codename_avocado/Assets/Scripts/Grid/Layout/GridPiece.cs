@@ -19,7 +19,7 @@ public class GridPiece
 
 	protected List<Coordinate>			m_Coordinates = new List<Coordinate>();
 
-	public IEnumerable<Coordinate>		Coordinates
+	public List<Coordinate>		Coordinates
     {
 		get => m_Coordinates;
 	}
@@ -33,7 +33,6 @@ public class GridPiece
 		m_TileType = tileType;
 
 		m_Coordinates = m_Grid.GetCoordinatesForShape(m_origin_coords, Direction.North, shape.Coordinates());
-		//m_Coordinates.ForEach(coord => coord.Type = tileType);
 	}
 
     public static GridPiece GeneratePiece(WorldGrid grid, Vector2Int position, GridTileBuilder.TileType tileType, Shape shapeOverride = null)
@@ -65,16 +64,6 @@ public class GridPiece
 			m_Coordinates[i].Redecorate();
 		}
 	}
-
-	protected virtual bool CheckHealedPiece(Coordinate coordinate)
-	{
-		return m_Coordinates.Count == 0;
-	}
-
-	protected virtual void OnPieceHealed()
-	{
-		m_Grid.m_Pieces.Remove(this);
-	}
 }
 
 
@@ -89,9 +78,6 @@ public class PollutionPiece : GridPiece
 		: base(grid, shape, position, tileType, false)
 	{
 		m_PlacedDirection = Direction.North;
-		//m_Grid.m_Polluter.m_PollutionCoordinates.AddRange(m_Coordinates);
-		//m_Grid.RepresentCoordianates(this);
-		//PopulateCoords(m_Grid.m_Polluter.m_PollutionCoordinates);
 		RedecorateCords();
 	}
 
@@ -109,16 +95,6 @@ public class BlockingPiece : PollutionPiece
 		m_PlacedDirection = Direction.North;
 		RedecorateCords();
 	}
-
-	protected override bool CheckHealedPiece(Coordinate coordinate)
-	{
-		return false;
-	}
-
-	protected override void OnPieceHealed()
-	{
-		//do nothing 
-	}
 }
 
 public class ToxicPiece : PollutionPiece
@@ -127,29 +103,26 @@ public class ToxicPiece : PollutionPiece
 	private float m_LastExpansion = -1f;
 	private int m_MaxSpread = 0;
 
+	List<Coordinate> m_SourceCoordinates;
 	List<Vector2Int> m_CurrentExpansion = new List<Vector2Int>();
 
 	public ToxicPiece(WorldGrid grid, Shape shape, Vector2Int position, int max_spread)
 		: base(grid, shape, position, GridTileBuilder.TileType.toxic_pool)
 	{
+		m_SourceCoordinates = m_Coordinates;
 		m_MaxSpread = max_spread;
 		m_ToxicLevel = GridTileBuilder.ToxicLevel.deep;
 		m_ExpansionTime = grid.m_Polluter.m_PollutionExpansionTime;
-		// want random offset for each pollution
-		//m_LastExpansion = Random.Range(Time.time, Time.time + (m_ExpansionTime / 2));
 		var variation = grid.m_Polluter.m_PollutionExpansionTimeVariation;
 		m_LastExpansion = Time.time + Random.Range(m_ExpansionTime - variation, m_ExpansionTime + variation);
 
 		m_PlacedDirection = Direction.North;
-		//m_Grid.m_Polluter.m_PollutionCoordinates.AddRange(m_Coordinates);
-		//m_Grid.RepresentCoordianates(this);
-		//PopulateCoords(m_Grid.m_Polluter.m_PollutionCoordinates);
 		RedecorateCords();
 
 		m_Grid.OnCoordinateTypeChanged += Coord_OnCoordinateTypeChanged;
 	}
 
-	private void Coord_OnCoordinateTypeChanged(Coordinate coordinate, GridTileBuilder.TileType previous_type, GridTileBuilder.ToxicLevel previous_level)
+	private void Coord_OnCoordinateTypeChanged(Coordinate coordinate, GridTileBuilder.TileType previous_type)
     {
 		if (m_Coordinates.Contains(coordinate) == false)
 			return;
@@ -171,8 +144,8 @@ public class ToxicPiece : PollutionPiece
 				if (coord != coordinate)
 					m_Grid.SetCoordType(coord, GridTileBuilder.TileType.floor);
 			});
-			m_Grid.m_Polluter.m_Pollution.Remove(this);
-        }
+			m_Grid.m_Polluter.HealPositions(copy);
+		}
 	}
 
     public override void TickPollution()
@@ -187,6 +160,7 @@ public class ToxicPiece : PollutionPiece
 				Expand();
 				RedecorateCords();
 			}
+			m_SourceCoordinates.ForEach(coord => m_Grid.GetCoordinateRepresentation(coord)?.UpdateTimer(m_ExpansionTime - delta));
 		}
 	}
 
@@ -202,7 +176,7 @@ public class ToxicPiece : PollutionPiece
 		if (m_MaxSpread > 0)
 		{
 			var source_tiles = m_Coordinates
-				.Where(coord => coord.Type == GridTileBuilder.TileType.toxic_pool/*m_Grid.GetToxicLevel(coord) == GridTileBuilder.ToxicLevel.shallow || m_Grid.GetToxicLevel(coord) == GridTileBuilder.ToxicLevel.deep*/)
+				.Where(coord => coord.Type == GridTileBuilder.TileType.toxic_pool)
 				.Select(coord => coord.m_Position)
 				.ToList();
 			m_CurrentExpansion.RemoveAll(vec =>
@@ -234,26 +208,13 @@ public class ToxicPiece : PollutionPiece
 		coordsToGrow.Add(expansion);
 
 		List<Coordinate> newCoords = coordsToGrow.Select(vec => m_Grid.GetCoordinate(vec.x, vec.y)).ToList();
-		m_Grid.m_Polluter.m_PollutionCoordinates.AddRange(newCoords);
-		List<Vector2> gridNeighborPositions = new List<Vector2>();
-		for (int i = 0; i < coordsToGrow.Count; ++i)
+		for (int i = 0; i < newCoords.Count; ++i)
 		{
-			gridNeighborPositions.Add(/*m_PlacedPosition +*/ coordsToGrow[i]);
+			// player consumed by lava
+			if (newCoords[i].m_PopulatedPlayer != null)
+				newCoords[i].m_PopulatedPlayer.Die();
 		}
 
-
-		for (int i = 0; i < m_Grid.m_Coordinates.Count; ++i)
-		{
-			var expanded = m_Grid.m_Coordinates[i];
-			if (gridNeighborPositions.Contains(expanded.GridPosition()))
-			{
-				// player consumed by lava
-				if (expanded.m_PopulatedPlayer != null)
-					expanded.m_PopulatedPlayer.Die();
-			}
-		}
-
-		//PopulateCoords(m_Grid.m_Polluter.m_PollutionCoordinates);
 		RedecorateCords();
 		for (int i = 0; i < newCoords.Count; ++i)
 		{
@@ -262,16 +223,6 @@ public class ToxicPiece : PollutionPiece
 		}
 
 		m_Grid.UpdateTileRepresentationNow(this);
-	}
-
-	protected override bool CheckHealedPiece(Coordinate coordinate)
-	{
-		return coordinate.m_Position == Vector2.zero;
-	}
-
-	protected override void OnPieceHealed()
-	{
-		m_Grid.m_Polluter.m_Pollution.Remove(this);
 	}
 
 }

@@ -1,14 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
 
 public class GridPolluter : MonoBehaviour
 {
 	public WorldGrid m_Grid;
-	public List<Coordinate> m_PollutionCoordinates = new List<Coordinate>();
-	public List<PollutionPiece> m_Pollution = new List<PollutionPiece>();
-
-	private int m_ObstacleRange = 3;
+	private List<PollutionPiece> m_Pollution = new List<PollutionPiece>();
 
 	public float m_PollutionExpansionTime = 9999.0f;
 	public float m_PollutionExpansionTimeVariation = 0.0f;
@@ -16,20 +15,6 @@ public class GridPolluter : MonoBehaviour
     public void Start()
     {
 		StartCoroutine(PlayToxicSFXInterval());
-    }
-
-	int GetNumToxicPollution()
-    {
-		var toxic_count = 0;
-		foreach(PollutionPiece p in m_Pollution)
-        {
-			if(p.m_TileType == GridTileBuilder.TileType.toxic)
-            {
-				toxic_count++;
-            }
-        }
-
-		return toxic_count;
     }
 
 	IEnumerator PlayToxicSFXInterval()
@@ -44,7 +29,7 @@ public class GridPolluter : MonoBehaviour
 
 
 			// if no toxic don't play sfx
-			if(GetNumToxicPollution() > 0)
+			if (m_Pollution.Any(p => p.Coordinates.Any(c => c.Type.IsPolluted())))
             {
 				AudioManager.GetOrCreateInstance().PlayToxicSFX();
 			}
@@ -65,57 +50,18 @@ public class GridPolluter : MonoBehaviour
 		});
 	}
 
-	private void HealPosition(Vector2 coPosition, ref List<Coordinate> coordsToHeal)
+	public void HealPositions(List<Coordinate> coordinates)
 	{
-		for (int p = 0; p < m_PollutionCoordinates.Count; ++p)
+		for (int p = 0; p < m_Pollution.Count; ++p)
 		{
-			var pollutionCoord = m_PollutionCoordinates[p];
-			if (pollutionCoord.GridPosition() == coPosition && m_Grid.CanBeHealed(pollutionCoord, false))
-			{
-				coordsToHeal.Add(pollutionCoord);
-			}
+			m_Pollution[p].Coordinates.RemoveAll(c => coordinates.Contains(c));
 		}
-	}
-
-	public bool HandleHealing()
-	{
-		List<Coordinate> coordsToHeal = new List<Coordinate>();
-		for (int i = 0; i < m_Grid.m_Coordinates.Count; ++i)
-		{
-			var coPosition = m_Grid.m_Coordinates[i].GridPosition();
-			HealPosition(coPosition, ref coordsToHeal);
-		}
-
-		return true;
-	}
-
-	private Vector2 RandomPollutant()
-	{
-		int randomX = Random.Range(0, m_ObstacleRange);
-		int randomY = Random.Range(4, m_Grid.m_Distance - 4);
-		var position = new Vector2(randomX, randomY);
-		return position;
+		m_Pollution.RemoveAll(p => p.Coordinates.Count == 0);
 	}
 
     public void Reset()
     {
 		m_Pollution.Clear();
-		m_PollutionCoordinates.Clear();
-	}
-
-    public void AddObstacles(List<BlockingPiece> pieces)
-	{
-		var pollutant = RandomPollutant();
-		while (m_PollutionCoordinates.Find((Coordinate c) => c.GridPosition() == pollutant) != null)
-		{
-			pollutant = RandomPollutant();
-		}
-
-		pieces.ForEach(piece =>
-		{
-			m_Pollution.Add(piece);
-			m_PollutionCoordinates.AddRange(piece.Coordinates);
-		});
 	}
 
 	public void AddToxicPools(List<ToxicPiece> pieces)
@@ -123,7 +69,6 @@ public class GridPolluter : MonoBehaviour
 		pieces.ForEach(piece =>
 		{
 			m_Pollution.Add(piece);
-			m_PollutionCoordinates.AddRange(piece.Coordinates);
 
 			piece.Coordinates.ForEach(coord => m_Grid.SetCoordType(coord, GridTileBuilder.TileType.toxic_pool));
 			piece.GenerateExpansion();

@@ -188,6 +188,12 @@ public class AnimatedCharacter : MonoBehaviour
         face = Instantiate(faces[faceType], facePivot.position, facePivot.rotation, facePivot);
         armL = Instantiate(arms[armType], armLPivot.position, armLPivot.rotation * arms[armType].transform.rotation, armLPivot);
         armR = Instantiate(arms[armType], armRPivot.position, armRPivot.rotation * arms[armType].transform.rotation, armRPivot);
+
+        // Assign all of the pieces to the same layer as the parent.
+        var layer = gameObject.layer;
+        face.layer = layer;
+        armL.layer = layer;
+        armR.layer = layer;
     }
 
     void Update()
