@@ -3,72 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
-public class GridPolluter : MonoBehaviour
+public interface IGridPolluter
 {
-	public WorldGrid m_Grid;
-	private List<PollutionPiece> m_Pollution = new List<PollutionPiece>();
+	void TickPollution();
+	void AddToxicPools(List<ToxicPiece> pieces);
+	void HealPositions(List<Coordinate> coordinates);
+	bool HasAnyPollution();
+	void Clear();
+}
 
-	public float m_PollutionExpansionTime = 9999.0f;
-	public float m_PollutionExpansionTimeVariation = 0.0f;
 
-    public void Start()
-    {
-		StartCoroutine(PlayToxicSFXInterval());
-    }
-
-	IEnumerator PlayToxicSFXInterval()
+public class GridPolluter : IGridPolluter
+{
+	class ToxicSource
 	{
-		while (true)
-		{
-
-			var time_variation = UnityEngine.Random.Range(-1.0f, 1.0f) * AudioManager.GetOrCreateInstance().toxic_sfx_interval_variation;
-			var random_interval = AudioManager.GetOrCreateInstance().toxic_sfx_interval + time_variation;
-
-			yield return new WaitForSeconds(random_interval);
-
-
-			// if no toxic don't play sfx
-			if (m_Pollution.Any(p => p.Coordinates.Any(c => c.Type.IsPolluted())))
-            {
-				AudioManager.GetOrCreateInstance().PlayToxicSFX();
-			}
-		}
+		public ToxicPiece piece;
+		public float nextExpansionTime;
 	}
 
-	private void Update()
+	private readonly WorldGrid m_Grid;
+	private readonly List<ToxicSource> m_Pollution = new List<ToxicSource>();
+
+	private readonly float m_PollutionExpansionTime = 9999.0f;
+	private readonly float m_PollutionExpansionTimeVariation = 0.0f;
+
+	public GridPolluter(WorldGrid grid, float pollutionExpansionTime, float pollutionExpansionTimeVariation)
+	{
+		m_Grid = grid;
+		m_PollutionExpansionTime = pollutionExpansionTime;
+		m_PollutionExpansionTimeVariation = pollutionExpansionTimeVariation;
+	}
+
+	public void TickPollution()
 	{
 		CheckExpandPollution();
-	}
-
-	public void CheckExpandPollution()
-	{
-		var copy = new List<PollutionPiece>(m_Pollution);
-		copy.ForEach((PollutionPiece piece) =>
-		{
-			piece.TickPollution();
-		});
-	}
-
-	public void HealPositions(List<Coordinate> coordinates)
-	{
-		for (int p = 0; p < m_Pollution.Count; ++p)
-		{
-			m_Pollution[p].Coordinates.RemoveAll(c => coordinates.Contains(c));
-		}
-		m_Pollution.RemoveAll(p => p.Coordinates.Count == 0);
-	}
-
-    public void Reset()
-    {
-		m_Pollution.Clear();
 	}
 
 	public void AddToxicPools(List<ToxicPiece> pieces)
 	{
 		pieces.ForEach(piece =>
 		{
-			m_Pollution.Add(piece);
+			m_Pollution.Add(new ToxicSource() { piece = piece, nextExpansionTime = CalculateNextExpansion(Time.time) });
 
 			piece.Coordinates.ForEach(coord => m_Grid.SetCoordType(coord, GridTileBuilder.TileType.toxic_pool));
 			piece.GenerateExpansion();
@@ -76,4 +51,39 @@ public class GridPolluter : MonoBehaviour
 				piece.Expand();
 		});
 	}
+
+	public void HealPositions(List<Coordinate> coordinates)
+	{
+		for (int p = 0; p < m_Pollution.Count; ++p)
+		{
+			m_Pollution[p].piece.Coordinates.RemoveAll(c => coordinates.Contains(c));
+		}
+		m_Pollution.RemoveAll(p => p.piece.Coordinates.Count == 0);
+	}
+
+	public bool HasAnyPollution()
+	{
+		return m_Pollution.Any(p => p.piece.Coordinates.Any(c => c.Type.IsPolluted()));
+	}
+
+	public void Clear()
+	{
+		m_Pollution.Clear();
+	}
+
+	private void CheckExpandPollution()
+	{
+		m_Pollution.ForEach(source =>
+		{
+			if (Time.time >= source.nextExpansionTime)
+			{
+				source.piece.Expand();
+				source.piece.RedecorateCords();
+				source.nextExpansionTime = CalculateNextExpansion(Time.time);
+			}
+			source.piece.UpdateTimer(source.nextExpansionTime - Time.time);
+		});
+	}
+
+	private float CalculateNextExpansion(float initialTime) => initialTime + Random.Range(m_PollutionExpansionTime - m_PollutionExpansionTimeVariation, m_PollutionExpansionTime + m_PollutionExpansionTimeVariation);
 }

@@ -46,12 +46,10 @@ public class GridPlayerCharacter : MonoBehaviour
     public UnityEvent OnSpawnDelegate;
     public UnityEvent OnDeathDelegate;
 
-    private PreviewPlacement m_PreviewPlacement;
-
-	public bool waitingForLevelToLoad;
-    public bool waitingToRespawn;
-    public bool canUnfold;
-    public bool hasMoved;
+	public bool waitingForLevelToLoad = true;
+    public bool waitingToRespawn = false;
+    public bool canUnfold = false;
+    public bool hasMoved = false;
 
     private void Awake()
     {
@@ -78,9 +76,8 @@ public class GridPlayerCharacter : MonoBehaviour
 	{
         CheckLink();
 		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
-        canUnfold = false;
-
-    }
+		PreparePlacement();
+	}
 
     void CheckLink()
     {
@@ -146,7 +143,6 @@ public class GridPlayerCharacter : MonoBehaviour
             m_Facing = newFacing;
             transform.rotation = Quaternion.Euler(0, newFacing.Heading(), 0);
 
-            ClearPreview();
             MoveToCoordinate(m_CurrentCoordinte);
             CheckWinCondition();
             return true;
@@ -155,7 +151,6 @@ public class GridPlayerCharacter : MonoBehaviour
 		if (m_Grid.TryMove(m_CurrentCoordinte, directionVec, out var nextCoordinate))
 		{
 			//Debug.Log("moving to coordinate: " + nextCoordinate.GridPosition().x.ToString() + "," + nextCoordinate.GridPosition().y.ToString());
-			ClearPreview();
 			MoveToCoordinate(nextCoordinate);
 			CheckWinCondition();
 			return true;
@@ -194,16 +189,8 @@ public class GridPlayerCharacter : MonoBehaviour
 	private void PreparePlacement()
 	{
 		// always recreate for now, might switch directions...
-		ClearPreview();
-
 		Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
-		//if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing))
-		{
-			m_PreviewPlacement = m_PlayerPiece.PreviewPlacement(placePostition, m_Facing);
-		}
-
-        //bool canPlace = m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing);
-        //unfoldScript.ShowPrevis(canPlace ? Color.green : Color.red);
+		m_PlayerPiece.UpdatePreviewPlacement(placePostition, m_Facing);
         canUnfold = m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing);
         //Debug.Log(canUnfold + " at " + placePostition.ToString() + m_Facing.ToString());
     }
@@ -217,7 +204,7 @@ public class GridPlayerCharacter : MonoBehaviour
 
 	private void Interactions()
 	{
-		if (/*m_PreviewPlacement != null &&*/ Input.GetKeyDown(KeyCode.Space) || Input.GetAxisRaw("Jump") > 0.1f)
+		if (Input.GetKeyDown(KeyCode.Space) || Input.GetAxisRaw("Jump") > 0.1f)
 		{
 			TryPlacePiece();
 		}
@@ -228,8 +215,6 @@ public class GridPlayerCharacter : MonoBehaviour
 		// check if can place piece in front of player...
 		//if (!m_CurrentCoordinte.TryMove(m_Facing, ref nextCoordinate))
 		{
-			ClearPreview();
-
 			Vector2 placePostition = WorldGrid.OffsetDirection(m_CurrentCoordinte.GridPosition(), m_Facing);
 			if (m_Grid.SupportsPlacement(placePostition, m_PlayerPiece, m_Facing))
 			{
@@ -244,17 +229,6 @@ public class GridPlayerCharacter : MonoBehaviour
 			}
 		}
 	}
-
-	private void ClearPreview()
-	{
-		if (m_PreviewPlacement != null)
-		{
-			m_PreviewPlacement.Clear();
-			m_PreviewPlacement = null;
-		}
-
-        //unfoldScript.HidePrevis();
-    }
 
     public void Die()
     {
@@ -274,7 +248,6 @@ public class GridPlayerCharacter : MonoBehaviour
 
         m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, m_Grid.m_Coordinates[0].m_Position, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
 		MoveToCoordinate(m_Grid.m_Coordinates[0]);
-        canUnfold = false;
 
         m_Facing = Direction.North;
         AttemptMove(Vector2.right);

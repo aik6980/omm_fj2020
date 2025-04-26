@@ -45,16 +45,13 @@ public class GridPiece
 		return newPiece;
 	}
 
-    public PreviewPlacement PreviewPlacement(Vector2 position, Direction direction)
+    public void UpdatePreviewPlacement(Vector2 position, Direction direction)
 	{
 		m_PlacedPosition = position;
 		m_origin_coords = Vector2Int.RoundToInt(position);
 		m_PlacedDirection = direction;
 
 		m_Coordinates = m_Grid.GetCoordinatesForShape(m_origin_coords, direction, m_Shape.Coordinates());
-
-		var preview = new PreviewPlacement(m_Grid.UpdateTileRepresentationNow(this));
-		return preview;
 	}
 
 	public void RedecorateCords()
@@ -99,8 +96,6 @@ public class BlockingPiece : PollutionPiece
 
 public class ToxicPiece : PollutionPiece
 {
-	public float m_ExpansionTime = 9999.0f;
-	private float m_LastExpansion = -1f;
 	private int m_MaxSpread = 0;
 
 	List<Coordinate> m_SourceCoordinates;
@@ -109,12 +104,9 @@ public class ToxicPiece : PollutionPiece
 	public ToxicPiece(WorldGrid grid, Shape shape, Vector2Int position, int max_spread)
 		: base(grid, shape, position, GridTileBuilder.TileType.toxic_pool)
 	{
-		m_SourceCoordinates = m_Coordinates;
+		m_SourceCoordinates = new List<Coordinate>(m_Coordinates);
 		m_MaxSpread = max_spread;
 		m_ToxicLevel = GridTileBuilder.ToxicLevel.deep;
-		m_ExpansionTime = grid.m_Polluter.m_PollutionExpansionTime;
-		var variation = grid.m_Polluter.m_PollutionExpansionTimeVariation;
-		m_LastExpansion = Time.time + Random.Range(m_ExpansionTime - variation, m_ExpansionTime + variation);
 
 		m_PlacedDirection = Direction.North;
 		RedecorateCords();
@@ -144,24 +136,13 @@ public class ToxicPiece : PollutionPiece
 				if (coord != coordinate)
 					m_Grid.SetCoordType(coord, GridTileBuilder.TileType.floor);
 			});
-			m_Grid.m_Polluter.HealPositions(copy);
+			m_Grid.HealPositions(copy);
 		}
 	}
 
-    public override void TickPollution()
-	{
-		if (m_LastExpansion > 0f)
-		{
-			float delta = Time.time - m_LastExpansion;
-			if (delta >= m_ExpansionTime)
-			{
-				m_LastExpansion = Time.time;
-				// grow outwards...
-				Expand();
-				RedecorateCords();
-			}
-			m_SourceCoordinates.ForEach(coord => m_Grid.GetCoordinateRepresentation(coord)?.UpdateTimer(m_ExpansionTime - delta));
-		}
+	public void UpdateTimer(float timeRemaining)
+    {
+		m_SourceCoordinates.ForEach(coord => m_Grid.GetCoordinateRepresentation(coord)?.UpdateTimer(timeRemaining));
 	}
 
 	public void GenerateExpansion()
@@ -221,8 +202,6 @@ public class ToxicPiece : PollutionPiece
 			m_Coordinates.Add(newCoords[i]);
 			m_Grid.SetCoordType(newCoords[i], GridTileBuilder.TileType.toxic);
 		}
-
-		m_Grid.UpdateTileRepresentationNow(this);
 	}
 
 }

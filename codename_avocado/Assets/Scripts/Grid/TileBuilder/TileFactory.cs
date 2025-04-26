@@ -77,32 +77,6 @@ public static class TileConfigurationExtensions
             }
         }
     }
-
-    //public static GameObject GetRandomTile(this TileConfiguration tileConfiguration, Direction alignToDirection)
-    //{
-    //    float rangeSum = tileConfiguration.tileset.Sum(t => t.weight);
-    //    float value = Random.Range(0.0f, rangeSum);
-    //    var selectedTile = tileConfiguration.tileset.SkipWhile(t => (value -= t.weight) > 0.0f).First();
-    //
-    //    var tile = GameObject.Instantiate(selectedTile.tile);
-    //    if (tileConfiguration.can_be_flipped_ns && Random.Range(0, 1) > 0)
-    //    {
-    //        var flippedScale = tile.transform.localScale;
-    //        flippedScale.x *= -1.0f;
-    //        tile.transform.localScale = flippedScale;
-    //    }
-    //
-    //    if (tileConfiguration.can_be_flipped_ew && Random.Range(0, 1) > 0)
-    //    {
-    //        var flippedScale = tile.transform.localScale;
-    //        flippedScale.y *= -1.0f;
-    //        tile.transform.localScale = flippedScale;
-    //    }
-    //
-    //    tile.transform.Rotate(0.0f, 0.0f, 180.0f + heading[(int)alignToDirection] + tileConfiguration.allowable_rotations[Random.Range(0, tileConfiguration.allowable_rotations.Length)]);
-    //
-    //    return tile;
-    //}
 }
 
 public class TileFactory
@@ -136,10 +110,6 @@ public class TileFactory
 
     public GameObject CreateTileRepresentation(WorldGrid grid, Coordinate coord)
     {
-        //// Create a prefab holder for the tile bits...
-        //var instance = GameObject.Instantiate(tilePrefab);
-        //instance.name = $"Tile({coord.m_Position.x}, {coord.m_Position.y})";
-
         // Create an appropriate base tile model (aligned appropriately)...
         var tile = coord.Type switch
         {
@@ -157,26 +127,5 @@ public class TileFactory
             return null;
 
         return tile;
-        //tile.transform.parent = instance.transform;
-
-        //// Create adornments to the tile as appropriate...
-        //var adornments = coord.Type switch
-        //{
-        //    GridTileBuilder.TileType.start => startBuilder.CreateTileAdornments(grid, coord),
-        //    GridTileBuilder.TileType.exit => exitBuilder.CreateTileAdornments(grid, coord),
-        //    GridTileBuilder.TileType.floor => floorBuilder.CreateTileAdornments(grid, coord),
-        //    GridTileBuilder.TileType.obstacle => obstacleBuilder.CreateTileAdornments(grid, coord),
-        //    GridTileBuilder.TileType.grass => grassBuilder.CreateTileAdornments(grid, coord),
-        //    GridTileBuilder.TileType.toxic => toxicBuilder.CreateTileAdornments(grid, coord),
-        //    GridTileBuilder.TileType.toxic_pool => toxicBuilder.CreateTileAdornments(grid, coord),
-        //    _ => null
-        //};
-        //
-        //for (int i = 0; i < adornments.Length; ++i)
-        //{
-        //    adornments[i].transform.parent = instance.transform;
-        //}
-        //
-        //return instance;
     }
 }

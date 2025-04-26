@@ -26,7 +26,7 @@ public class WorldGrid : MonoBehaviour
     public List<Coordinate> m_Coordinates = new List<Coordinate>();
 
     public int m_Distance = 20;
-    public GridPolluter m_Polluter;
+    private IGridPolluter m_Polluter = null;
 
     public GridTileBuilder m_GridTileBuilder;
 
@@ -55,6 +55,10 @@ public class WorldGrid : MonoBehaviour
             Time.timeScale = 1.0f;
         }
 
+        if (m_Polluter != null)
+        {
+            m_Polluter.TickPollution();
+        }
     }
 
     public void InitialiseGrid(int level_num, Vector2Int dim, string environment_name, Vector3 env_offset, string sky_box_name)
@@ -166,20 +170,6 @@ public class WorldGrid : MonoBehaviour
         return GetCoordinate(dest);
     }
 
-    public List<CoordinateRepresentation> UpdateTileRepresentationNow(GridPiece piece)
-    {
-        List<CoordinateRepresentation> reps = new List<CoordinateRepresentation>();
-        if (!m_LevelReady)
-            return reps;
-
-        foreach (var coord in piece.Coordinates)
-        {
-            reps.Add(m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]);
-        }
-
-        return reps;
-    }
-
     public List<CoordinateRepresentation> UpdateTileRepresentation(GridPiece piece)
     {
         IEnumerator ConfigureCoords(List<Coordinate> coords)
@@ -187,8 +177,6 @@ public class WorldGrid : MonoBehaviour
             yield return new WaitForSeconds(1.8f);
             foreach (var coord in coords)
             {
-                //m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y].Configure(this, coord, m_GridTileBuilder);
-                //reps.Add(m_coord_grid_representation[coord.m_Position.x, coord.m_Position.y]);
                 yield return new WaitForSeconds(0.18f);
             }
         }
@@ -219,13 +207,12 @@ public class WorldGrid : MonoBehaviour
             return;
         }
 
-        m_Polluter.m_PollutionExpansionTime = m_level_data.Config.ToxicSpreadTime;
-        m_Polluter.m_PollutionExpansionTimeVariation = m_level_data.Config.ToxicSpreadTimeVariation;
+        m_Polluter = new GridPolluter(this, m_level_data.Config.ToxicSpreadTime, m_level_data.Config.ToxicSpreadTimeVariation);
         m_Levelname.text = m_level_data.Config.Name;
 
         InitialiseGrid(m_level_data.levelNumber, m_level_data.Dimension, m_level_data.Config.EnvironmentName, new Vector3(m_level_data.Config.EnvironmentOffsetX, m_level_data.Config.EnvironmentOffsetY, m_level_data.Config.EnvironmentOffsetZ), m_level_data.Config.SkyName);
 
-        m_Polluter.Reset();
+        m_Polluter.Clear();
         m_Coordinates.Clear();
 
         // Populate the Coordinates, starting with the start position and ending with the end position.
@@ -416,6 +403,9 @@ public class WorldGrid : MonoBehaviour
         Debug.Assert(false);
         return false;
     }
+
+    public void HealPositions(List<Coordinate> coordinates) => m_Polluter?.HealPositions(coordinates);
+    public bool HasAnyPollution() => m_Polluter?.HasAnyPollution() ?? false;
 
     bool CanBeHealed_Toxic(Coordinate coord)
     {

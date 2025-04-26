@@ -66,6 +66,7 @@ public class CoordinateRepresentation : MonoBehaviour
         this.transform.position = new Vector3(coordinate.GridPosition().x, -.5f, coordinate.GridPosition().y);
         CreateTileRepresentation(coordinate);
         CreateTileAdornments(coordinate);
+        UpdateCounterUIVisibility();
     }
 
     [Button("Force Update Representation")]
@@ -77,6 +78,7 @@ public class CoordinateRepresentation : MonoBehaviour
 
         CreateTileRepresentation(coordinate);
         CreateTileAdornments(coordinate);
+        UpdateCounterUIVisibility();
         UpdateNeighbourStateCache();
     }
 
@@ -98,6 +100,7 @@ public class CoordinateRepresentation : MonoBehaviour
                     DestroyPart(ref m_vfx_object);
 
                     CreateTileRepresentation(coordinate);
+                    UpdateCounterUIVisibility();
                     UpdateNeighbourStateCache();
                     return true;
                 }
@@ -130,6 +133,7 @@ public class CoordinateRepresentation : MonoBehaviour
         m_base_tile_object.transform.parent = this.transform;
         m_base_tile_object.transform.localPosition = Vector3.zero;
         m_base_tile_object.GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        m_base_tile_object.layer = gameObject.layer;
 
         // VFX...
         if (coordinate.Type == GridTileBuilder.TileType.toxic ||
@@ -156,8 +160,11 @@ public class CoordinateRepresentation : MonoBehaviour
         {
             adornment.transform.parent = this.transform;
             adornment.transform.localPosition = Vector3.zero;
+            adornment.layer = gameObject.layer;
         });
     }
+
+    private void UpdateCounterUIVisibility() => timerRepresentation.gameObject.SetActive(coordinate.IsPollutionSource());
 
     private int num_toxic_neighbours(WorldGrid worldGrid, Coordinate coordinate) => worldGrid.GetOrthogonalNeighbours(coordinate).Count(c => c.IsPolluted());
 
