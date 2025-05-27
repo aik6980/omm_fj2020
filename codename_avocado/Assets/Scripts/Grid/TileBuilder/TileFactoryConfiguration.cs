@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TileFactoryConfiguration", menuName = "ScriptableObjects/Tile Factory Configuration")]
+[CreateAssetMenu(fileName = "TileFactoryConfiguration", menuName = "Scriptable Objects/Tile Factory Configuration")]
 public class TileFactoryConfiguration : ScriptableObject
 {
     public TileSet startTiles;

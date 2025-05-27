@@ -44,6 +44,9 @@ public class WorldGrid : MonoBehaviour
 
     public event System.Action<Coordinate, GridTileBuilder.TileType> OnCoordinateTypeChanged;
 
+    public TutorialUiController tutorialControllerUi;
+    public TutorialDataPart[] tutorialPartsy;
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.KeypadPlus))
@@ -207,7 +210,7 @@ public class WorldGrid : MonoBehaviour
             return;
         }
 
-        m_Polluter = new GridPolluter(this, m_level_data.Config.ToxicSpreadTime, m_level_data.Config.ToxicSpreadTimeVariation);
+        m_Polluter = new TimedGridPolluter(this, m_level_data.Config.ToxicSpreadTime, m_level_data.Config.ToxicSpreadTimeVariation);
         m_Levelname.text = m_level_data.Config.Name;
 
         InitialiseGrid(m_level_data.levelNumber, m_level_data.Dimension, m_level_data.Config.EnvironmentName, new Vector3(m_level_data.Config.EnvironmentOffsetX, m_level_data.Config.EnvironmentOffsetY, m_level_data.Config.EnvironmentOffsetZ), m_level_data.Config.SkyName);
@@ -265,6 +268,9 @@ public class WorldGrid : MonoBehaviour
                 yield return new WaitForSeconds(0.02f);
             }
         }
+
+        tutorialControllerUi.SetupUi(tutorialPartsy);
+        tutorialControllerUi.ShowUi();
 
         for (int y = 0; y < m_coord_grid.GetLength(1); ++y)
         {

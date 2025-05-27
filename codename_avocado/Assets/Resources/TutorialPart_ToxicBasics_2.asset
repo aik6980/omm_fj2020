@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea5cfea146c6ecd4da7bfe8a1d28c988, type: 3}
+  m_Name: TutorialPart_ToxicBasics_2
+  m_EditorClassIdentifier: 
+  title: Toxic - Deep Pools
+  description: Where <font="Mohave-Bold SDF"><size=14><color=white>Toxic</color></size></font>
+    is in greater concentrations the corruption eats into the very ground in <font="Mohave-Bold
+    SDF"><size=14><color=white>Deep Pools</color></size></font>. Where these exist
+    our boxes cannot go. But healing the land around the encroaching pool will allow
+    us to bring back the firm soil.
+  videoSource: {fileID: 0}
+  loopVideo: 1

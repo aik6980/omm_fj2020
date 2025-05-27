@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea5cfea146c6ecd4da7bfe8a1d28c988, type: 3}
+  m_Name: TutorialPart_ToxicBasics_4
+  m_EditorClassIdentifier: 
+  title: Toxic - Spread
+  description: Toxic Sources build up until they <font="Mohave-Bold SDF"><size=14><color=white>errupt</color></size></font>,
+    spilling their chemicals across the neighbouring land. Watch out for spread <font="Mohave-Bold
+    SDF"><size=14><color=white>Countdown Timers</color></size></font>, they will
+    warn of an impending erruption! And be cautious around spreading Toxic; spreading
+    Toxic will destroy unwary boxes.
+  videoSource: {fileID: 0}
+  loopVideo: 1

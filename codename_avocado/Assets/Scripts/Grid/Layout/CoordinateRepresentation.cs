@@ -112,6 +112,13 @@ public class CoordinateRepresentation : MonoBehaviour
 
     public void UpdateTimer(float timeRemaining)
     {
+        timerRepresentation?.SetCounterToFloat();
+        timerRepresentation?.UpdateTimeRemaining(timeRemaining);
+    }
+
+    public void UpdateTimer(int timeRemaining)
+    {
+        timerRepresentation?.SetCounterToInt();
         timerRepresentation?.UpdateTimeRemaining(timeRemaining);
     }
 

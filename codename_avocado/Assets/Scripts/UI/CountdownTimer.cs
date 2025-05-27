@@ -14,6 +14,8 @@ public class CountdownTimer : MonoBehaviour
     public float thresholdTime;
     public float fadeInTime;
 
+    public string counterFormatString = "0.0";
+
     // For debugging only...
     //[Range(0.0f, 60.0f)]
     //public float t;
@@ -22,6 +24,9 @@ public class CountdownTimer : MonoBehaviour
     //{
     //    UpdateTimeRemaining(t);
     //}
+
+    public void SetCounterToFloat() => counterFormatString = "0.0";
+    public void SetCounterToInt() => counterFormatString = "0";
 
     public void UpdateTimeRemaining(float time)
     {
@@ -37,7 +42,7 @@ public class CountdownTimer : MonoBehaviour
 
         sprite.color = currentColour;
         counter.color = currentColour;
-        counter.text = time.ToString("0.0");
+        counter.text = time.ToString(counterFormatString);
 
         transform.localScale = new Vector3(0.15f, 0.15f, 1.0f) * (1.0f - (tValue / 2.0f));
         fadeGroup.alpha = Mathf.Clamp01(1.0f - (time - thresholdTime + fadeInTime));

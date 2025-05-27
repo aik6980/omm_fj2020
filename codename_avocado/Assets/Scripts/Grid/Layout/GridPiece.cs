@@ -98,7 +98,7 @@ public class ToxicPiece : PollutionPiece
 {
 	private int m_MaxSpread = 0;
 
-	List<Coordinate> m_SourceCoordinates;
+	public List<Coordinate> m_SourceCoordinates;
 	List<Vector2Int> m_CurrentExpansion = new List<Vector2Int>();
 
 	public ToxicPiece(WorldGrid grid, Shape shape, Vector2Int position, int max_spread)
@@ -123,6 +123,7 @@ public class ToxicPiece : PollutionPiece
 			coordinate.Type != GridTileBuilder.TileType.toxic)
 		{
 			m_Coordinates.Remove(coordinate);
+			m_Grid.HealPositions(new List<Coordinate> { coordinate });
 		}
 
 		if (previous_type == GridTileBuilder.TileType.toxic_pool &&
@@ -138,11 +139,6 @@ public class ToxicPiece : PollutionPiece
 			});
 			m_Grid.HealPositions(copy);
 		}
-	}
-
-	public void UpdateTimer(float timeRemaining)
-    {
-		m_SourceCoordinates.ForEach(coord => m_Grid.GetCoordinateRepresentation(coord)?.UpdateTimer(timeRemaining));
 	}
 
 	public void GenerateExpansion()
@@ -204,18 +200,4 @@ public class ToxicPiece : PollutionPiece
 		}
 	}
 
-}
-
-public class PreviewPlacement
-{
-	List<CoordinateRepresentation> m_Reps;
-
-	public PreviewPlacement(List<CoordinateRepresentation> reps)
-	{
-		m_Reps = reps;
-	}
-
-	public void Clear()
-	{
-	}
 }
