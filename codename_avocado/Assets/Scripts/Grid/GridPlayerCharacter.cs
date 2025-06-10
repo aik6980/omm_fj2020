@@ -75,7 +75,7 @@ public class GridPlayerCharacter : MonoBehaviour
 	private void Start()
 	{
         CheckLink();
-		m_CurrentCoordinte = m_Grid.m_Coordinates[0];
+		m_CurrentCoordinte = m_Grid.m_start_coordinate;
 		PreparePlacement();
 	}
 
@@ -246,8 +246,8 @@ public class GridPlayerCharacter : MonoBehaviour
             unfoldScript.UseUnfoldShapeDefinition(shapeDefinitionIndex);
         }
 
-        m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, m_Grid.m_Coordinates[0].m_Position, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
-		MoveToCoordinate(m_Grid.m_Coordinates[0]);
+        m_PlayerPiece = GridPiece.GeneratePiece(m_Grid, m_Grid.m_start_coordinate.m_Position, GridTileBuilder.TileType.grass, unfoldScript ? new UnfoldedShape(unfoldScript) : null);
+		MoveToCoordinate(m_Grid.m_start_coordinate);
 
         m_Facing = Direction.North;
         AttemptMove(Vector2.right);

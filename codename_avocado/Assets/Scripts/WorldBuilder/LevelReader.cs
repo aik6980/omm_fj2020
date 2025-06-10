@@ -22,7 +22,8 @@ public class LevelReader : MonoSingleton<LevelReader>
 		public Coordinates Start;
 		public Coordinates End;
 		public List<Coordinates> Solid = new List<Coordinates> { };
-		public List<Coordinates> Magma = new List<Coordinates> { };
+		public List<Coordinates> ToxicSource = new List<Coordinates> { };
+		public List<Coordinates> Toxic = new List<Coordinates> { };
 		public List<Coordinates> Block = new List<Coordinates> { };
 
 		public Vector2Int Dimension;
@@ -32,12 +33,13 @@ public class LevelReader : MonoSingleton<LevelReader>
 	public LevelData GetLevelData(int level_num)
 	{
 		///
-		/// 0	Unassigned (empty)
-		/// 1	Starting tile
-		/// 2	Ending tile
-		/// 3	Magma source
-		/// 4	Blocking tile (rock/obstacle)
-		/// 5	Pre-gen island/ground
+		/// 0 or F	Unassigned (empty)
+		/// 1 or I	Starting tile
+		/// 2 or O	Ending tile
+		/// 3 or S	Toxic source
+		/// 4 or R	Blocking tile (rock/obstacle)
+		/// 5 or G	Pre-gen island/ground
+		/// 6 or T	Pre-gen toxic
 		///
 		var level = new LevelData();
 
@@ -72,26 +74,40 @@ public class LevelReader : MonoSingleton<LevelReader>
 			width = Mathf.Max(width, part.Length);
 			for (int x = 0; x < part.Length; ++x)
 			{
-				switch (part[x])
+				switch (part[x].ToUpper())
 				{
+					case "0":
+					case "F":
+						break;
+
 					case "1":
+					case "I":
 						level.Start = new LevelData.Coordinates { x = x, y = line.Length - y - 1 };
 						break;
 
 					case "2":
+					case "O":
 						level.End = new LevelData.Coordinates { x = x, y = line.Length - y - 1 };
 						break;
 
 					case "3":
-						level.Magma.Add(new LevelData.Coordinates { x = x, y = line.Length - y - 1 });
+					case "S":
+						level.ToxicSource.Add(new LevelData.Coordinates { x = x, y = line.Length - y - 1 });
 						break;
 
 					case "4":
+					case "R":
 						level.Block.Add(new LevelData.Coordinates { x = x, y = line.Length - y - 1 });
 						break;
 
 					case "5":
+					case "G":
 						level.Solid.Add(new LevelData.Coordinates { x = x, y = line.Length - y - 1 });
+						break;
+
+					case "6":
+					case "T":
+						level.Toxic.Add(new LevelData.Coordinates { x = x, y = line.Length - y - 1 });
 						break;
 				}
 			}

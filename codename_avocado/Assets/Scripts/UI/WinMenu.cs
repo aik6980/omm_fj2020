@@ -44,18 +44,15 @@ public class WinMenu : MonoBehaviour
 
     public void NextLevel()
     {
-        player.m_Grid.LoadNextLevel();
+        LaunchGameScript ls = LaunchGameScript.singleton;
+        player.m_Grid.LoadNextLevel(++ls.levelToLoad);
         this.gameObject.SetActive(false);
     }
 
     public void RestartLevel()
     {
         LaunchGameScript ls = LaunchGameScript.singleton;
-        if (ls)
-        {
-            ls.levelToLoad--;
-        }
-        player.m_Grid.LoadNextLevel();
+        player.m_Grid.LoadNextLevel(ls.levelToLoad);
         this.gameObject.SetActive(false);
     }
 

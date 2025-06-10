@@ -4,23 +4,21 @@ using UnityEngine;
 
 public interface ILevelLoader
 {
-    LevelReader.LevelData LoadLevel(WorldGrid grid);
+    int CurrentLevel { get; }
+    LevelDataObject LoadLevel(WorldGrid grid, int levelToLoad);
 }
 
 public class LevelLoader : MonoBehaviour, ILevelLoader
 {
     public int Level = 1;
+    public LevelOrder LevelOrder;
 
-    public LevelReader.LevelData LoadLevel(WorldGrid grid)
+    public int CurrentLevel { get => Level; }
+
+    public LevelDataObject LoadLevel(WorldGrid grid, int levelToLoad)
     {
-        LaunchGameScript ls = LaunchGameScript.singleton;
-        if (ls)
-        {
-            this.Level = ls.levelToLoad++;
-        }
-
-        var level = PlayerPrefs.GetInt("LevelAt", 1);
-        PlayerPrefs.SetInt("LevelAt", System.Math.Max(level, this.Level));
-        return WorldBuilder.GetOrCreateInstance().BuildLevel(grid, this.Level++);
+        Level = levelToLoad;
+        PlayerPrefs.SetInt("LevelAt", System.Math.Max(PlayerPrefs.GetInt("LevelAt", 1), this.Level));
+        return Level <= LevelOrder.Levels.Length ? LevelOrder.Levels[Level-1] : null;
     }
 }

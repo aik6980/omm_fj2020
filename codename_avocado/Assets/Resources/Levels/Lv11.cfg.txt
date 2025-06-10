@@ -1,5 +1,5 @@
 {
-	"Name": "2-3 LOCKDOWN",
+	"Name": "2-3: LOCKDOWN",
 	"SkyName": "Skybox01_day",
 	"EnvironmentName": "Environment_24x24",
 	"EnvironmentOffsetX": 0,

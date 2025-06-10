@@ -109,5 +109,6 @@ public class TutorialUiController : MonoBehaviour
         }
 
         selfFadeMask.alpha = 0.0f;
+        gameObject.SetActive(false);
     }
 }

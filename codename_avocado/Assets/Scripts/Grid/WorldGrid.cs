@@ -24,6 +24,8 @@ public class WorldGrid : MonoBehaviour
     public GameState m_GameState;
     public GameObject m_CoordinatePrefab;
     public List<Coordinate> m_Coordinates = new List<Coordinate>();
+    public Coordinate m_start_coordinate = null;
+    public Coordinate m_exit_coordinate = null;
 
     public int m_Distance = 20;
     private IGridPolluter m_Polluter = null;
@@ -33,7 +35,8 @@ public class WorldGrid : MonoBehaviour
     public event System.Action<IEnumerable<Coordinate>> OnLevelLoaded;
     public event System.Action<IEnumerable<Coordinate>> OnLevelReady;
 
-    private LevelReader.LevelData		m_level_data;
+    //private LevelReader.LevelData		m_level_data;
+    private LevelDataObject             m_level_data;
     public Coordinate[,]				m_coord_grid;
     public CoordinateRepresentation[,]	m_coord_grid_representation;
     private GameObject					m_Environment;
@@ -89,6 +92,7 @@ public class WorldGrid : MonoBehaviour
 
         m_coord_grid_representation?.ForEach((x, y, coord_rep) => Destroy(coord_rep?.gameObject));
 
+        Debug.Log(string.Format("Levels/Lv{0}_Queue", level_num));
         var conveyorQueue = Resources.Load<ManualConveyorQueue>(string.Format("Levels/Lv{0}_Queue", level_num));
         if (conveyorQueue != null)
         {
@@ -143,7 +147,8 @@ public class WorldGrid : MonoBehaviour
     private void Awake()
     {
         m_LevelReady = false;
-        LoadNextLevel();
+        LaunchGameScript ls = LaunchGameScript.singleton;
+        LoadNextLevel(ls.levelToLoad);
     }
 
     public CoordinateRepresentation GetCoordinateRepresentation(Coordinate coord)
@@ -198,45 +203,83 @@ public class WorldGrid : MonoBehaviour
         return reps;
     }
 
-    public void LoadNextLevel()
+    public void LoadNextLevel(int levelToLoad)
     {
-        //Debug.Log("LoadNextLevel");
+        Debug.Log($"LoadNextLevel ({levelToLoad})");
         m_LevelReady = false;
 
-        m_level_data = GetComponent<ILevelLoader>().LoadLevel(this);
+        var levelLoader = GetComponent<ILevelLoader>();
+        m_level_data = levelLoader.LoadLevel(this, levelToLoad);
         if (m_level_data == null)
         {
             m_GameState.Win();
             return;
         }
 
-        m_Polluter = new TimedGridPolluter(this, m_level_data.Config.ToxicSpreadTime, m_level_data.Config.ToxicSpreadTimeVariation);
-        m_Levelname.text = m_level_data.Config.Name;
+        m_Polluter = new TimedGridPolluter(this, m_level_data.ToxicSpreadTime, m_level_data.ToxicSpreadTimeVariation);
+        m_Levelname.text = m_level_data.Name;
 
-        InitialiseGrid(m_level_data.levelNumber, m_level_data.Dimension, m_level_data.Config.EnvironmentName, new Vector3(m_level_data.Config.EnvironmentOffsetX, m_level_data.Config.EnvironmentOffsetY, m_level_data.Config.EnvironmentOffsetZ), m_level_data.Config.SkyName);
+        InitialiseGrid(levelToLoad, m_level_data.Tiles.Dimensions, m_level_data.EnvironmentName, new Vector3(m_level_data.EnvironmentOffsetX, m_level_data.EnvironmentOffsetY, m_level_data.EnvironmentOffsetZ), m_level_data.SkyName);
 
         m_Polluter.Clear();
         m_Coordinates.Clear();
+        m_coord_grid = new Coordinate[m_level_data.Tiles.Dimensions.x, m_level_data.Tiles.Dimensions.y];
+        m_coord_grid_representation = new CoordinateRepresentation[m_level_data.Tiles.Dimensions.x, m_level_data.Tiles.Dimensions.y];
 
-        // Populate the Coordinates, starting with the start position and ending with the end position.
-        m_Coordinates.Add(new Coordinate(this, m_level_data.Start.ToVector2Int(), GridTileBuilder.TileType.start));
+        List<Coordinate> toxic_sources = new List<Coordinate>();
+        for (int row = 0; row < m_level_data.Tiles.Dimensions.y; ++row)
+        {
+            for (int column = 0; column < m_level_data.Tiles.Dimensions.x; ++column)
+            {
+                var coord = new Coordinate(this, new Vector2Int(column, (m_level_data.Tiles.Dimensions.y - 1) - row), m_level_data.Tiles[row, column]);
+                m_Coordinates.Add(coord);
+                m_coord_grid[column, (m_level_data.Tiles.Dimensions.y - 1) - row] = coord;
 
-        m_level_data.Magma.ForEach(c => m_Coordinates.Add(new(this, c.ToVector2Int(), GridTileBuilder.TileType.toxic_pool)));
-        m_level_data.Block.ForEach(c => m_Coordinates.Add(new(this, c.ToVector2Int(), GridTileBuilder.TileType.obstacle)));
-        m_level_data.Solid.ForEach(c => m_Coordinates.Add(new(this, c.ToVector2Int(), GridTileBuilder.TileType.grass)));
+                switch (m_level_data.Tiles[row, column])
+                {
+                    case GridTileBuilder.TileType.start: m_start_coordinate = coord; break;
+                    case GridTileBuilder.TileType.exit: m_exit_coordinate = coord; break;
+                    case GridTileBuilder.TileType.toxic_pool: toxic_sources.Add(coord); break;
+                }
+            }
+        }
 
-        m_Coordinates.Add(new Coordinate(this, m_level_data.End.ToVector2Int(), GridTileBuilder.TileType.exit));
+        m_Polluter.AddToxicPools(toxic_sources.Select(c => new ToxicPiece(this, new Shape(), c.m_Position, m_level_data.MaxSpreadDistance)).ToList());
 
-        // Populate the coordinate grid from the coordinates, then add any remaining floor.
-        m_coord_grid = new Coordinate[m_level_data.Dimension.x, m_level_data.Dimension.y];
-        m_Coordinates.ForEach(c => m_coord_grid[c.m_Position.x, c.m_Position.y] = c);
-        m_coord_grid.ForEach((x, y, coord) => m_coord_grid[x, y] = m_coord_grid[x, y] ?? new Coordinate(this, new(x, y), GridTileBuilder.TileType.floor));
-
-        // Populate the game tiles from the coordinates.
-        m_coord_grid_representation = new CoordinateRepresentation[m_level_data.Dimension.x, m_level_data.Dimension.y];
-
-        // Update the polluter.
-        m_Polluter.AddToxicPools(m_level_data.Magma.Select(c => new ToxicPiece(this, new Shape(), c.ToVector2Int(), m_level_data.Config.MaxSpreadDistance)).ToList()/*m_world_data.toxic_pool_pieces*/);
+        //m_level_data = GetComponent<ILevelLoader>().LoadLevel(this);
+        //if (m_level_data == null)
+        //{
+        //    m_GameState.Win();
+        //    return;
+        //}
+        //
+        //m_Polluter = new TimedGridPolluter(this, m_level_data.Config.ToxicSpreadTime, m_level_data.Config.ToxicSpreadTimeVariation);
+        //m_Levelname.text = m_level_data.Config.Name;
+        //
+        //InitialiseGrid(m_level_data.levelNumber, m_level_data.Dimension, m_level_data.Config.EnvironmentName, new Vector3(m_level_data.Config.EnvironmentOffsetX, m_level_data.Config.EnvironmentOffsetY, m_level_data.Config.EnvironmentOffsetZ), m_level_data.Config.SkyName);
+        //
+        //m_Polluter.Clear();
+        //m_Coordinates.Clear();
+        //
+        //// Populate the Coordinates, starting with the start position and ending with the end position.
+        //m_Coordinates.Add(new Coordinate(this, m_level_data.Start.ToVector2Int(), GridTileBuilder.TileType.start));
+        //
+        //m_level_data.ToxicSource.ForEach(c => m_Coordinates.Add(new(this, c.ToVector2Int(), GridTileBuilder.TileType.toxic_pool)));
+        //m_level_data.Block.ForEach(c => m_Coordinates.Add(new(this, c.ToVector2Int(), GridTileBuilder.TileType.obstacle)));
+        //m_level_data.Solid.ForEach(c => m_Coordinates.Add(new(this, c.ToVector2Int(), GridTileBuilder.TileType.grass)));
+        //
+        //m_Coordinates.Add(new Coordinate(this, m_level_data.End.ToVector2Int(), GridTileBuilder.TileType.exit));
+        //
+        //// Populate the coordinate grid from the coordinates, then add any remaining floor.
+        //m_coord_grid = new Coordinate[m_level_data.Dimension.x, m_level_data.Dimension.y];
+        //m_Coordinates.ForEach(c => m_coord_grid[c.m_Position.x, c.m_Position.y] = c);
+        //m_coord_grid.ForEach((x, y, coord) => m_coord_grid[x, y] = m_coord_grid[x, y] ?? new Coordinate(this, new(x, y), GridTileBuilder.TileType.floor));
+        //
+        //// Populate the game tiles from the coordinates.
+        //m_coord_grid_representation = new CoordinateRepresentation[m_level_data.Dimension.x, m_level_data.Dimension.y];
+        //
+        //// Update the polluter.
+        //m_Polluter.AddToxicPools(m_level_data.ToxicSource.Select(c => new ToxicPiece(this, new Shape(), c.ToVector2Int(), m_level_data.Config.MaxSpreadDistance)).ToList()/*m_world_data.toxic_pool_pieces*/);
 
         OnLevelLoaded?.Invoke(/*m_world_data.start_piece.Coordinates*/null);
         StartCoroutine(TileAnimation(true));
@@ -286,7 +329,8 @@ public class WorldGrid : MonoBehaviour
 
     public bool IsFinalCoordinate(Coordinate coordinate)
     {
-        return coordinate.m_Position == m_level_data.End.ToVector2Int();//m_FinalPiece.Coordinates.Contains(coordinate);
+        //return coordinate.m_Position == m_level_data.End.ToVector2Int();//m_FinalPiece.Coordinates.Contains(coordinate);
+        return coordinate.Type == GridTileBuilder.TileType.exit;
     }
 
     public static Vector2 OffsetDirection(Vector2 start, Direction direction)
