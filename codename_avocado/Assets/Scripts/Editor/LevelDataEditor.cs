@@ -19,9 +19,6 @@ public class LevelDataEditor : PropertyDrawer
     {
         string propertyLabelText = label.text;
         var dimensionsProp = property.FindPropertyRelative("Dimensions");
-        var dataProp = property.FindPropertyRelative("tiles");
-
-        var dimensions = dimensionsProp.vector2IntValue;
 
         // Ensure data list has correct size
         SerializedObject so = property.serializedObject;
@@ -31,41 +28,47 @@ public class LevelDataEditor : PropertyDrawer
         Rect d = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
 
         EditorGUI.BeginChangeCheck();
-        dimensionsProp.vector2IntValue = EditorGUI.Vector2IntField(d, "Level Size", dimensions);
+        dimensionsProp.vector2IntValue = EditorGUI.Vector2IntField(d, "Level Size", dimensionsProp.vector2IntValue);
+        var dimensions = dimensionsProp.vector2IntValue;
 
         if (EditorGUI.EndChangeCheck())
         {
             dimensionsProp.serializedObject.ApplyModifiedProperties();
         }
 
-        var gridObj = fieldInfo.GetValue(so.targetObject) as TileData;
-        gridObj?.EnsureSize();
-
-        Rect r = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight, position.width, EditorGUIUtility.singleLineHeight);
-        EditorGUI.LabelField(r, propertyLabelText);
-        r.y += EditorGUIUtility.singleLineHeight + 4;
-
-        for (int y = 0; y < dimensions.y; y++)
+        if (so.isEditingMultipleObjects == false)
         {
-            r.x = position.x;
-            for (int x = 0; x < dimensions.x; x++)
-            {
-                int index = y * dimensions.x + x;
-                var tileProp = dataProp.GetArrayElementAtIndex(index);
-                var icon = new GUIContent(GetIcon((GridTileBuilder.TileType)tileProp.enumValueIndex), $"{(GridTileBuilder.TileType)tileProp.enumValueIndex}");
+            var dataProp = property.FindPropertyRelative("tiles");
+            var gridObj = fieldInfo.GetValue(so.targetObject) as TileData;
+            gridObj?.EnsureSize();
 
-                if (GUI.Button(new Rect(r.x, r.y, cellSize, cellSize), icon, GUIStyle.none))
+            Rect r = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight, position.width, EditorGUIUtility.singleLineHeight);
+            EditorGUI.LabelField(r, propertyLabelText);
+            r.y += EditorGUIUtility.singleLineHeight + 4;
+
+            for (int y = 0; y < dimensions.y; y++)
+            {
+                r.x = position.x;
+                for (int x = 0; x < dimensions.x; x++)
                 {
-                    var next = (tileProp.enumValueIndex + 1) % System.Enum.GetValues(typeof(GridTileBuilder.TileType)).Length;
-                    dataProp.GetArrayElementAtIndex(index).enumValueIndex = next;
-                    dataProp.serializedObject.ApplyModifiedProperties();
+                    int index = y * dimensions.x + x;
+                    var tileProp = dataProp.GetArrayElementAtIndex(index);
+                    var icon = new GUIContent(GetIcon((GridTileBuilder.TileType)tileProp.enumValueIndex), $"{(GridTileBuilder.TileType)tileProp.enumValueIndex}");
+
+                    if (GUI.Button(new Rect(r.x, r.y, cellSize, cellSize), icon, GUIStyle.none))
+                    {
+                        var next = (tileProp.enumValueIndex + 1) % System.Enum.GetValues(typeof(GridTileBuilder.TileType)).Length;
+                        dataProp.GetArrayElementAtIndex(index).enumValueIndex = next;
+                        dataProp.serializedObject.ApplyModifiedProperties();
+                    }
+
+
+                    r.x += cellSize + cellMargin;
                 }
 
-
-                r.x += cellSize + cellMargin;
+                r.y += cellSize + cellMargin;
             }
 
-            r.y += cellSize + cellMargin;
         }
 
         EditorGUI.EndProperty();

@@ -19,6 +19,6 @@ public class LevelLoader : MonoBehaviour, ILevelLoader
     {
         Level = levelToLoad;
         PlayerPrefs.SetInt("LevelAt", System.Math.Max(PlayerPrefs.GetInt("LevelAt", 1), this.Level));
-        return Level <= LevelOrder.Levels.Length ? LevelOrder.Levels[Level-1] : null;
+        return Level <= LevelOrder.Levels.Length ? Instantiate(LevelOrder.Levels[Level-1]) : null;
     }
 }

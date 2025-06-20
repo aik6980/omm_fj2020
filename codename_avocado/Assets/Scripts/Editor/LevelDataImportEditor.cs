@@ -74,6 +74,7 @@ public class LevelDataImportEditor : EditorWindow
                         levelData.Tiles[rowIndex, colIndex] = tile;
                     }
                 }
+                EditorUtility.SetDirty(levelData);
             }
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
